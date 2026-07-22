@@ -106,10 +106,46 @@ Working branch: `build-part-ii` (continuation of `build-bocap-site`, merged to `
     `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP smoke-check confirmed both
     "Próximamente" empty states render on `/convocatorias`.
 
-**⚠️ General content-accuracy flag** (not specific to Ecosistema): `src/data/juntaDirectiva.ts`
-and `src/data/miembrosAliados.ts` (merged to `main` before this session) contain
-plausible-but-unverified names — no legacy content source was available when they were
-built. Worth revisiting against real data at some point, same as Ecosistema was.
+- ✅ **Membresía** (`/membresia`): `QuienPuedeParticipar` (ink hero, no data seam — built
+  directly like `QueEs`) + `TiposDeMiembro` (server, empty-state) + `Beneficios` (server,
+  mist band, empty-state) + `MiembrosActuales` (server, tile wall, **populated**) +
+  `UnirseForm` (server component, no `"use client"`, no `onSubmit` possible by design —
+  submit `Button` is `disabled`; note "Este formulario es demostrativo y aún no está
+  conectado"). Built test-first for the three data-driven sections (TDD skill).
+  `src/data/tiposMiembro.ts`, `src/data/beneficios.ts`, `src/data/miembrosActuales.ts`.
+  - **`TiposDeMiembro`/`Beneficios` are empty by design** — no real membership-tier or
+    benefit content exists yet (this is institutional/policy content, judged too risky to
+    guess at — could describe a membership incorrectly, not just use a placeholder name).
+    Render the established "Próximamente" pattern.
+  - **`MiembrosActuales` is populated**, not empty — it reuses the real `members` list from
+    `siteContent.js` (same 4 orgs as `directorio.ts`/`miembrosAliados.ts`), since the
+    ecosystem directory and BOCAP's actual membership roster are the same underlying data.
+  - **`QuienPuedeParticipar`'s eligibility copy is drafted, not sourced verbatim** — the
+    real `bocap.vc/#/miembros` page is a client-rendered Vue SPA (`WebFetch` only returned
+    the page shell/title, no body content). The user supplied the site's `siteContent.js`
+    source directly instead. That file has no literal "who's eligible" list, so the six
+    bullets (Fondos de venture capital / Inversionistas ángeles / Aceleradoras /
+    Corporativos / Founders y startups / Aliados institucionales) were synthesized from
+    recurring phrasing across its `homeHighlights`/`institutionalGoals`/`aboutSections`
+    fields. **Flagged for user review** — not a literal quote from the source.
+  - **Fixed the previously-flagged fabricated Home content** using the same
+    `siteContent.js` dump (user-confirmed in-session): `src/data/juntaDirectiva.ts` now
+    holds the real board (Viviana Coloma/Presidenta · Escalatec + Aceleradora SOLYDES,
+    Corina Marion/Vicepresidenta · Babasú Ventures, Juan Cruz Valdez Rojas/Secretario ·
+    iThink VC, Álvaro Villarroel/Tesorero · Escalatec — org affiliations taken from each
+    person's bio in the source), and `src/data/miembrosAliados.ts` now holds the real
+    `members`/`allies` data (same 4 orgs; `allies` is empty in the real source too — no
+    additional partners to add). Existing tests for both didn't need changes since they
+    assert "one rendered item per data-array entry," not literal names.
+  - **Still fabricated, not touched this session**: `src/data/cifras.ts` ("40+ startups",
+    "$8M+ capital movilizado", etc.) — no real figures were in the `siteContent.js` dump
+    supplied. Flagged for a future pass, not fixed now (out of scope for Membresía).
+  - Verified: `pnpm test` (34/34 incl. 3 new files/3 new tests), `pnpm typecheck`,
+    `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP smoke-check confirmed all 6
+    eligibility bullets, both empty states, all 4 `MiembrosActuales` tiles, and the
+    UnirseForm demo note render on `/membresia`; confirmed on `/` that the real board names
+    render and the old fabricated names (`María Fernanda Rojas`, `Andes Ventures`,
+    `Impulso Bolivia`) are gone.
 
 ## Reference material
 - `reference/legacy-styles.css` — the **full** legacy `src/styles.css`, pasted in full by
@@ -131,15 +167,19 @@ the remaining pages below.
 
 ## Remaining work
 
-### 1. Membresía (`/membresia`)
-`QuienPuedeParticipar` (ink hero + 2-col bullet list of who can join), `TiposDeMiembro`
-(3 feature cards with ✓ highlight lists), `Beneficios` (6 mini cards — mist band),
-`MiembrosActuales` (tile wall), `UnirseForm` (**UI only, intentionally unwired** — plain
-server-component `<form>`, reuses FormField primitives, note "Este formulario es
-demostrativo y aún no está conectado" — mist band, centered max-w-2xl).
-Data: `tiposMiembro.ts` (`MemberType { name, description, highlights[] }`),
-`beneficios.ts` (`Beneficio { title, description }`),
-`miembrosActuales.ts` (`CurrentMember { name, type }` — separate from miembrosAliados until real data).
+All 6 pages are now built (Home, Contacto, Ecosistema, Recursos, Convocatorias, Membresía).
+What's left is content, review, and polish:
+
+### 1. Content still needed from the institution
+- `QuienPuedeParticipar`'s eligibility bullets (`src/components/sections/membresia/QuienPuedeParticipar.tsx`)
+  are **drafted/synthesized**, not a literal source quote — needs review.
+- Empty-state sections awaiting real content: `startups.ts` (Ecosistema),
+  `guiasArticulos.ts`/`reportes.ts` (Recursos), `eventos.ts`/`convocatoriasAceleradoras.ts`
+  (Convocatorias), `tiposMiembro.ts`/`beneficios.ts` (Membresía). Also still pending:
+  `angels`/`accelerators` entries for `directorio.ts` (mentioned as arriving "later this
+  week" as of this session).
+- `src/data/cifras.ts` (Home stats: "40+", "$8M+", etc.) is still fabricated — no real
+  figures have been supplied yet.
 
 ### 2. Polish
 - ✅ `"typecheck": "tsc --noEmit"` script added to package.json.
