@@ -1,6 +1,6 @@
 # BOCAP site build — plan & status
 
-Working branch: `build-bocap-site`. Delete this file before merging/PR.
+Working branch: `build-bocap-site`. Delete this file before merging/PR — but not yet; keep it updated until the remaining pages below are implemented.
 
 ## Status
 
@@ -125,7 +125,8 @@ Commit per phase. Push / PR **only on explicit user go-ahead**
   `tone="mist"` on `Section`; pills = `rounded-full`; success/highlight = `gold` or `teal`.
 - Eyebrow idiom: `text-xs font-bold uppercase tracking-[0.16em] text-red`.
 - Containers: `max-w-[var(--maxw)] px-[var(--gutter)]` (Section handles this).
-- No `next/font` — system stacks only. h1–h4 get serif bold from globals.css.
+- Fonts loaded via `next/font/google` (Inter for `--sans`, Lora for `--serif`), set up in
+  `src/app/layout.tsx`. h1–h4 get serif bold from globals.css.
 - Server Components by default; `"use client"` only for real interactivity
   (DirectorioFiltrable, ContactForm, Nav, CopyEmailButton).
 - pnpm only. Next.js 16: check `node_modules/next/dist/docs/` before assuming APIs.

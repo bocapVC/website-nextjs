@@ -13,8 +13,7 @@ BOCAP's marketing site (Bocap.vc — capital emprendedor / VC network in Bolivia
 - `pnpm build` — production build (Turbopack)
 - `pnpm start` — serve the production build
 - `pnpm lint` — ESLint via `eslint-config-next` (`core-web-vitals` + TypeScript rules), flat config in `eslint.config.mjs`
-
-No test runner is configured yet.
+- `pnpm test` — Vitest + React Testing Library (jsdom), config in `vitest.config.mts`/`vitest.setup.ts`; tests live alongside each section in `src/components/sections/<page>/__tests__/`
 
 ## Architecture
 
