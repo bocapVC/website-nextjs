@@ -1,6 +1,6 @@
 # BOCAP site build — plan & status
 
-Working branch: `build-bocap-site`. Delete this file before merging/PR — but not yet; keep it updated until the remaining pages below are implemented.
+Working branch: `build-part-ii` (continuation of `build-bocap-site`, merged to `main` in #1). Delete this file before merging/PR — but not yet; keep it updated until the remaining pages below are implemented.
 
 ## Status
 
@@ -47,6 +47,35 @@ Working branch: `build-bocap-site`. Delete this file before merging/PR — but n
     `typecheck`/tests are clean, but no fresh `pnpm dev` visual check was done post-edit
     (dev server from earlier in the session was left running per user request).
 
+- ✅ **Ecosistema** (`/ecosistema`): `StartupGrid` (server; feature cards, sector Badge,
+  location · stage footer) + `DirectorioFiltrable` (`"use client"`; chip filter, mini cards
+  — mist band). `src/data/startups.ts`, `src/data/directorio.ts`.
+  - **Content note**: real directory data supplied by the user (4 entries: Babasú Ventures,
+    Cibersons, Escalatec, iThink VC — sourced from `members` in the legacy site's
+    `siteContent.js`, not fabricated). `angels`/`accelerators`/`allies` arrays were empty in
+    that source and are **not yet represented** — more data expected later this week.
+  - **Startups**: no startup entries exist anywhere in the source data. `STARTUPS` is an
+    empty array by design; `StartupGrid` renders an honest "Próximamente: startups del
+    ecosistema boliviano." empty state rather than inventing entries. Update `STARTUPS` and
+    (if new categories arrive) `DIRECTORIO` when real data lands — `DIRECTORY_CATEGORIES` is
+    derived automatically from whatever `category` values are present, so no extra wiring
+    needed for new categories.
+  - **Category taxonomy deviates from the original plan below**: filter categories are
+    driven by the real `category` field values from source data (`Fondo`, `Tecnología`,
+    `VC`) rather than the originally-guessed `fondo`/`ángel`/`aceleradora`/`organización`
+    union — the plan's guess didn't match the actual source classification.
+  - Verified: `pnpm test` (13/13 incl. 2 new files), `pnpm typecheck`, `pnpm lint`,
+    `pnpm build` all clean; `pnpm dev` HTTP smoke-check of rendered `/ecosistema` HTML
+    confirmed all 4 directory cards, all 4 filter chips, external links, and the empty-state
+    copy render correctly (no browser tooling available in this environment for a full
+    click-through, but the client-side filter interaction is covered by
+    `DirectorioFiltrable.test.tsx`, which fires the click and asserts the filtered DOM).
+
+**⚠️ General content-accuracy flag** (not specific to Ecosistema): `src/data/juntaDirectiva.ts`
+and `src/data/miembrosAliados.ts` (merged to `main` before this session) contain
+plausible-but-unverified names — no legacy content source was available when they were
+built. Worth revisiting against real data at some point, same as Ecosistema was.
+
 ## Reference material
 - `reference/legacy-styles.css` — the **full** legacy `src/styles.css`, pasted in full by
   the user. Not built/imported by the app; consult it directly for exact values (colors,
@@ -67,21 +96,14 @@ the remaining pages below.
 
 ## Remaining work
 
-### 2. Ecosistema (`/ecosistema`)
-`StartupGrid` (server; feature cards with sector Badge, location · stage footer) +
-`DirectorioFiltrable` (`"use client"`; filter chips Todos/Fondos/Ángeles/Aceleradoras/
-Organizaciones, `useState` filter, mini cards with category Badge — mist band).
-Data: `startups.ts` (`Startup { name, sector, description, location, stage }`),
-`directorio.ts` (`DirectoryEntry { name, category: "fondo"|"ángel"|"aceleradora"|"organización", description, location, url? }` + `DIRECTORY_CATEGORIES` chip list).
-
-### 3. Recursos (`/recursos`)
+### 2. Recursos (`/recursos`)
 `GuiasArticulos` (news cards: category Badge, title, excerpt, meta; anchor-wrapped when
 `url` present) + `Reportes` (row cards: year in red serif + title + description, "Descargar →"
 when `url` else "Próximamente" — mist band).
 Data: `guiasArticulos.ts` (`Guide { title, excerpt, category, meta, url? }`),
 `reportes.ts` (`Report { title, description, year, url? }`).
 
-### 4. Convocatorias (`/convocatorias`)
+### 3. Convocatorias (`/convocatorias`)
 `Eventos` (feature cards: date in red, gold Badge "Vigente" / neutral "Pasado", title,
 description, location) + `AceleradorasAplicaciones` (row cards: program + status Badge,
 organization, description, deadline; CTA "Postular" (external url) or ghost "Más información"
@@ -89,7 +111,7 @@ organization, description, deadline; CTA "Postular" (external url) or ghost "Má
 Data: `eventos.ts` (`Evento { title, description, date, location, status: "vigente"|"pasado", url? }`),
 `convocatoriasAceleradoras.ts` (`Convocatoria { program, organization, description, deadline, status: "vigente"|"cerrada", url? }`).
 
-### 5. Membresía (`/membresia`)
+### 4. Membresía (`/membresia`)
 `QuienPuedeParticipar` (ink hero + 2-col bullet list of who can join), `TiposDeMiembro`
 (3 feature cards with ✓ highlight lists), `Beneficios` (6 mini cards — mist band),
 `MiembrosActuales` (tile wall), `UnirseForm` (**UI only, intentionally unwired** — plain
@@ -99,7 +121,7 @@ Data: `tiposMiembro.ts` (`MemberType { name, description, highlights[] }`),
 `beneficios.ts` (`Beneficio { title, description }`),
 `miembrosActuales.ts` (`CurrentMember { name, type }` — separate from miembrosAliados until real data).
 
-### 6. Polish
+### 5. Polish
 - ✅ `"typecheck": "tsc --noEmit"` script added to package.json.
 - README: structure, swap points (tokens in globals.css, `LOGO_SRC` in Logo.tsx,
   `SITE.email` in nav.ts), contact-form verification notes.
@@ -108,11 +130,11 @@ Data: `tiposMiembro.ts` (`MemberType { name, description, highlights[] }`),
   sections against it for exact-value drift (they were built from the ported
   `globals.css` tokens + judgment, before the full legacy file was available).
 
-### 7. Verify
+### 6. Verify
 `pnpm typecheck` / `pnpm lint` / `pnpm build` clean; `pnpm dev` click-through of all 6
 routes + mobile nav; directory filter interaction.
 
-### 8. Ship
+### 7. Ship
 Commit per phase. Push / PR **only on explicit user go-ahead**
 (remote: git@github.com:bocapVC/website-nextjs.git).
 
