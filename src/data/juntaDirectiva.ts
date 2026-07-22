@@ -5,8 +5,8 @@ export interface BoardMember {
 }
 
 export const JUNTA_DIRECTIVA: BoardMember[] = [
-  { name: "María Fernanda Rojas", role: "Presidenta", organization: "Andes Ventures" },
-  { name: "Diego Salazar", role: "Vicepresidente", organization: "Fundación Emprender" },
-  { name: "Camila Vargas", role: "Secretaria", organization: "Altiplano Capital" },
-  { name: "Rodrigo Peña", role: "Tesorero", organization: "Impulso Bolivia" },
+  { name: "Viviana Coloma", role: "Presidenta", organization: "Escalatec · Aceleradora SOLYDES" },
+  { name: "Corina Marion", role: "Vicepresidenta", organization: "Babasú Ventures" },
+  { name: "Juan Cruz Valdez Rojas", role: "Secretario", organization: "iThink VC" },
+  { name: "Álvaro Villarroel", role: "Tesorero", organization: "Escalatec" },
 ];
