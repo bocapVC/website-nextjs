@@ -71,6 +71,20 @@ Working branch: `build-part-ii` (continuation of `build-bocap-site`, merged to `
     click-through, but the client-side filter interaction is covered by
     `DirectorioFiltrable.test.tsx`, which fires the click and asserts the filtered DOM).
 
+- ✅ **Recursos** (`/recursos`): `GuiasArticulos` (server) + `Reportes` (server, mist band).
+  Built test-first (TDD skill) with leaf presentational components — `GuideCard`,
+  `ReportRow` — extracted specifically so the url-present/url-absent branches (link-wrap,
+  "Descargar →" vs "Próximamente") get real fixture-driven test coverage, since
+  `GUIAS_ARTICULOS`/`REPORTES` are currently empty and looping over them would be vacuous.
+  `src/data/guiasArticulos.ts` (`Guide { title, excerpt, category, meta, url? }`),
+  `src/data/reportes.ts` (`Report { title, description, year, url? }`).
+  - **No real content exists yet** — both arrays are empty by design (not fabricated);
+    `GuiasArticulos`/`Reportes` render the same honest "Próximamente" empty-state pattern as
+    `StartupGrid`. Populate when guides/articles/reports content is supplied.
+  - Verified: `pnpm test` (21/21 incl. 4 new files/8 new tests), `pnpm typecheck`,
+    `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP smoke-check confirmed both
+    "Próximamente" empty states render on `/recursos`.
+
 **⚠️ General content-accuracy flag** (not specific to Ecosistema): `src/data/juntaDirectiva.ts`
 and `src/data/miembrosAliados.ts` (merged to `main` before this session) contain
 plausible-but-unverified names — no legacy content source was available when they were
@@ -96,14 +110,7 @@ the remaining pages below.
 
 ## Remaining work
 
-### 2. Recursos (`/recursos`)
-`GuiasArticulos` (news cards: category Badge, title, excerpt, meta; anchor-wrapped when
-`url` present) + `Reportes` (row cards: year in red serif + title + description, "Descargar →"
-when `url` else "Próximamente" — mist band).
-Data: `guiasArticulos.ts` (`Guide { title, excerpt, category, meta, url? }`),
-`reportes.ts` (`Report { title, description, year, url? }`).
-
-### 3. Convocatorias (`/convocatorias`)
+### 1. Convocatorias (`/convocatorias`)
 `Eventos` (feature cards: date in red, gold Badge "Vigente" / neutral "Pasado", title,
 description, location) + `AceleradorasAplicaciones` (row cards: program + status Badge,
 organization, description, deadline; CTA "Postular" (external url) or ghost "Más información"
@@ -111,7 +118,7 @@ organization, description, deadline; CTA "Postular" (external url) or ghost "Má
 Data: `eventos.ts` (`Evento { title, description, date, location, status: "vigente"|"pasado", url? }`),
 `convocatoriasAceleradoras.ts` (`Convocatoria { program, organization, description, deadline, status: "vigente"|"cerrada", url? }`).
 
-### 4. Membresía (`/membresia`)
+### 2. Membresía (`/membresia`)
 `QuienPuedeParticipar` (ink hero + 2-col bullet list of who can join), `TiposDeMiembro`
 (3 feature cards with ✓ highlight lists), `Beneficios` (6 mini cards — mist band),
 `MiembrosActuales` (tile wall), `UnirseForm` (**UI only, intentionally unwired** — plain
@@ -121,7 +128,7 @@ Data: `tiposMiembro.ts` (`MemberType { name, description, highlights[] }`),
 `beneficios.ts` (`Beneficio { title, description }`),
 `miembrosActuales.ts` (`CurrentMember { name, type }` — separate from miembrosAliados until real data).
 
-### 5. Polish
+### 3. Polish
 - ✅ `"typecheck": "tsc --noEmit"` script added to package.json.
 - README: structure, swap points (tokens in globals.css, `LOGO_SRC` in Logo.tsx,
   `SITE.email` in nav.ts), contact-form verification notes.
@@ -130,11 +137,11 @@ Data: `tiposMiembro.ts` (`MemberType { name, description, highlights[] }`),
   sections against it for exact-value drift (they were built from the ported
   `globals.css` tokens + judgment, before the full legacy file was available).
 
-### 6. Verify
+### 4. Verify
 `pnpm typecheck` / `pnpm lint` / `pnpm build` clean; `pnpm dev` click-through of all 6
 routes + mobile nav; directory filter interaction.
 
-### 7. Ship
+### 5. Ship
 Commit per phase. Push / PR **only on explicit user go-ahead**
 (remote: git@github.com:bocapVC/website-nextjs.git).
 
