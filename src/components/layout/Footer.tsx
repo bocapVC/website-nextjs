@@ -10,7 +10,7 @@ export function Footer() {
       <div className="mx-auto w-full max-w-[var(--maxw)] px-[var(--gutter)] py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div className="flex flex-col items-start gap-4">
-            <Logo invert />
+            <Logo className="h-[clamp(52px,6vw,72px)] w-auto" />
             <p className="max-w-sm text-sm leading-relaxed text-white/70">{SITE.tagline}</p>
           </div>
 

@@ -21,7 +21,7 @@ No test runner is configured yet.
 - Next.js 16 App Router + TypeScript, source under `src/app`. Path alias `@/*` maps to `src/*` (see `tsconfig.json`).
 - Tailwind CSS v4, CSS-first config — there is no `tailwind.config.*`. All theming happens in `src/app/globals.css` via `@theme inline`.
 - **Design tokens** (`src/app/globals.css`): BOCAP brand values (`--ink`, `--red`, `--teal`, `--gold`, `--paper`, `--radius`, `--shadow`, `--serif`, `--sans`, etc.) are declared as CSS custom properties under `:root`, then mapped into Tailwind's `@theme inline` block so they're usable as utilities (`bg-ink`, `text-red`, `font-serif`, `rounded-brand`, `shadow-brand`, ...). These are ported 1:1 from the legacy site — don't invent new brand colors/radii/shadows; if a value seems to be missing, treat that as a signal to check the legacy source rather than picking something new.
-- Typography uses system font stacks only (`--serif` for headings, `--sans` for body/UI) — no `next/font` or webfont loading, matching the legacy site, which ships no font files.
+- Typography (`--serif` for headings, `--sans` for body/UI) is loaded via `next/font/google` (Inter for `--sans`, Lora for `--serif`), set up in `src/app/layout.tsx` and referenced by the `--sans`/`--serif` custom properties in `src/app/globals.css`. This is a deliberate deviation from the legacy site (which used Apple-only system fonts and shipped no font files): those fonts don't resolve consistently across Windows/Android/Linux, so the fonts are self-hosted by Next.js instead for consistent, readable rendering on every platform. Don't revert to raw `@import` webfont loading or bare system-font stacks.
 
 ## Working with this Next.js version
 

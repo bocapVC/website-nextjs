@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
-/* BOCAP design tokens — ported 1:1 from the legacy site's src/styles.css :root.
+/* BOCAP design tokens — ported 1:1 from the legacy site's src/styles.css :root,
+   except --sans/--serif: legacy used Apple-only system fonts (Avenir Next,
+   Iowan Old Style) that don't render consistently across Windows/Android/Linux,
+   so those are now self-hosted via next/font (Inter/Lora) in app/layout.tsx.
    See design-system reference artifact for the full catalog and provenance notes. */
 :root {
   --ink: #1f2f4a;
@@ -22,8 +25,8 @@
   --radius-sm: 18px;
   --maxw: 1180px;
   --gutter: clamp(18px, 4vw, 40px);
-  --sans: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --sans: var(--font-inter), "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --serif: var(--font-lora), Georgia, "Times New Roman", serif;
   --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
 }
 

@@ -6,7 +6,7 @@ Working branch: `build-bocap-site`. Delete this file before merging/PR.
 
 - ✅ **Foundation** (commit `5c2ee6f`): `src/config/nav.ts`, `src/lib/cn.ts`, ui primitives
   (`Section`, `Eyebrow`, `SectionHeading`, `Button`, `Card`, `Badge`, `Logo`,
-  `FormField`, `StatusPanel`), layout (`Header`, `Footer`, `MobileNav`,
+  `FormField`, `StatusPanel`), layout (`Header`, `Footer`, `Nav`,
   `CopyEmailButton`), wired into `src/app/layout.tsx`.
 - ✅ **Contacto** (commit `564da60`): `src/app/api/contact/route.ts` (server proxy to
   Google Forms with real status checking), `src/hooks/useContactSubmission.ts`,
@@ -15,19 +15,57 @@ Working branch: `build-bocap-site`. Delete this file before merging/PR.
   - **Pending human check**: confirm the "[PRUEBA] Test de integración del sitio" entry
     landed in the Google Form's linked responses (Google can 200 without recording if a
     choice value mismatches — esp. the accent-less `"Membresias"` topic value).
+- ✅ **Home** (`/`): `src/app/page.tsx` composes `Hero`, `QueEs`, `AQuienRepresenta`,
+  `QueHace`, `Cifras`, `JuntaDirectiva`, `MiembrosAliados`, `QuickAccess` from
+  `src/components/sections/home/`. Data-driven sections and CTA links built test-first
+  (Vitest + React Testing Library, see "Testing" below); `QueEs` has no data/link seam so
+  it was implemented directly. `pnpm build` / `pnpm lint` / `pnpm exec tsc --noEmit` clean;
+  `pnpm dev` click-through confirmed all 8 sections render in order.
+- ✅ **Header/Nav redesign**: replaced the in-flow light `Header` + `MobileNav` with a
+  fixed floating glass pill (`Header.tsx` + new `Nav.tsx`, `MobileNav.tsx` deleted),
+  matching the legacy site's `.site-header`/`.site-header__inner`/`.site-nav` **exactly**
+  (see `reference/legacy-styles.css` + `reference/legacy-header.vue`, both pasted in full
+  by the user this session — the ground-truth source, not a screenshot approximation):
+  fixed at `top:12px` (`10px` ≤640), `z-[80]`, `rounded-[20px]` (`18px` ≤640),
+  `border-white/[0.08]`, background `linear-gradient(rgba(27,40,58,.72)→.6)`,
+  `backdrop-blur-[16px] saturate(140%)`, `shadow-[0_18px_40px_rgba(0,0,0,.18)]`. Nav
+  collapses to a hamburger + absolute dropdown panel below 920px (`rounded-brand-sm`,
+  `bg-[rgba(27,40,58,.95)]`), active-route underline via `usePathname()`. Because the
+  header is now `fixed` (not in-flow), `<main>` in `layout.tsx` got `pt-[104px]` so
+  content doesn't sit under it — on `/` this leaves a small `paper`-colored strip above
+  the Hero's ink band; a true "nav floats over the hero" look would need per-page
+  top-padding instead (not done).
+  - **Logo**: legacy header is just `<img class="brand-logo">` — no separate wordmark
+    markup — so `Logo.tsx` was simplified to a single `<Image>` (no `invert` variant).
+    Institution supplied a proper transparent white-lockup PNG at `public/logo.png`
+    (replaced the earlier `logo.jpeg` + a hand-derived `logo-invert.png`, both gone).
+    Height is caller-supplied via `className` per legacy's `clamp()` values: header
+    `clamp(42px,5vw,58px)`, footer `clamp(52px,6vw,72px)`.
+  - **Follow-up asks made to the institution**: prefer SVG, or transparent PNGs in both
+    color variants, with the wordmark separate from the full lockup.
+  - **Not yet re-verified live** after this last precision pass — `pnpm build`/`lint`/
+    `typecheck`/tests are clean, but no fresh `pnpm dev` visual check was done post-edit
+    (dev server from earlier in the session was left running per user request).
+
+## Reference material
+- `reference/legacy-styles.css` — the **full** legacy `src/styles.css`, pasted in full by
+  the user. Not built/imported by the app; consult it directly for exact values (colors,
+  radii, shadows, breakpoints) instead of re-deriving from screenshots or memory before
+  porting any remaining page.
+- `reference/legacy-header.vue` — the legacy Vue header component markup (structure only;
+  already ported to `Header.tsx`/`Nav.tsx`).
+
+## Testing
+
+Added this session (repo had none before): Vitest + React Testing Library + jsdom
+(`vitest.config.mts`, `vitest.setup.ts`, `pnpm test`), per the Next.js 16 docs guide since
+Home's sections are synchronous Server Components. Agreed seams: **data-driven sections**
+(assert one rendered item per entry in the backing array/data file) and **CTA/nav links**
+(assert hrefs point at the right routes) — not full-copy snapshots. Tests live alongside
+each section in `src/components/sections/<page>/__tests__/`. Apply the same approach to
+the remaining pages below.
 
 ## Remaining work
-
-### 1. Home (`/`) — replace placeholder `src/app/page.tsx`
-Sections in `src/components/sections/home/`: `Hero` (ink band, eyebrow + serif headline +
-tagline + CTAs to /contacto and /ecosistema), `QueEs` (2-col institutional intro),
-`AQuienRepresenta` (4 mini cards: fondos, aceleradoras, ángeles, organizaciones — mist band),
-`QueHace` (6 numbered feature cards), `Cifras` (ink stats band), `JuntaDirectiva`
-(mini cards with initials avatars — mist band), `MiembrosAliados` (partner-name tile wall),
-`QuickAccess` (4 link cards to the other pages — mist band).
-Data: `src/data/cifras.ts` (`Stat { value, label, description? }`),
-`juntaDirectiva.ts` (`BoardMember { name, role, organization? }`),
-`miembrosAliados.ts` (`Partner { name, type }`). Realistic placeholder entries.
 
 ### 2. Ecosistema (`/ecosistema`)
 `StartupGrid` (server; feature cards with sector Badge, location · stage footer) +
@@ -62,10 +100,13 @@ Data: `tiposMiembro.ts` (`MemberType { name, description, highlights[] }`),
 `miembrosActuales.ts` (`CurrentMember { name, type }` — separate from miembrosAliados until real data).
 
 ### 6. Polish
-- Add `"typecheck": "tsc --noEmit"` script to package.json.
+- ✅ `"typecheck": "tsc --noEmit"` script added to package.json.
 - README: structure, swap points (tokens in globals.css, `LOGO_SRC` in Logo.tsx,
   `SITE.email` in nav.ts), contact-form verification notes.
 - Per-route `metadata` exports (already the pattern in /contacto).
+- Now that `reference/legacy-styles.css` exists, re-check the already-built Home
+  sections against it for exact-value drift (they were built from the ported
+  `globals.css` tokens + judgment, before the full legacy file was available).
 
 ### 7. Verify
 `pnpm typecheck` / `pnpm lint` / `pnpm build` clean; `pnpm dev` click-through of all 6
@@ -86,5 +127,5 @@ Commit per phase. Push / PR **only on explicit user go-ahead**
 - Containers: `max-w-[var(--maxw)] px-[var(--gutter)]` (Section handles this).
 - No `next/font` — system stacks only. h1–h4 get serif bold from globals.css.
 - Server Components by default; `"use client"` only for real interactivity
-  (DirectorioFiltrable, ContactForm, MobileNav, CopyEmailButton).
+  (DirectorioFiltrable, ContactForm, Nav, CopyEmailButton).
 - pnpm only. Next.js 16: check `node_modules/next/dist/docs/` before assuming APIs.

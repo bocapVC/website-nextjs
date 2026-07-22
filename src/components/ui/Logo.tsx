@@ -3,41 +3,28 @@ import { cn } from "@/lib/cn";
 import { SITE } from "@/config/nav";
 
 /**
- * Set this to the logo asset path once it's dropped into `public/`
- * (e.g. "/logo.svg"). While null, a bordered wordmark box renders instead —
- * swapping in the real asset is a one-line change here.
+ * Institutional wordmark, transparent PNG with the full lockup (BOCAP + tagline) in
+ * white — built for dark surfaces (the header pill, the ink footer), which is the
+ * only context this site currently uses it in. Native size is 620×300 (~2.07:1).
+ * Height is caller-supplied via `className` (the legacy site sizes it differently in
+ * the header vs. the footer — see `.brand-logo`/`.brand-logo--footer` in
+ * reference/legacy-styles.css) — always pass an explicit height class.
  */
-const LOGO_SRC: string | null = null;
+const LOGO_SRC = "/logo.png";
 
 interface LogoProps {
-  /** Render light-on-dark, for use on the ink footer. */
-  invert?: boolean;
   className?: string;
 }
 
-export function Logo({ invert = false, className }: LogoProps) {
-  if (LOGO_SRC) {
-    return (
-      <Image
-        src={LOGO_SRC}
-        alt={SITE.name}
-        width={120}
-        height={32}
-        priority
-        className={cn("h-8 w-auto", className)}
-      />
-    );
-  }
-
+export function Logo({ className }: LogoProps) {
   return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-md border-2 px-2.5 py-1 font-serif text-lg font-bold tracking-wide",
-        invert ? "border-white text-white" : "border-ink text-ink",
-        className,
-      )}
-    >
-      {SITE.name}
-    </span>
+    <Image
+      src={LOGO_SRC}
+      alt={SITE.name}
+      width={132}
+      height={64}
+      priority
+      className={cn("w-auto", className)}
+    />
   );
 }
