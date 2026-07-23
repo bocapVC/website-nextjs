@@ -50,6 +50,18 @@ pnpm test       # Vitest + React Testing Library (jsdom)
   site-wide constants (see swap points below).
 - `src/lib/cn.ts` — small `clsx`-style classname helper.
 
+## Primitive components
+
+`src/components/ui/` (`Button`, `Card`, `Badge`, `Section`, `Eyebrow`,
+`FormField`, ...) are built from scratch on top of Tailwind utility classes —
+there's no external component library (no shadcn/ui, Radix, Headless UI,
+etc.) for now. Each primitive is a single file with a typed prop interface,
+a plain `Record<Variant, string>` map of Tailwind classes for variants, and
+`src/lib/cn.ts` (a tiny hand-rolled classname joiner) for merging classes —
+no `clsx`/`tailwind-merge`/`cva` dependency either. If a future need
+justifies pulling in a library, that's a deliberate decision to make then,
+not an assumption to carry over from other projects.
+
 ## Design tokens
 
 Tailwind CSS v4, CSS-first config — there's no `tailwind.config.*`. All

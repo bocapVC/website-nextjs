@@ -1,37 +1,6 @@
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
-
-interface Elegible {
-  label: string;
-  description: string;
-}
-
-const ELEGIBLES: Elegible[] = [
-  {
-    label: "Fondos de venture capital",
-    description: "Vehículos de inversión enfocados en startups en etapa temprana.",
-  },
-  {
-    label: "Inversionistas ángeles",
-    description: "Personas que invierten capital propio en startups emergentes.",
-  },
-  {
-    label: "Aceleradoras",
-    description: "Programas que forman y aceleran equipos fundadores.",
-  },
-  {
-    label: "Corporativos",
-    description: "Empresas interesadas en innovación abierta y colaboración con startups.",
-  },
-  {
-    label: "Founders y startups",
-    description: "Equipos fundadores en etapa de crecimiento y escalamiento.",
-  },
-  {
-    label: "Aliados institucionales",
-    description: "Organizaciones que impulsan el ecosistema emprendedor boliviano.",
-  },
-];
+import { ELEGIBLES } from "@/data/elegibles";
 
 /** Ink-toned hero: who is eligible to join BOCAP, as a 2-col bullet list. */
 export function QuienPuedeParticipar() {
