@@ -18,7 +18,7 @@ const toneClasses: Record<NonNullable<SectionProps["tone"]>, string> = {
 /** Full-bleed section band with the legacy `--maxw`/`--gutter` content container. */
 export function Section({ children, tone = "paper", id, className }: SectionProps) {
   return (
-    <section id={id} className={cn(toneClasses[tone], "py-16 sm:py-20")}>
+    <section id={id} className={cn(toneClasses[tone], "py-[62px] sm:py-[var(--section-pad-y)]")}>
       <div className={cn("mx-auto w-full max-w-[var(--maxw)] px-[var(--gutter)]", className)}>
         {children}
       </div>

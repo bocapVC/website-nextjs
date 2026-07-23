@@ -183,16 +183,46 @@ What's left is content, review, and polish:
 
 ### 2. Polish
 - ✅ `"typecheck": "tsc --noEmit"` script added to package.json.
-- README: structure, swap points (tokens in globals.css, `LOGO_SRC` in Logo.tsx,
-  `SITE.email` in nav.ts), contact-form verification notes.
-- Per-route `metadata` exports (already the pattern in /contacto).
-- Now that `reference/legacy-styles.css` exists, re-check the already-built Home
-  sections against it for exact-value drift (they were built from the ported
-  `globals.css` tokens + judgment, before the full legacy file was available).
+- ✅ Per-route `metadata` exports — `contacto`, `convocatorias`, `ecosistema`,
+  `membresia`, `recursos` all export `metadata`; Home (`src/app/page.tsx`) has none but
+  correctly inherits the root layout's default title/description, which is the right
+  copy for the homepage anyway.
+- ✅ README: expanded from the bare install/dev stub into structure, design tokens,
+  swap points (tokens in globals.css, `LOGO_SRC` in Logo.tsx, `SITE.email`/`NAV_LINKS`
+  in nav.ts), Contacto form proxy + `ENTRY_IDS`/topic-value caveat, testing pattern,
+  Next.js 16 docs note.
+- ✅ Re-checked the already-built Home sections against `reference/legacy-styles.css`
+  for exact-value drift (they were built from ported `globals.css` tokens + judgment,
+  before the full legacy file was available). Scoped to **value fixes only** — kept
+  the current simpler section structures rather than rebuilding legacy's bespoke
+  features (Hero's image-carousel + stats bar, the animated network-diagram
+  "regional-home" panel) — those are a separate, bigger undertaking if ever wanted.
+  Found and fixed real, sitewide drift in shared primitives (not just Home, since
+  these are used on all 6 pages):
+  - `Card.tsx`: legacy's `.mini-card`/`.feature-card`/`.news-card`/`.ally-card`/...
+    all share one rule (24px padding, `--radius-sm`, `box-shadow: var(--shadow)`).
+    Our `feature`/`news` variants used the wrong radius (`--radius`, 22px) and all
+    three variants were missing the shadow. Fixed.
+  - `Section.tsx`: legacy `.section` padding is `clamp(72px, 11vw, 132px)` (flat
+    `62px` below 640px) — ours was `py-16 sm:py-20` (64px/80px), notably tighter.
+    Added a `--section-pad-y` token (`globals.css`) and fixed.
+  - `Hero.tsx` / `QuienPuedeParticipar.tsx`: both stacked their own extra `py-*` on
+    top of `Section`'s padding as a workaround for the old too-tight default — now
+    redundant (would double up), removed.
+  - `SectionHeading.tsx`: title was `text-3xl sm:text-4xl` (30–36px) vs legacy
+    `.section-head h2`'s `clamp(2rem, 4vw, 3.2rem)` (32–51.2px) + `max-width: 16ch`.
+    Added a `--heading-lg` token and fixed — affects every section title sitewide.
+  - Bonus: an untracked `reference/sitContent.ts` (raw legacy `siteContent.js` dump)
+    was breaking `pnpm typecheck`/`build` since `tsconfig`'s `**/*.ts` include picked
+    it up. Renamed to `.js` to match how the other `reference/` files are kept
+    (unrelated to the CSS audit, but was blocking verification of it).
+  - Verified: `pnpm test` (34/34), `typecheck`, `lint`, `build` all clean; `/` and
+    `/membresia` HTTP smoke-checked post-fix.
 
 ### 3. Verify
-`pnpm typecheck` / `pnpm lint` / `pnpm build` clean; `pnpm dev` click-through of all 6
-routes + mobile nav; directory filter interaction.
+- ✅ `pnpm typecheck` / `pnpm lint` / `pnpm build` clean.
+- ✅ `pnpm dev` click-through of all 6 routes + mobile nav + directory filter
+  interaction — done by the user directly in-browser (confirmed working).
 
 ### 4. Ship
 Commit per phase. Push / PR **only on explicit user go-ahead**

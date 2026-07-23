@@ -36,7 +36,7 @@ const ELEGIBLES: Elegible[] = [
 /** Ink-toned hero: who is eligible to join BOCAP, as a 2-col bullet list. */
 export function QuienPuedeParticipar() {
   return (
-    <Section tone="ink" className="flex flex-col gap-10 py-20 sm:py-24">
+    <Section tone="ink" className="flex flex-col gap-10">
       <div className="flex flex-col gap-3">
         <Eyebrow className="text-red">Membresía</Eyebrow>
         <h1 className="max-w-2xl font-serif text-3xl font-bold text-white sm:text-4xl">

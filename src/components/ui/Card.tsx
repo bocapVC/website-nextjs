@@ -11,13 +11,12 @@ interface CardProps {
   className?: string;
 }
 
+// Legacy `.mini-card`/`.feature-card`/`.news-card`/`.ally-card`/... share one rule:
+// padding 24px, border-radius var(--radius-sm), border #e5e5e5, shadow var(--shadow).
 const variants: Record<Variant, string> = {
-  // Prominent bordered card with the brand shadow.
-  feature: "rounded-brand border border-line bg-surface-solid p-6 shadow-brand sm:p-7",
-  // Compact card for dense grids.
-  mini: "rounded-brand-sm border border-line bg-surface-solid p-5",
-  // Article/report card with a lighter footprint.
-  news: "rounded-brand border border-line bg-surface-solid p-6",
+  feature: "rounded-brand-sm border border-line bg-surface-solid p-6 shadow-brand",
+  mini: "rounded-brand-sm border border-line bg-surface-solid p-6 shadow-brand",
+  news: "rounded-brand-sm border border-line bg-surface-solid p-6 shadow-brand",
 };
 
 /** Shared border + radius + shadow surface. `feature`/`mini`/`news` compose it. */
