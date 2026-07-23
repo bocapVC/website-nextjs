@@ -1,0 +1,30 @@
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Section } from "@/components/ui/Section";
+import { ELEGIBLES } from "@/data/elegibles";
+
+/** Ink-toned hero: who is eligible to join BOCAP, as a 2-col bullet list. */
+export function QuienPuedeParticipar() {
+  return (
+    <Section tone="ink" firstOnPage className="flex flex-col gap-10">
+      <div className="flex flex-col gap-3">
+        <Eyebrow className="text-red">Membresía</Eyebrow>
+        <h1 className="max-w-2xl font-serif text-3xl font-bold text-white sm:text-4xl">
+          ¿Quién puede participar en BOCAP?
+        </h1>
+        <p className="max-w-xl text-base leading-relaxed text-white/70">
+          BOCAP reúne a los actores que están construyendo el mercado de capital emprendedor
+          en Bolivia.
+        </p>
+      </div>
+
+      <ul className="grid gap-6 sm:grid-cols-2">
+        {ELEGIBLES.map((item) => (
+          <li key={item.label} className="flex flex-col gap-1">
+            <p className="font-semibold text-white">{item.label}</p>
+            <p className="text-sm text-white/70">{item.description}</p>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  );
+}

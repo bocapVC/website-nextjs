@@ -25,6 +25,12 @@
   --radius-sm: 18px;
   --maxw: 1180px;
   --gutter: clamp(18px, 4vw, 40px);
+  /* Vertical padding of a full-bleed `.section` band (legacy `.section` rule);
+     legacy overrides this to a flat 62px below 640px instead of letting the
+     clamp's own 72px floor apply. */
+  --section-pad-y: clamp(72px, 11vw, 132px);
+  /* Section title size (legacy `.section-head h2`). */
+  --heading-lg: clamp(2rem, 4vw, 3.2rem);
   --sans: var(--font-inter), "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --serif: var(--font-lora), Georgia, "Times New Roman", serif;
   --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
@@ -53,6 +59,9 @@
   --radius-brand: var(--radius);
   --radius-brand-sm: var(--radius-sm);
   --shadow-brand: var(--shadow);
+
+  --spacing-section-pad-y: var(--section-pad-y);
+  --text-heading-lg: var(--heading-lg);
 }
 
 body {

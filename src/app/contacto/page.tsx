@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function ContactoPage() {
   return (
-    <Section>
+    <Section firstOnPage>
       <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
         <ContactoInfo />
         <div className="rounded-brand border border-line bg-surface-solid p-6 shadow-brand sm:p-8">

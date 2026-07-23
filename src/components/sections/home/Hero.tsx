@@ -5,7 +5,7 @@ import { Section } from "@/components/ui/Section";
 /** Ink-toned landing band: eyebrow, serif headline, tagline, and the two primary CTAs. */
 export function Hero() {
   return (
-    <Section tone="ink" className="flex flex-col items-center gap-6 py-24 text-center sm:py-32">
+    <Section tone="ink" firstOnPage className="flex flex-col items-center gap-6 text-center">
       <Eyebrow className="text-red">Bocap.vc</Eyebrow>
       <h1 className="max-w-2xl font-serif text-4xl font-bold text-white sm:text-6xl">
         Capital emprendedor en Bolivia

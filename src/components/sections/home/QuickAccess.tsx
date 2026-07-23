@@ -40,7 +40,7 @@ export function QuickAccess() {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {QUICK_LINKS.map((item) => (
           <Link key={item.href} href={item.href} className="block">
-            <Card variant="mini" interactive className="h-full">
+            <Card interactive className="h-full">
               <p className="font-serif text-lg font-bold text-ink">{item.label}</p>
               <p className="mt-2 text-sm text-ink-soft">{item.description}</p>
             </Card>
