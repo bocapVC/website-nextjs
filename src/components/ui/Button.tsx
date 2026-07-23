@@ -1,6 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import { ExternalLink } from "./ExternalLink";
 
 type Variant = "primary" | "secondary" | "ghost";
 type Size = "md" | "sm";
@@ -46,9 +47,9 @@ export function Button(props: ButtonProps) {
     const classes = cn(base, variants[variant], sizes[size], className);
     if (external) {
       return (
-        <a href={href} target="_blank" rel="noreferrer" className={classes}>
+        <ExternalLink href={href} className={classes}>
           {children}
-        </a>
+        </ExternalLink>
       );
     }
     return (

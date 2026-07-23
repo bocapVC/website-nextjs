@@ -21,7 +21,7 @@ export function AQuienRepresenta() {
       <SectionHeading eyebrow="Comunidad" title="A quién representa BOCAP" />
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {REPRESENTADOS.map((item) => (
-          <Card key={item.label} variant="mini">
+          <Card key={item.label}>
             <p className="font-semibold text-ink">{item.label}</p>
             <p className="mt-2 text-sm text-ink-soft">{item.description}</p>
           </Card>

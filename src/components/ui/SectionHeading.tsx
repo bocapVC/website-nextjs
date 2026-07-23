@@ -33,7 +33,7 @@ export function SectionHeading({
       {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
       <h2
         className={cn(
-          "max-w-[16ch] font-serif text-[length:var(--heading-lg)] font-bold leading-tight",
+          "max-w-[16ch] font-serif text-heading-lg font-bold leading-tight",
           invert ? "text-white" : "text-ink",
         )}
       >

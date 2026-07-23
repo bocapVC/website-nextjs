@@ -59,6 +59,9 @@
   --radius-brand: var(--radius);
   --radius-brand-sm: var(--radius-sm);
   --shadow-brand: var(--shadow);
+
+  --spacing-section-pad-y: var(--section-pad-y);
+  --text-heading-lg: var(--heading-lg);
 }
 
 body {

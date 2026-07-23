@@ -7,7 +7,7 @@ import { STARTUPS } from "@/data/startups";
 /** Feature-card grid of startups; shows an honest "Próximamente" state while STARTUPS is empty. */
 export function StartupGrid() {
   return (
-    <Section>
+    <Section firstOnPage>
       <SectionHeading
         eyebrow="Ecosistema"
         title="Startups destacadas"

@@ -20,7 +20,7 @@ export function JuntaDirectiva() {
       <SectionHeading eyebrow="Gobernanza" title="Junta directiva" />
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {JUNTA_DIRECTIVA.map((member) => (
-          <Card key={member.name} variant="mini" className="flex flex-col items-center gap-3 text-center">
+          <Card key={member.name} className="flex flex-col items-center gap-3 text-center">
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink text-sm font-bold text-white">
               {initials(member.name)}
             </span>

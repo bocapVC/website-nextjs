@@ -38,7 +38,7 @@ export function DirectorioFiltrable() {
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {entries.map((entry) => (
-          <Card key={entry.name} variant="mini">
+          <Card key={entry.name}>
             <Badge>{entry.category}</Badge>
             <p className="mt-3 font-semibold text-ink">{entry.name}</p>
             <p className="text-xs uppercase tracking-wide text-ink-soft">{entry.type}</p>
