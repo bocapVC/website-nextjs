@@ -1,6 +1,13 @@
 # BOCAP site build — plan & status
 
-Working branch: `build-part-ii` (continuation of `build-bocap-site`, merged to `main` in #1). Delete this file before merging/PR — but not yet; keep it updated until the remaining pages below are implemented.
+Working branch: `build-part-ii` (continuation of `build-bocap-site`, merged to `main` in #1).
+
+**Build phase is complete**: all 6 pages are built and test-first, Polish and Verify are
+both done (see "Remaining work" below), and the branch is committed locally. What's left
+is (1) real content from the institution for several still-empty sections, and (2) the
+Ship step — push/PR only on explicit user go-ahead. Delete this file at that point (once
+those content gaps are resolved or consciously deferred past the PR) — not yet, since it's
+still the authoritative tracker for what's pending.
 
 ## Status
 
@@ -225,8 +232,10 @@ What's left is content, review, and polish:
   interaction — done by the user directly in-browser (confirmed working).
 
 ### 4. Ship
-Commit per phase. Push / PR **only on explicit user go-ahead**
-(remote: git@github.com:bocapVC/website-nextjs.git).
+- ✅ Committed per phase locally (latest: `a808de2`, "Expand README, fix Home/sitewide
+  CSS value drift against legacy source").
+- Push / PR **only on explicit user go-ahead** (remote: `git@github.com:bocapVC/website-nextjs.git`).
+  Not yet pushed.
 
 ## Conventions (from CLAUDE.md + established code)
 - Real design tokens only — never invent colors/radii/shadows. Available: `ink`, `ink-soft`,
