@@ -5,8 +5,10 @@ export interface Stat {
 }
 
 export const CIFRAS: Stat[] = [
-  { value: "40+", label: "Startups conectadas", description: "Activas en el ecosistema boliviano." },
-  { value: "15", label: "Fondos y aceleradoras", description: "Participando en la red." },
-  { value: "$8M+", label: "Capital movilizado", description: "En rondas facilitadas desde 2021." },
-  { value: "9", label: "Departamentos", description: "Con presencia de miembros BOCAP." },
+  { value: "1ra", label: "Red de venture capital de Bolivia" },
+  { value: "4", label: "Ejes estratégicos" },
+  { value: "4", label: "Integrantes en la junta directiva" },
+  { value: "4", label: "Miembros activos en el directorio" },
+  { value: "6", label: "Reportes en la biblioteca editorial" },
+  { value: "4", label: "Eventos en agenda 2026" },
 ];

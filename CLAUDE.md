@@ -14,7 +14,7 @@ BOCAP's marketing site (Bocap.vc — capital emprendedor / VC network in Bolivia
 - `pnpm start` — serve the production build
 - `pnpm lint` — ESLint via `eslint-config-next` (`core-web-vitals` + TypeScript rules), flat config in `eslint.config.mjs`
 - `pnpm test` — Vitest + React Testing Library (jsdom), config in `vitest.config.mts`/`vitest.setup.ts`; tests live alongside each section in `src/components/sections/<page>/__tests__/`
-- `pnpx tsc --noEmit -p tsconfig.json` - type-checks the whole project against tsconfig.json without emitting output files.
+- `pnpm tsc --noEmit -p tsconfig.json` - type-checks the whole project against tsconfig.json without emitting output files.
 
 ## Architecture
 

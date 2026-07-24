@@ -7,8 +7,9 @@ describe("Cifras", () => {
   it("renders one stat per entry in CIFRAS", () => {
     render(<Cifras />);
     for (const stat of CIFRAS) {
-      expect(screen.getByText(stat.value)).toBeInTheDocument();
-      expect(screen.getByText(stat.label)).toBeInTheDocument();
+      const label = screen.getByText(stat.label);
+      expect(label).toBeInTheDocument();
+      expect(label.previousElementSibling).toHaveTextContent(stat.value);
     }
   });
 });
