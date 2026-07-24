@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-labelledby="title">
+  <title>Escalatec</title>
+  <g transform="translate(84 20)">
+    <path d="M24 6h26c8 0 14 6 14 14s-6 14-14 14H24v10h22c8 0 14 6 14 14s-6 14-14 14H12" fill="none" stroke="#67d4e8" stroke-linecap="round" stroke-width="8"/>
+    <path d="M4 14h16M4 32h16M4 50h16M4 68h16" fill="none" stroke="#67d4e8" stroke-linecap="round" stroke-width="8"/>
+  </g>
+  <text x="180" y="78" text-anchor="middle" fill="#4d6fa8" font-family="'Avenir Next', 'Segoe UI', Arial, sans-serif" font-size="28" font-weight="600" letter-spacing="2">ESCALATEC</text>
+</svg>
