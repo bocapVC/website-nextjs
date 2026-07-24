@@ -6,13 +6,12 @@ import { Section } from "@/components/ui/Section";
 export function Hero() {
   return (
     <Section tone="ink" firstOnPage className="flex flex-col items-center gap-6 text-center">
-      <Eyebrow className="text-red">Bocap.vc</Eyebrow>
-      <h1 className="max-w-2xl font-serif text-4xl font-bold text-white sm:text-6xl">
-        Capital emprendedor en Bolivia
+      <Eyebrow className="text-red">Asociación Boliviana de Capital Semilla y Emprendedor</Eyebrow>
+      <h1 className="max-w-6xl font-serif text-5xl font-bold text-white sm:text-6xl">
+        Creemos en el poder de las <span className="text-red">startups</span> para transformar la economía.
       </h1>
-      <p className="max-w-xl text-lg text-white/70">
-        Reunimos fondos, aceleradoras y fundadores en una sola conversación
-        sobre el ecosistema.
+      <p className="max-w-3xl text-md text-white/70">
+         Apoyo estratégico e inversion de capital inteligente a emprendedores visionarios que están creando las soluciones del mañana.
       </p>
       <div className="flex flex-wrap items-center justify-center gap-4">
         <Button href="/contacto" variant="primary">

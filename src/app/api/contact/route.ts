@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   try {
     const res = await fetch(GOOGLE_FORM_ACTION, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
       body: params.toString(),
       // Don't follow the post-submit redirect; we only need the status.
       redirect: "manual",
