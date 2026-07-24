@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/Card";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
@@ -26,7 +27,7 @@ export function QueEs() {
       </div>
       <div className="mt-10 grid gap-5 sm:grid-cols-2">
         <Card>
-          <p className="text-xs font-bold uppercase tracking-[0.1em] text-teal">Misión</p>
+          <Eyebrow color="teal">Misión</Eyebrow>
           <p className="mt-2 text-sm text-ink-soft">
             Fortalecer el capital emprendedor en Bolivia conectando actores
             clave, generando información relevante, compartiendo mejores
@@ -35,7 +36,7 @@ export function QueEs() {
           </p>
         </Card>
         <Card>
-          <p className="text-xs font-bold uppercase tracking-[0.1em] text-teal">Visión</p>
+          <Eyebrow color="teal">Visión</Eyebrow>
           <p className="mt-2 text-sm text-ink-soft">
             Posicionar a Bolivia como un mercado más confiable, visible y
             preparado para atraer, desplegar y escalar capital inteligente

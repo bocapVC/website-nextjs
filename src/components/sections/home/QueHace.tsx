@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/Card";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PILARES } from "@/data/pilares";
@@ -15,7 +16,7 @@ export function QueHace() {
       <div className="mt-10 grid gap-5 sm:grid-cols-2">
         {PILARES.map((pilar) => (
           <Card key={pilar.title}>
-            <p className="text-xs font-bold uppercase tracking-[0.1em] text-red">{pilar.label}</p>
+            <Eyebrow>{pilar.label}</Eyebrow>
             <p className="mt-3 font-serif text-xl font-bold text-ink">{pilar.title}</p>
             <p className="mt-2 text-sm text-ink-soft">{pilar.description}</p>
           </Card>
