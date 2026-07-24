@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { QueHace, PILARES } from "../QueHace";
+import { QueHace } from "../QueHace";
+import { PILARES } from "@/data/pilares";
 
 describe("QueHace", () => {
   it("renders one card per pillar in PILARES", () => {
