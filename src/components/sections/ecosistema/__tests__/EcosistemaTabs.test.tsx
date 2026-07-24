@@ -5,15 +5,29 @@ import { DIRECTORIO } from "@/data/directorio";
 import { STARTUPS } from "@/data/startups";
 
 describe("EcosistemaTabs", () => {
-  it("renders a tab button for Fondos, Ángeles, Aceleradoras and Startups", () => {
+  it("renders a tab button for Todos, Fondos, Ángeles, Aceleradoras and Startups", () => {
     render(<EcosistemaTabs />);
-    for (const tab of ["Fondos", "Ángeles", "Aceleradoras", "Startups"]) {
+    for (const tab of ["Todos", "Fondos", "Ángeles", "Aceleradoras", "Startups"]) {
       expect(screen.getByRole("button", { name: tab })).toBeInTheDocument();
     }
   });
 
-  it("defaults to the Fondos tab, showing only Fondos entries", () => {
+  it("defaults to the Todos tab, showing every directory entry and startup", () => {
     render(<EcosistemaTabs />);
+    expect(screen.getByRole("button", { name: "Todos" })).toHaveAttribute("aria-current", "true");
+
+    for (const entry of DIRECTORIO) {
+      expect(screen.getByText(entry.name)).toBeInTheDocument();
+    }
+    for (const startup of STARTUPS) {
+      expect(screen.getByText(startup.name)).toBeInTheDocument();
+    }
+  });
+
+  it("switches to Fondos and shows only Fondos entries", () => {
+    render(<EcosistemaTabs />);
+    fireEvent.click(screen.getByRole("button", { name: "Fondos" }));
+
     const fondos = DIRECTORIO.filter((entry) => entry.category === "Fondos");
     const others = DIRECTORIO.filter((entry) => entry.category !== "Fondos");
 

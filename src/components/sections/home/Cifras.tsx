@@ -12,9 +12,12 @@ export function Cifras() {
         invert
         align="center"
       />
-      <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
         {CIFRAS.map((stat) => (
-          <div key={stat.label} className="flex flex-col items-center gap-1 text-center">
+          <div
+            key={stat.label}
+            className="flex flex-col items-center gap-1 rounded-brand-sm border border-white/15 bg-white/5 px-6 py-8 text-center shadow-brand"
+          >
             <p className="font-serif text-4xl font-bold text-white sm:text-5xl">{stat.value}</p>
             <p className="text-sm font-semibold text-white">{stat.label}</p>
             {stat.description ? (
