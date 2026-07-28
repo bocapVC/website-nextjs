@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { EcosistemaTabs } from "@/components/sections/ecosistema/EcosistemaTabs";
 
 export const metadata: Metadata = {
@@ -8,5 +9,15 @@ export const metadata: Metadata = {
 };
 
 export default function EcosistemaPage() {
-  return <EcosistemaTabs />;
+  return (
+    <>
+      <PageHeader
+        photo="/ecosistema.avif"
+        eyebrow="Ecosistema"
+        title="Fondos, ángeles, aceleradoras y startups"
+        description="Directorio de organizaciones y emprendimientos que forman parte de la red BOCAP."
+      />
+      <EcosistemaTabs />
+    </>
+  );
 }

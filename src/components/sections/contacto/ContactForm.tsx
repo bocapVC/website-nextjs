@@ -16,8 +16,16 @@ const EMPTY: ContactValues = {
   message: "",
 };
 
-export function ContactForm() {
-  const [values, setValues] = useState<ContactValues>(EMPTY);
+interface ContactFormProps {
+  /** Locks the "Tema" field to this value and hides the select, e.g. for pages that only ever submit one topic. */
+  fixedTopic?: string;
+}
+
+export function ContactForm({ fixedTopic }: ContactFormProps = {}) {
+  const [values, setValues] = useState<ContactValues>(() => ({
+    ...EMPTY,
+    topic: fixedTopic ?? EMPTY.topic,
+  }));
   const { status, submit } = useContactSubmission();
   const submitting = status === "submitting";
 
@@ -28,7 +36,7 @@ export function ContactForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const ok = await submit(values);
-    if (ok) setValues(EMPTY);
+    if (ok) setValues({ ...EMPTY, topic: fixedTopic ?? EMPTY.topic });
   }
 
   return (
@@ -61,15 +69,17 @@ export function ContactForm() {
         onChange={(e) => update("email", e.target.value)}
       />
 
-      <SelectField
-        label="Tema"
-        name="topic"
-        required
-        placeholder="Selecciona un tema"
-        options={CONTACT_TOPICS}
-        value={values.topic}
-        onChange={(e) => update("topic", e.target.value)}
-      />
+      {fixedTopic ? null : (
+        <SelectField
+          label="Tema"
+          name="topic"
+          required
+          placeholder="Selecciona un tema"
+          options={CONTACT_TOPICS}
+          value={values.topic}
+          onChange={(e) => update("topic", e.target.value)}
+        />
+      )}
 
       <TextareaField
         label="Mensaje"

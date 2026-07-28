@@ -6,7 +6,7 @@ import { EventoCard } from "./EventoCard";
 /** Feature-card grid of events; shows an honest "Próximamente" state while EVENTOS is empty. */
 export function Eventos() {
   return (
-    <Section firstOnPage>
+    <Section>
       <SectionHeading
         eyebrow="Convocatorias"
         title="Eventos"

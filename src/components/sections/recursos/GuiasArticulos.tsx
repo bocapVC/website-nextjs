@@ -6,7 +6,7 @@ import { GuideCard } from "./GuideCard";
 /** News-card grid of guides/articles; shows an honest "Próximamente" state while GUIAS_ARTICULOS is empty. */
 export function GuiasArticulos() {
   return (
-    <Section firstOnPage>
+    <Section>
       <SectionHeading
         eyebrow="Recursos"
         title="Guías y artículos"

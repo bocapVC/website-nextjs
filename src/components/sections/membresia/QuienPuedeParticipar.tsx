@@ -3,10 +3,15 @@ import { Section } from "@/components/ui/Section";
 import { ELEGIBLES } from "@/data/elegibles";
 import { ELEGIBLE_ICONS } from "./ElegibleIcons";
 
-/** Ink-toned hero: who is eligible to join BOCAP, as a 2-col icon list. */
+/** Ink-toned hero: who is eligible to join BOCAP, as a 2-col icon list. Uses illimani.avif as a placeholder until a dedicated membresía photo is ready. */
 export function QuienPuedeParticipar() {
   return (
-    <Section tone="ink" firstOnPage className="flex flex-col gap-10">
+    <Section
+      tone="ink"
+      firstOnPage
+      photo="/illimani.avif"
+      className="relative z-10 flex flex-col gap-10"
+    >
       <div className="flex flex-col gap-3">
         <Eyebrow className="text-red">Membresía</Eyebrow>
         <h1 className="max-w-2xl font-serif text-3xl font-bold text-white sm:text-4xl">
