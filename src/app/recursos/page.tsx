@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { RecursosHeader } from "@/components/sections/recursos/RecursosHeader";
 import { GuiasArticulos } from "@/components/sections/recursos/GuiasArticulos";
 import { Reportes } from "@/components/sections/recursos/Reportes";
 
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function RecursosPage() {
   return (
     <>
+      <RecursosHeader />
       <GuiasArticulos />
       <Reportes />
     </>

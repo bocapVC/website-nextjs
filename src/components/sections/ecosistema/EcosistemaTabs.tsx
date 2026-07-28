@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/cn";
 import { DIRECTORIO } from "@/data/directorio";
 import { STARTUPS } from "@/data/startups";
@@ -35,14 +34,8 @@ export function EcosistemaTabs() {
   const startupEntries = activeTab === "Todos" || activeTab === "Startups" ? STARTUPS : [];
 
   return (
-    <Section firstOnPage>
-      <SectionHeading
-        eyebrow="Ecosistema"
-        title="Fondos, ángeles, aceleradoras y startups"
-        description="El directorio de organizaciones y emprendimientos que forman parte de la red BOCAP."
-      />
-
-      <div className="mt-8 flex flex-wrap gap-6 border-b border-line-strong">
+    <Section>
+      <div className="flex flex-wrap gap-6 border-b border-line-strong">
         {TABS.map((tab) => (
           <button
             key={tab}

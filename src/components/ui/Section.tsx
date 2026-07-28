@@ -7,6 +7,8 @@ interface SectionProps {
   tone?: "paper" | "mist" | "ink";
   id?: string;
   className?: string;
+  /** Extra classes for the outer full-bleed <section> element (e.g. a photo-band background class). */
+  sectionClassName?: string;
   /**
    * True for the first section on a page. Swaps the default top padding for
    * enough clearance to sit under the fixed floating header, so this
@@ -23,7 +25,14 @@ const toneClasses: Record<NonNullable<SectionProps["tone"]>, string> = {
 };
 
 /** Full-bleed section band with the legacy `--maxw`/`--gutter` content container. */
-export function Section({ children, tone = "paper", id, className, firstOnPage = false }: SectionProps) {
+export function Section({
+  children,
+  tone = "paper",
+  id,
+  className,
+  sectionClassName,
+  firstOnPage = false,
+}: SectionProps) {
   return (
     <section
       id={id}
@@ -31,6 +40,7 @@ export function Section({ children, tone = "paper", id, className, firstOnPage =
         toneClasses[tone],
         firstOnPage ? "pt-30" : "pt-15.5 sm:pt-section-pad-y",
         "pb-15.5 sm:pb-section-pad-y",
+        sectionClassName,
       )}
     >
       <div className={cn("mx-auto w-full max-w-(--maxw) px-(--gutter)", className)}>

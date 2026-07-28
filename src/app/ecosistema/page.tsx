@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { EcosistemaHeader } from "@/components/sections/ecosistema/EcosistemaHeader";
 import { EcosistemaTabs } from "@/components/sections/ecosistema/EcosistemaTabs";
 
 export const metadata: Metadata = {
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function EcosistemaPage() {
-  return <EcosistemaTabs />;
+  return (
+    <>
+      <EcosistemaHeader />
+      <EcosistemaTabs />
+    </>
+  );
 }

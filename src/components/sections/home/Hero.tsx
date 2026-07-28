@@ -5,7 +5,12 @@ import { Section } from "@/components/ui/Section";
 /** Ink-toned landing band: eyebrow, serif headline, tagline, and the two primary CTAs. */
 export function Hero() {
   return (
-    <Section tone="ink" firstOnPage className="flex flex-col items-center gap-6 text-center">
+    <Section
+      tone="ink"
+      firstOnPage
+      sectionClassName="section-photo-band lg:flex lg:min-h-[90vh] lg:flex-col lg:items-center lg:justify-center"
+      className="relative z-10 flex flex-col items-center gap-6 text-center"
+    >
       <Eyebrow className="text-red">Asociación Boliviana de Capital Semilla y Emprendedor</Eyebrow>
       <h1 className="max-w-6xl font-serif text-5xl font-bold text-white sm:text-6xl">
         Creemos en el poder de las <span className="text-red">startups</span> para transformar la economía.

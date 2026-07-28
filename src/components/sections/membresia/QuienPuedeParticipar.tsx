@@ -6,7 +6,12 @@ import { ELEGIBLE_ICONS } from "./ElegibleIcons";
 /** Ink-toned hero: who is eligible to join BOCAP, as a 2-col icon list. */
 export function QuienPuedeParticipar() {
   return (
-    <Section tone="ink" firstOnPage className="flex flex-col gap-10">
+    <Section
+      tone="ink"
+      firstOnPage
+      sectionClassName="section-photo-band section-photo-band--membresia"
+      className="relative z-10 flex flex-col gap-10"
+    >
       <div className="flex flex-col gap-3">
         <Eyebrow className="text-red">Membresía</Eyebrow>
         <h1 className="max-w-2xl font-serif text-3xl font-bold text-white sm:text-4xl">
