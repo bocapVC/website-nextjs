@@ -30,7 +30,7 @@ export function SectionHeading({
         className,
       )}
     >
-      {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
+      {eyebrow ? <Eyebrow color={invert ? "white" : "red"}>{eyebrow}</Eyebrow> : null}
       <h2
         className={cn(
           "max-w-[16ch] font-serif text-heading-lg font-bold leading-tight",
@@ -43,7 +43,7 @@ export function SectionHeading({
         <p
           className={cn(
             "max-w-2xl text-base leading-relaxed",
-            invert ? "text-white/70" : "text-ink-soft",
+            invert ? "text-white/85" : "text-ink-soft",
           )}
         >
           {description}

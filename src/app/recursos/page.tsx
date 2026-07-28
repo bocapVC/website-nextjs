@@ -16,6 +16,7 @@ export default function RecursosPage() {
       {/* illimani.avif is a placeholder until a dedicated recursos photo is ready */}
       <PageHeader
         photo="/illimani.avif"
+        photoPosition="top"
         eyebrow="Recursos"
         title="Guías, artículos y reportes"
         description="Contenido para entender el ecosistema de capital emprendedor en Bolivia."

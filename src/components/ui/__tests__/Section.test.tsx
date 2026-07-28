@@ -14,8 +14,28 @@ describe("Section", () => {
     const img = container.querySelector("img");
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute("alt", "");
-    expect(img).toHaveAttribute("sizes", "100vw");
     expect(container.querySelector(".section-photo-overlay")).toBeInTheDocument();
+  });
+
+  it("serves the photo as authored, skipping the optimizer's second AVIF generation", () => {
+    const { container } = render(<Section photo="/illimani.avif">content</Section>);
+    const img = container.querySelector("img");
+    expect(img).toHaveAttribute("src", "/illimani.avif");
+    expect(img).not.toHaveAttribute("srcset");
+  });
+
+  it("centers the photo crop by default", () => {
+    const { container } = render(<Section photo="/illimani.avif">content</Section>);
+    expect(container.querySelector("img")).toHaveClass("object-center");
+  });
+
+  it("anchors the photo crop to the top when photoPosition says so", () => {
+    const { container } = render(
+      <Section photo="/illimani.avif" photoPosition="top">
+        content
+      </Section>,
+    );
+    expect(container.querySelector("img")).toHaveClass("object-top");
   });
 
   it("eagerly loads the photo when firstOnPage, since it's the LCP element", () => {

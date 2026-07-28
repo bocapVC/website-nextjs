@@ -78,18 +78,30 @@ h4 {
   font-weight: 700;
 }
 
-/* Photo band overlay: corner radial accents over a dark scrim + diagonal
-   brand-red tint. Ported from legacy `.section--why-bocap-band`, where these
-   sat in the same background shorthand as the photo. The photo itself is now a
-   sibling <Image fill> underneath (see `Section`'s `photo` prop), so it can go
-   through next/image — layers are listed here topmost-first, as before. */
+/* Photo band overlay: corner radial accents over a graded scrim + diagonal
+   brand-red tint. The scrim follows the legacy page heroes (`.page-hero--*`,
+   `.hero-band--home`), which ran light at the top and darker toward the bottom
+   rather than the flat 0.78–0.84 of the `.section--why-bocap-band` content
+   band. The photo itself is a sibling <Image fill> underneath (see `Section`'s
+   `photo` prop), so it can go through next/image — layers are listed here
+   topmost-first, as in the legacy background shorthand. */
 .section-photo-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at top left, rgba(239, 42, 35, 0.16), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(46, 91, 141, 0.18), transparent 36%),
-    linear-gradient(180deg, rgba(7, 10, 16, 0.84), rgba(7, 10, 16, 0.78)),
-    linear-gradient(120deg, rgba(239, 42, 35, 0.18), transparent 46%);
+    radial-gradient(circle at top left, rgba(239, 42, 35, 0.12), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(46, 91, 141, 0.14), transparent 36%),
+    linear-gradient(180deg, rgba(7, 10, 16, 0.45), rgba(7, 10, 16, 0.7)),
+    linear-gradient(120deg, rgba(239, 42, 35, 0.12), transparent 46%);
+}
+
+/* Legacy `.hero-copy h1` / `.page-hero h1` text-shadow — carries the legibility
+   the lightened scrim above no longer provides on its own. Applied by `Section`
+   to the content container whenever a `photo` is set, so it also covers the
+   lede and the small red eyebrow, which are the first things to wash out over
+   a bright photo (see `/ecosistema`). Deeper than the legacy 0.18 because that
+   sat under much larger hero type than `--heading-lg`. */
+.section-photo-text {
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
 }

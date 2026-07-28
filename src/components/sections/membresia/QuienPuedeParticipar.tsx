@@ -10,6 +10,7 @@ export function QuienPuedeParticipar() {
       tone="ink"
       firstOnPage
       photo="/illimani.avif"
+      photoPosition="top"
       className="relative z-10 flex flex-col gap-10"
     >
       <div className="flex flex-col gap-3">
