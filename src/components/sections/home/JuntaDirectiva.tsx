@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/icons/ArrowUpRight";
 import { Card } from "@/components/ui/Card";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Section } from "@/components/ui/Section";
@@ -35,9 +36,10 @@ export function JuntaDirectiva() {
               {member.linkedin ? (
                 <ExternalLink
                   href={member.linkedin}
-                  className="mt-2 inline-block text-xs font-semibold text-teal hover:underline"
+                  className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-teal hover:underline hover:text-red"
                 >
-                  LinkedIn ↗
+                  LinkedIn
+                  <ArrowUpRight className="h-3 w-3" />
                 </ExternalLink>
               ) : null}
             </div>

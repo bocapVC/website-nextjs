@@ -1,7 +1,7 @@
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
 import { ELEGIBLES } from "@/data/elegibles";
-import { ELEGIBLE_ICONS } from "./ElegibleIcons";
+import { ELEGIBLE_ICONS } from "@/components/icons/ElegibleIcons";
 
 /** Ink-toned hero: who is eligible to join BOCAP, as a 2-col icon list. Uses illimani.avif as a placeholder until a dedicated membresía photo is ready. */
 export function QuienPuedeParticipar() {
