@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { EcosistemaTabs } from "@/components/sections/ecosistema/EcosistemaTabs";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Ecosistema",
   description:
     "Fondos, ángeles, aceleradoras y startups que forman parte del ecosistema de capital emprendedor en Bolivia.",
-};
+  path: "/ecosistema",
+});
 
 export default function EcosistemaPage() {
   return (

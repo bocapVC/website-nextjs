@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { Section } from "@/components/ui/Section";
 import { ContactoInfo } from "@/components/sections/contacto/ContactoInfo";
 import { ContactForm } from "@/components/sections/contacto/ContactForm";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Contacto",
   description:
     "Escríbenos para formar parte del ecosistema, proponer alianzas o conocer más sobre BOCAP.",
-};
+  path: "/contacto",
+});
 
 export default function ContactoPage() {
   return (
