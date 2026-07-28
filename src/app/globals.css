@@ -78,33 +78,18 @@ h4 {
   font-weight: 700;
 }
 
-/* Photo band: dark scrim + diagonal brand-red tint over a photo, with corner
-   radial accents via ::before. Ported from legacy `.section--why-bocap-band`.
-   --photo-band-image is overridden per section via a modifier class below. */
-.section-photo-band {
-  --photo-band-image: url("/illimani.avif");
-  position: relative;
-  overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(7, 10, 16, 0.84), rgba(7, 10, 16, 0.78)),
-    linear-gradient(120deg, rgba(239, 42, 35, 0.18), transparent 46%),
-    var(--photo-band-image) center center / cover no-repeat;
-}
-
-.section-photo-band--ecosistema {
-  --photo-band-image: url("/ecosistema.avif");
-}
-
-.section-photo-band--convocatorias {
-  --photo-band-image: url("/convocatoria.avif");
-}
-
-.section-photo-band::before {
-  content: "";
+/* Photo band overlay: corner radial accents over a dark scrim + diagonal
+   brand-red tint. Ported from legacy `.section--why-bocap-band`, where these
+   sat in the same background shorthand as the photo. The photo itself is now a
+   sibling <Image fill> underneath (see `Section`'s `photo` prop), so it can go
+   through next/image — layers are listed here topmost-first, as before. */
+.section-photo-overlay {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background:
     radial-gradient(circle at top left, rgba(239, 42, 35, 0.16), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(46, 91, 141, 0.18), transparent 36%);
-  pointer-events: none;
+    radial-gradient(circle at bottom right, rgba(46, 91, 141, 0.18), transparent 36%),
+    linear-gradient(180deg, rgba(7, 10, 16, 0.84), rgba(7, 10, 16, 0.78)),
+    linear-gradient(120deg, rgba(239, 42, 35, 0.18), transparent 46%);
 }

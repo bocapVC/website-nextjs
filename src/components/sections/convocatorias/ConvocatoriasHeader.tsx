@@ -7,7 +7,8 @@ export function ConvocatoriasHeader() {
     <Section
       tone="ink"
       firstOnPage
-      sectionClassName="section-photo-band section-photo-band--convocatorias lg:flex lg:min-h-[55vh] lg:flex-col lg:items-center lg:justify-center"
+      photo="/convocatoria.avif"
+      sectionClassName="lg:flex lg:min-h-[55vh] lg:flex-col lg:items-center lg:justify-center"
       className="relative z-10"
     >
       <SectionHeading

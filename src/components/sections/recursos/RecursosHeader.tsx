@@ -7,7 +7,8 @@ export function RecursosHeader() {
     <Section
       tone="ink"
       firstOnPage
-      sectionClassName="section-photo-band lg:flex lg:min-h-[55vh] lg:flex-col lg:items-center lg:justify-center"
+      photo="/illimani.avif"
+      sectionClassName="lg:flex lg:min-h-[55vh] lg:flex-col lg:items-center lg:justify-center"
       className="relative z-10"
     >
       <SectionHeading

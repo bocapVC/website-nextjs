@@ -8,7 +8,8 @@ export function Hero() {
     <Section
       tone="ink"
       firstOnPage
-      sectionClassName="section-photo-band lg:flex lg:min-h-[90vh] lg:flex-col lg:items-center lg:justify-center"
+      photo="/illimani.avif"
+      sectionClassName="lg:flex lg:min-h-[90vh] lg:flex-col lg:items-center lg:justify-center"
       className="relative z-10 flex flex-col items-center gap-6 text-center"
     >
       <Eyebrow className="text-red">Asociación Boliviana de Capital Semilla y Emprendedor</Eyebrow>

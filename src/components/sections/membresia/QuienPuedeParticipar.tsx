@@ -9,7 +9,7 @@ export function QuienPuedeParticipar() {
     <Section
       tone="ink"
       firstOnPage
-      sectionClassName="section-photo-band"
+      photo="/illimani.avif"
       className="relative z-10 flex flex-col gap-10"
     >
       <div className="flex flex-col gap-3">
