@@ -1,7 +1,7 @@
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
-/** Photo-band page header: centered eyebrow, serif title, and lede over convocatoria.jpeg. */
+/** Photo-band page header: centered eyebrow, serif title, and lede over convocatoria.avif. */
 export function ConvocatoriasHeader() {
   return (
     <Section

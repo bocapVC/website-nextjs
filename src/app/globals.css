@@ -82,7 +82,7 @@ h4 {
    radial accents via ::before. Ported from legacy `.section--why-bocap-band`.
    --photo-band-image is overridden per section via a modifier class below. */
 .section-photo-band {
-  --photo-band-image: url("/hero-banner4.avif");
+  --photo-band-image: url("/illimani.avif");
   position: relative;
   overflow: hidden;
   background:
@@ -92,19 +92,11 @@ h4 {
 }
 
 .section-photo-band--ecosistema {
-  --photo-band-image: url("/ecosistema.jpg");
-}
-
-.section-photo-band--recursos {
-  --photo-band-image: url("/recursos.jpg");
+  --photo-band-image: url("/ecosistema.avif");
 }
 
 .section-photo-band--convocatorias {
-  --photo-band-image: url("/convocatoria.jpeg");
-}
-
-.section-photo-band--membresia {
-  --photo-band-image: url("/membresia.jpeg");
+  --photo-band-image: url("/convocatoria.avif");
 }
 
 .section-photo-band::before {

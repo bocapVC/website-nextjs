@@ -1,13 +1,13 @@
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
-/** Photo-band page header: centered eyebrow, serif title, and lede over recursos.jpg. */
+/** Photo-band page header: centered eyebrow, serif title, and lede over illimani.avif (placeholder until a dedicated recursos photo is ready). */
 export function RecursosHeader() {
   return (
     <Section
       tone="ink"
       firstOnPage
-      sectionClassName="section-photo-band section-photo-band--recursos lg:flex lg:min-h-[55vh] lg:flex-col lg:items-center lg:justify-center"
+      sectionClassName="section-photo-band lg:flex lg:min-h-[55vh] lg:flex-col lg:items-center lg:justify-center"
       className="relative z-10"
     >
       <SectionHeading

@@ -1,7 +1,7 @@
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
-/** Photo-band page header: centered eyebrow, serif title, and lede over hero-banner4.avif. */
+/** Photo-band page header: centered eyebrow, serif title, and lede over ecosistema.avif. */
 export function EcosistemaHeader() {
   return (
     <Section
