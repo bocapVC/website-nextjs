@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ConvocatoriasHeader } from "@/components/sections/convocatorias/ConvocatoriasHeader";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { Eventos } from "@/components/sections/convocatorias/Eventos";
 import { AceleradorasAplicaciones } from "@/components/sections/convocatorias/AceleradorasAplicaciones";
 
@@ -12,7 +12,12 @@ export const metadata: Metadata = {
 export default function ConvocatoriasPage() {
   return (
     <>
-      <ConvocatoriasHeader />
+      <PageHeader
+        photo="/convocatoria.avif"
+        eyebrow="Convocatorias"
+        title="Eventos y convocatorias"
+        description="Encuentros, demo days y convocatorias de aceleradoras del ecosistema."
+      />
       <Eventos />
       <AceleradorasAplicaciones />
     </>
