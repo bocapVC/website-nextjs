@@ -7,7 +7,7 @@ import { ReportRow } from "./ReportRow";
 export function Reportes() {
   return (
     <Section tone="mist">
-      <SectionHeading eyebrow="Datos" title="Reportes" />
+      <SectionHeading eyebrow="Datos" title="Articulos y Reportes" />
 
       {REPORTES.length > 0 ? (
         <div className="mt-10 flex flex-col gap-4">

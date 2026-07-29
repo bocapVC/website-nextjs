@@ -1,4 +1,4 @@
-export interface Convocatoria {
+export interface Oportunidad {
   program: string;
   organization: string;
   description: string;
@@ -8,4 +8,4 @@ export interface Convocatoria {
 }
 
 /** No accelerator applications exist yet — AceleradorasAplicaciones shows an empty state until this is populated. */
-export const CONVOCATORIAS_ACELERADORAS: Convocatoria[] = [];
+export const OPORTUNIDADES_ACELERADORAS: Oportunidad[] = [];

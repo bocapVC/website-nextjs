@@ -1,3 +1,4 @@
+import { ArrowDownTray } from "@/components/icons/ArrowDownTray";
 import type { Report } from "@/data/reportes";
 
 interface ReportRowProps {
@@ -21,9 +22,10 @@ export function ReportRow({ report }: ReportRowProps) {
           href={report.url}
           target="_blank"
           rel="noreferrer"
-          className="shrink-0 text-sm font-semibold text-teal hover:text-teal-strong"
+          className="inline-flex w-fit shrink-0 items-center gap-1.5 text-sm font-semibold text-teal hover:text-teal-strong"
         >
-          Descargar →
+          Descargar
+          <ArrowDownTray className="h-4 w-4" />
         </a>
       ) : (
         <span className="shrink-0 text-sm text-ink-soft">Próximamente</span>

@@ -30,7 +30,7 @@ pnpm test       # Vitest + React Testing Library (jsdom)
 ## Structure
 
 - `src/app/` — Next.js App Router. One folder per route (`contacto/`,
-  `convocatorias/`, `ecosistema/`, `membresia/`, `recursos/`) plus the root
+  `oportunidades/`, `ecosistema/`, `membresia/`, `recursos/`) plus the root
   `page.tsx` (home) and `layout.tsx`. `src/app/api/contact/route.ts` is the
   Contacto form's server proxy (see below).
 - `src/components/sections/<page>/` — one component per page section, composed
