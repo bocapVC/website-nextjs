@@ -110,11 +110,16 @@ surface a real success/error to the user.
   change and need updating.
 - `CONTACT_TOPICS` in `src/data/contactTopics.ts` holds the "tema" select
   options; each `value` must match one of the Google Form's configured
-  choices **exactly**. Known caveat: the form's "Membresías" choice has no
-  accent (`"Membresias"`) — if topic submissions ever stop showing up in the
-  Form's responses, check for a similar accent/wording mismatch first, since
-  Google Forms can return 200 without recording the response when a choice
-  value doesn't match.
+  choices **exactly** (case- and accent-sensitive). All six were re-checked
+  against the live form on 2026-07-28 and match:
+  `Membresia` (singular, no accent — the visible label is "Membresías", the
+  submitted value is not), `Alianzas Institucionales`,
+  `Reportes e Investigación`, `Eventos y Participación`,
+  `Prensa y Visibilidad`, `Otro`.
+- If topic submissions ever stop appearing in the Form's responses, check for
+  an accent/wording drift here first: the choice list has no "other"
+  free-text fallback, so a value the form doesn't recognize is lost rather
+  than recorded under a fallback.
 - Verified live: a real submission returns `{ ok: true }`; missing-fields and
   invalid-JSON return `400`; an unreachable or erroring upstream returns
   `502`.

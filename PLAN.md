@@ -21,9 +21,16 @@ still the authoritative tracker for what's pending.
   Google Forms with real status checking), `src/hooks/useContactSubmission.ts`,
   `ContactForm` + `ContactoInfo` sections, `/contacto` page, `src/data/contactTopics.ts`.
   - **Verified live**: real submission returned `ok:true`; error paths return 400/400/502.
-  - **Pending human check**: confirm the "[PRUEBA] Test de integración del sitio" entry
-    landed in the Google Form's linked responses (Google can 200 without recording if a
-    choice value mismatches — esp. the accent-less `"Membresias"` topic value).
+  - ✅ **Topic values re-checked against the live form** (2026-07-28): all six
+    `CONTACT_TOPICS` values match the form's configured choices exactly. The earlier note
+    here and in the README claimed the form's choice was the plural `"Membresias"` while
+    the code sends the singular `"Membresia"` — the **code was right and the docs were
+    wrong**; the form's option really is `Membresia`. No code change was needed.
+  - **Pending human check** (narrowed): confirm the "[PRUEBA] Test de integración del
+    sitio" entry landed in the Form's linked responses. The topic-value risk is now closed,
+    but the five `entry.NNN` field IDs in `route.ts` still can't be validated from outside —
+    a wrong ID is accepted by Google and silently drops that one answer. Only seeing a real
+    submission arrive with all five fields populated proves them.
 - ✅ **Home** (`/`): rebuilt to match a 7-section outline the user supplied directly (Hero,
   Qué es BOCAP, Qué obtienes como miembro, El ecosistema, Oportunidades/eventos/recursos,
   Quiénes conforman BOCAP, Cierre). `src/app/page.tsx` now composes `Hero`, `QueEs`,
