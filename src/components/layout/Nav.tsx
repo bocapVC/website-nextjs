@@ -48,6 +48,9 @@ export function Nav() {
               key={link.href}
               href={link.href}
               onClick={close}
+              // The underline alone conveys the current page visually; this exposes it
+              // to assistive tech too.
+              aria-current={active ? "page" : undefined}
               className={cn(
                 "border-b-2 border-transparent pb-1.5 text-sm font-medium text-white/80 transition-colors hover:border-white/70 hover:text-white",
                 active && "border-white/70 text-white",
