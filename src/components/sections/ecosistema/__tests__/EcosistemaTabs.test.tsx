@@ -5,6 +5,11 @@ import { DIRECTORIO } from "@/data/directorio";
 import { STARTUPS } from "@/data/startups";
 
 describe("EcosistemaTabs", () => {
+  it("renders the Ecosistema Bocap eyebrow", () => {
+    render(<EcosistemaTabs />);
+    expect(screen.getByText("Ecosistema Bocap")).toBeInTheDocument();
+  });
+
   it("renders a tab button for Todos, Fondos, Ángeles, Aceleradoras and Startups", () => {
     render(<EcosistemaTabs />);
     for (const tab of ["Todos", "Fondos", "Ángeles", "Aceleradoras", "Startups"]) {

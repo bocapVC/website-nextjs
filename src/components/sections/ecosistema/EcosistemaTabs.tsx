@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
 import { cn } from "@/lib/cn";
 import { DIRECTORIO } from "@/data/directorio";
@@ -35,6 +36,7 @@ export function EcosistemaTabs() {
 
   return (
     <Section>
+      <Eyebrow className="mb-4">Ecosistema Bocap</Eyebrow>
       <div className="flex flex-wrap gap-6 border-b border-line-strong">
         {TABS.map((tab) => (
           <button

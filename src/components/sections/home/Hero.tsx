@@ -12,19 +12,25 @@ export function Hero() {
       sectionClassName="lg:flex lg:min-h-[90vh] lg:flex-col lg:items-center lg:justify-center"
       className="relative z-10 flex flex-col items-center gap-6 text-center"
     >
-      <Eyebrow className="text-red">Asociación Boliviana de Capital Semilla y Emprendedor</Eyebrow>
+      <Eyebrow className="text-red">BOCAP</Eyebrow>
       <h1 className="max-w-6xl font-serif text-5xl font-bold text-white sm:text-6xl">
-        Creemos en el poder de las <span className="text-red">startups</span> para transformar la economía.
+        La red de inversión en <span className="text-red">startups</span> de
+        Bolivia
       </h1>
       <p className="max-w-3xl text-md text-white/70">
-         Apoyo estratégico e inversion de capital inteligente a emprendedores visionarios que están creando las soluciones del mañana.
+        Reunimos a fondos, ángeles, family offices y corporativos que invierten,
+        o quieren empezar a invertir, en startups bolivianas.
       </p>
       <div className="flex flex-wrap items-center justify-center gap-4">
-        <Button href="/contacto" variant="primary">
-          Contáctanos
+        <Button href="/membresia#unirse" variant="primary">
+          Quiero ser miembro
         </Button>
-        <Button href="/ecosistema" variant="ghost" className="border-white/30 text-white hover:border-white hover:bg-white/10">
-          Explora el ecosistema
+        <Button
+          href="/ecosistema"
+          variant="ghost"
+          className="border-white/30 text-white hover:border-white hover:bg-white/10"
+        >
+          Explorar el ecosistema
         </Button>
       </div>
     </Section>

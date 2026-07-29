@@ -19,4 +19,6 @@ export const SITE = {
   tagline:
     "Impulsamos el desarrollo del capital emprendedor en Bolivia conectando inversión, conocimiento y colaboración regional.",
   email: "bocapbolivia@gmail.com",
+  /** Canonical production origin — used for metadataBase, sitemap.xml, and robots.txt. */
+  url: "https://bocap.vc",
 } as const;

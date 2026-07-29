@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useState } from "react";
 import { InputField, TextareaField, SelectField } from "@/components/ui/FormField";
 import { StatusPanel } from "@/components/ui/StatusPanel";
@@ -19,9 +20,11 @@ const EMPTY: ContactValues = {
 interface ContactFormProps {
   /** Locks the "Tema" field to this value and hides the select, e.g. for pages that only ever submit one topic. */
   fixedTopic?: string;
+  /** Extra hint text under the "Mensaje" field, e.g. prompting what the message should cover. */
+  messageHint?: ReactNode;
 }
 
-export function ContactForm({ fixedTopic }: ContactFormProps = {}) {
+export function ContactForm({ fixedTopic, messageHint }: ContactFormProps = {}) {
   const [values, setValues] = useState<ContactValues>(() => ({
     ...EMPTY,
     topic: fixedTopic ?? EMPTY.topic,
@@ -85,6 +88,7 @@ export function ContactForm({ fixedTopic }: ContactFormProps = {}) {
         label="Mensaje"
         name="message"
         required
+        hint={messageHint}
         value={values.message}
         onChange={(e) => update("message", e.target.value)}
       />

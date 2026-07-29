@@ -1,23 +1,19 @@
 import { Hero } from "@/components/sections/home/Hero";
 import { QueEs } from "@/components/sections/home/QueEs";
-import { AQuienRepresenta } from "@/components/sections/home/AQuienRepresenta";
-import { QueHace } from "@/components/sections/home/QueHace";
-import { Cifras } from "@/components/sections/home/Cifras";
-import { JuntaDirectiva } from "@/components/sections/home/JuntaDirectiva";
-import { MiembrosAliados } from "@/components/sections/home/MiembrosAliados";
-import { QuickAccess } from "@/components/sections/home/QuickAccess";
+import { Ecosistema } from "@/components/sections/shared/Ecosistema";
+import { OportunidadesEventosRecursos } from "@/components/sections/home/OportunidadesEventosRecursos";
+import { QuienesConforman } from "@/components/sections/home/QuienesConforman";
+import { Cierre } from "@/components/sections/home/Cierre";
 
 export default function Home() {
   return (
     <>
       <Hero />
       <QueEs />
-      <AQuienRepresenta />
-      <QueHace />
-      <Cifras />
-      <JuntaDirectiva />
-      <MiembrosAliados />
-      <QuickAccess />
+      <Ecosistema />
+      <OportunidadesEventosRecursos />
+      <QuienesConforman />
+      <Cierre />
     </>
   );
 }

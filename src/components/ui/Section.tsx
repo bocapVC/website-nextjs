@@ -11,9 +11,9 @@ interface SectionProps {
   /** Extra classes for the outer full-bleed <section> element. */
   sectionClassName?: string;
   /**
-   * Path to a decorative background photo, served through next/image (responsive
-   * srcset + format negotiation) beneath the brand gradient overlay. Content is
-   * layered above it, so callers still need `relative z-10` on `className`.
+   * Path to a decorative background photo, rendered beneath the brand gradient
+   * overlay. Content is layered above it, so callers still need `relative z-10`
+   * on `className`. Served `unoptimized` — see the note on the <Image> below.
    */
   photo?: string;
   /**
@@ -21,6 +21,14 @@ interface SectionProps {
    * loading. Defaults to `firstOnPage`, where the photo is the LCP element.
    */
   photoPreload?: boolean;
+  /**
+   * Which part of the photo to keep when `object-cover` crops it. Shorter
+   * bands crop away the most, so the default centre crop can cut the subject
+   * out entirely — `illimani.avif`'s mountain sits in the upper half and is
+   * lost on anything below full height. The legacy site set a focal point per
+   * hero for the same reason (`center 34%`, `center 22%`, ...).
+   */
+  photoPosition?: "center" | "top" | "bottom";
   /**
    * True for the first section on a page. Swaps the default top padding for
    * enough clearance to sit under the fixed floating header, so this
@@ -36,6 +44,12 @@ const toneClasses: Record<NonNullable<SectionProps["tone"]>, string> = {
   ink: "bg-ink text-white",
 };
 
+const photoPositionClasses: Record<NonNullable<SectionProps["photoPosition"]>, string> = {
+  center: "object-center",
+  top: "object-top",
+  bottom: "object-bottom",
+};
+
 /** Full-bleed section band with the legacy `--maxw`/`--gutter` content container. */
 export function Section({
   children,
@@ -45,6 +59,7 @@ export function Section({
   sectionClassName,
   photo,
   photoPreload,
+  photoPosition = "center",
   firstOnPage = false,
 }: SectionProps) {
   return (
@@ -60,19 +75,35 @@ export function Section({
     >
       {photo && (
         <>
+          {/* `unoptimized`: the band photos are authored as AVIF, so the
+              optimizer would decode and re-encode them into a second lossy
+              AVIF generation. That re-encode was visibly grainy under the
+              lightened overlay, and it isn't even a win on bytes —
+              convocatoria.avif came back 22% *larger* than its source, since
+              encoding the added noise costs bits. Serving them as authored
+              skips that generation entirely. No `sizes`: without an optimizer
+              there's no generated srcset, and Next drops the attribute anyway.
+              If these are ever re-authored large enough to be worth resizing,
+              drop `unoptimized` and restore `sizes="100vw"`. */}
           <Image
             src={photo}
             alt=""
             aria-hidden
             fill
-            sizes="100vw"
+            unoptimized
             preload={photoPreload ?? firstOnPage}
-            className="object-cover"
+            className={cn("object-cover", photoPositionClasses[photoPosition])}
           />
           <div className="section-photo-overlay" />
         </>
       )}
-      <div className={cn("mx-auto w-full max-w-(--maxw) px-(--gutter)", className)}>
+      <div
+        className={cn(
+          "mx-auto w-full max-w-(--maxw) px-(--gutter)",
+          photo && "section-photo-text",
+          className,
+        )}
+      >
         {children}
       </div>
     </section>

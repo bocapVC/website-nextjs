@@ -1,6 +1,7 @@
 # BOCAP site build — plan & status
 
-Working branch: `build-part-ii` (continuation of `build-bocap-site`, merged to `main` in #1).
+Working branch: `ui-004`. `main` is at `245184c` (PR #5, `ui-003`); the `build-part-ii` and
+`build-bocap-site` branches this file was started on are already merged.
 
 **Build phase is complete**: all 6 pages are built and test-first, Polish and Verify are
 both done (see "Remaining work" below), and the branch is committed locally. What's left
@@ -13,21 +14,81 @@ still the authoritative tracker for what's pending.
 
 - ✅ **Foundation** (commit `5c2ee6f`): `src/config/nav.ts`, `src/lib/cn.ts`, ui primitives
   (`Section`, `Eyebrow`, `SectionHeading`, `Button`, `Card`, `Badge`, `Logo`,
-  `FormField`, `StatusPanel`), layout (`Header`, `Footer`, `Nav`,
-  `CopyEmailButton`), wired into `src/app/layout.tsx`.
+  `FormField`, `StatusPanel`, plus `ExternalLink` and `PageHeader` added later), layout
+  (`Header`, `Footer`, `Nav`, `CopyEmailButton`), wired into `src/app/layout.tsx`.
+  Icons live in `src/components/icons/` (`ArrowUpRight`, `ElegibleIcons`).
 - ✅ **Contacto** (commit `564da60`): `src/app/api/contact/route.ts` (server proxy to
   Google Forms with real status checking), `src/hooks/useContactSubmission.ts`,
   `ContactForm` + `ContactoInfo` sections, `/contacto` page, `src/data/contactTopics.ts`.
   - **Verified live**: real submission returned `ok:true`; error paths return 400/400/502.
-  - **Pending human check**: confirm the "[PRUEBA] Test de integración del sitio" entry
-    landed in the Google Form's linked responses (Google can 200 without recording if a
-    choice value mismatches — esp. the accent-less `"Membresias"` topic value).
-- ✅ **Home** (`/`): `src/app/page.tsx` composes `Hero`, `QueEs`, `AQuienRepresenta`,
-  `QueHace`, `Cifras`, `JuntaDirectiva`, `MiembrosAliados`, `QuickAccess` from
-  `src/components/sections/home/`. Data-driven sections and CTA links built test-first
-  (Vitest + React Testing Library, see "Testing" below); `QueEs` has no data/link seam so
-  it was implemented directly. `pnpm build` / `pnpm lint` / `pnpm exec tsc --noEmit` clean;
-  `pnpm dev` click-through confirmed all 8 sections render in order.
+  - ✅ **Topic values re-checked against the live form** (2026-07-28): all six
+    `CONTACT_TOPICS` values match the form's configured choices exactly. The earlier note
+    here and in the README claimed the form's choice was the plural `"Membresias"` while
+    the code sends the singular `"Membresia"` — the **code was right and the docs were
+    wrong**; the form's option really is `Membresia`. No code change was needed.
+  - **Pending human check** (narrowed): confirm the "[PRUEBA] Test de integración del
+    sitio" entry landed in the Form's linked responses. The topic-value risk is now closed,
+    but the five `entry.NNN` field IDs in `route.ts` still can't be validated from outside —
+    a wrong ID is accepted by Google and silently drops that one answer. Only seeing a real
+    submission arrive with all five fields populated proves them.
+- ✅ **Home** (`/`): rebuilt to match a 7-section outline the user supplied directly (Hero,
+  Qué es BOCAP, Qué obtienes como miembro, El ecosistema, Oportunidades/eventos/recursos,
+  Quiénes conforman BOCAP, Cierre). `src/app/page.tsx` now composes `Hero`, `QueEs`,
+  `Ecosistema`, `OportunidadesEventosRecursos`, `QuienesConforman`, `Cierre`
+  from `src/components/sections/home/`.
+  - **`QueObtienes` moved off Home later** (see the Membresía entry below): the "Qué obtienes
+    como miembro" section was judged to be membership content, not homepage content, so it
+    was relocated to `/membresia`'s `Beneficios` section (replacing that section's empty
+    placeholder) and its CTA dropped — a membership CTA doesn't belong on the page it's
+    already pointing at. Home no longer has a dedicated "qué obtienes" section; `QueEs` →
+    `Ecosistema` now run back to back.
+  - **Removed** (not in the new outline, confirmed with user): `AQuienRepresenta`, `QueHace`
+    (+ `src/data/pilares.ts`), `Cifras` (+ `src/data/cifras.ts` — its numbers were fabricated
+    anyway), `QuickAccess` (superseded by `Cierre`).
+  - **`Ecosistema`** and **`Cierre`** are new, static (no data seam) — ink-toned bands with
+    CTAs, mirroring `Hero`'s pattern. `Ecosistema` reuses `/ecosistema.avif` as a photo band.
+  - **`OportunidadesEventosRecursos`** is new and conditionally rendered: a pure
+    `buildActivityColumns()` helper flags each of the three columns (`oportunidades` from
+    `convocatoriasAceleradoras.ts` status `vigente`, `eventos` from `eventos.ts` status
+    `vigente`, `recursos` from `reportes.ts`/`guiasArticulos.ts` non-empty) as having real
+    content or not; the whole section returns `null` unless at least 2 of 3 columns qualify
+    (per the outline's dev note: "mostrar solo contenido real y vigente... ocultar la
+    sección" if fewer than 2 items exist). **Currently renders nothing** — all four backing
+    data files are still empty (see "Content still needed" below) — verified via `pnpm dev`
+    HTTP smoke-check.
+  - **`QuienesConforman`** merges the old separate `MiembrosAliados` + `JuntaDirectiva`
+    sections into one `Section` (the outline frames "¿Quiénes conforman BOCAP?" as a single
+    section with two parts, not two page bands), with a shared intro before the Miembros logo
+    wall. **Its "Conocer cómo participar" CTA (→ `/membresia`) was later removed** —
+    redundant with `Cierre`'s membership CTA further down the same page, which already
+    covers the membership ask. The logo wall renders
+    real assets: `src/data/miembrosAliados.ts` gained a `logo` field per partner, backed by
+    `public/logos/` (`babasu-ventures.png`, `cibersons.svg`, `escalatec.svg`,
+    `ithink-vc.svg`) — supplied, not placeholders. **Board cards still show
+    initials (no photo) and full bios** — the outline wants a photo per member and no long
+    bios, but real headshots don't exist yet; user confirmed (2026-07-28) to defer that
+    trim until photos are supplied, not to strip bios in the meantime.
+  - **Copy fixes**: `Hero`'s ghost CTA now reads "Explorar el ecosistema" (was "Explora el
+    ecosistema"); `QueEs`'s second paragraph now reads "No administramos el dinero de
+    nadie" (was "No administramos capital") to match the outline verbatim. Misión/Visión
+    cards on `QueEs` were kept (user confirmed) even though the outline doesn't mention them.
+  - **CTA consolidation (later session)**: all home membership CTAs now point straight at
+    the `/membresia` form instead of the top of the page — `UnirseForm` gained `id="unirse"`
+    and every CTA links to `/membresia#unirse`. `Ecosistema`'s "Agregar mi organización" CTA
+    (the `showOrgCta` prop) was dropped as redundant with `Cierre`'s CTA on the same page —
+    `Ecosistema` now renders only "Explorar el mapa". `Cierre` itself went from two CTAs
+    ("Quiero ser miembro" + "Agregar mi organización", both doing the same thing) down to
+    one, rephrased "Unirse".
+  - **Fixed a pre-existing broken test**: `Hero.test.tsx` asserted a `/contacto` link that
+    `Hero` has never rendered (only `/membresia` + `/ecosistema`) — was failing on `main`
+    before this session; corrected the assertion to `/membresia#unirse`.
+  - **`QuienesConforman`'s "Miembros" subhead renamed to "Miembros fundadores"** (later
+    session, user confirmed): all 4 entries in `MIEMBROS_ALIADOS` (Babasú Ventures,
+    Cibersons, Escalatec, iThink VC) are specifically the founding members, not a general
+    members roster, so the label now says that explicitly.
+  - Verified: `pnpm test` (56/56), `pnpm typecheck`, `pnpm lint`, `pnpm build` all clean;
+    `pnpm dev` HTTP smoke-check confirmed all 6 rendered sections (Hero through Cierre) plus
+    the correctly-hidden 7th (`OportunidadesEventosRecursos`).
 - ✅ **Header/Nav redesign**: replaced the in-flow light `Header` + `MobileNav` with a
   fixed floating glass pill (`Header.tsx` + new `Nav.tsx`, `MobileNav.tsx` deleted),
   matching the legacy site's `.site-header`/`.site-header__inner`/`.site-nav` **exactly**
@@ -54,16 +115,28 @@ still the authoritative tracker for what's pending.
     `typecheck`/tests are clean, but no fresh `pnpm dev` visual check was done post-edit
     (dev server from earlier in the session was left running per user request).
 
-- ✅ **Ecosistema** (`/ecosistema`): `StartupGrid` (server; feature cards, sector Badge,
-  location · stage footer) + `DirectorioFiltrable` (`"use client"`; chip filter, mini cards
-  — mist band). `src/data/startups.ts`, `src/data/directorio.ts`.
+- ✅ **Ecosistema** (`/ecosistema`): a shared `PageHeader` (photo band) + `UneteRed` (server,
+  mist band) + `EcosistemaTabs` (`"use client"`). `src/data/startups.ts`,
+  `src/data/directorio.ts`.
+  - **`UneteRed`** (added later, `src/components/sections/ecosistema/UneteRed.tsx`): sits
+    directly after `PageHeader`, mirrors home's `Cierre` band (`SectionHeading` + single
+    primary `Button`) but with one CTA only — "Quiero ser miembro" → `/membresia`. Covered by
+    `UneteRed.test.tsx` (1 test, asserts the link href).
+  - **`EcosistemaTabs` eyebrow** (added later): an `Eyebrow` reading "Ecosistema Bocap" sits
+    above the tab row. Covered by a dedicated case in `EcosistemaTabs.test.tsx`.
+  - **Superseded structure**: the original `StartupGrid` (server) + `DirectorioFiltrable`
+    (`"use client"`, chip filter) pair described here was replaced by the single
+    `EcosistemaTabs` component — one tab row (`Todos`, `Fondos`, `Ángeles`, `Aceleradoras`,
+    `Startups`) over both `DIRECTORIO` and `STARTUPS`, rather than two separate page bands
+    with their own filter. Tests moved with it: `EcosistemaTabs.test.tsx` (now 7 tests) covers
+    the eyebrow, every tab, the per-category filtering, and the "próximamente" states.
   - **Content note**: real directory data supplied by the user (4 entries: Babasú Ventures,
     Cibersons, Escalatec, iThink VC — sourced from `members` in the legacy site's
     `siteContent.js`, not fabricated). `angels`/`accelerators`/`allies` arrays were empty in
     that source and are **not yet represented** — more data expected later this week.
   - **Startups**: no startup entries exist anywhere in the source data. `STARTUPS` is an
-    empty array by design; `StartupGrid` renders an honest "Próximamente: startups del
-    ecosistema boliviano." empty state rather than inventing entries. Update `STARTUPS` and
+    empty array by design; the Startups tab renders an honest "próximamente" empty state
+    rather than inventing entries. Update `STARTUPS` and
     (if new categories arrive) `DIRECTORIO` when real data lands — `DIRECTORY_CATEGORIES` is
     derived automatically from whatever `category` values are present, so no extra wiring
     needed for new categories.
@@ -71,12 +144,13 @@ still the authoritative tracker for what's pending.
     driven by the real `category` field values from source data (`Fondo`, `Tecnología`,
     `VC`) rather than the originally-guessed `fondo`/`ángel`/`aceleradora`/`organización`
     union — the plan's guess didn't match the actual source classification.
-  - Verified: `pnpm test` (13/13 incl. 2 new files), `pnpm typecheck`, `pnpm lint`,
-    `pnpm build` all clean; `pnpm dev` HTTP smoke-check of rendered `/ecosistema` HTML
-    confirmed all 4 directory cards, all 4 filter chips, external links, and the empty-state
-    copy render correctly (no browser tooling available in this environment for a full
-    click-through, but the client-side filter interaction is covered by
-    `DirectorioFiltrable.test.tsx`, which fires the click and asserts the filtered DOM).
+  - Verified at the time (against the superseded structure): `pnpm test` (13/13 incl. 2 new
+    files), `pnpm typecheck`, `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP
+    smoke-check of rendered `/ecosistema` HTML confirmed all 4 directory cards, all 4 filter
+    chips, external links, and the empty-state copy. The tab interaction is covered by
+    `EcosistemaTabs.test.tsx`, which fires the clicks and asserts the filtered DOM.
+  - Re-verified after adding `UneteRed` + the tabs eyebrow: `pnpm test` (128/128),
+    `pnpm typecheck`, `pnpm lint` all clean.
 
 - ✅ **Recursos** (`/recursos`): `GuiasArticulos` (server) + `Reportes` (server, mist band).
   Built test-first (TDD skill) with leaf presentational components — `GuideCard`,
@@ -113,20 +187,75 @@ still the authoritative tracker for what's pending.
     `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP smoke-check confirmed both
     "Próximamente" empty states render on `/convocatorias`.
 
-- ✅ **Membresía** (`/membresia`): `QuienPuedeParticipar` (ink hero, no data seam — built
-  directly like `QueEs`) + `TiposDeMiembro` (server, empty-state) + `Beneficios` (server,
-  mist band, empty-state) + `MiembrosActuales` (server, tile wall, **populated**) +
-  `UnirseForm` (server component, no `"use client"`, no `onSubmit` possible by design —
-  submit `Button` is `disabled`; note "Este formulario es demostrativo y aún no está
-  conectado"). Built test-first for the three data-driven sections (TDD skill).
-  `src/data/tiposMiembro.ts`, `src/data/beneficios.ts`, `src/data/miembrosActuales.ts`.
-  - **`TiposDeMiembro`/`Beneficios` are empty by design** — no real membership-tier or
-    benefit content exists yet (this is institutional/policy content, judged too risky to
-    guess at — could describe a membership incorrectly, not just use a placeholder name).
-    Render the established "Próximamente" pattern.
-  - **`MiembrosActuales` is populated**, not empty — it reuses the real `members` list from
-    `siteContent.js` (same 4 orgs as `directorio.ts`/`miembrosAliados.ts`), since the
-    ecosystem directory and BOCAP's actual membership roster are the same underlying data.
+- ✅ **Membresía** (`/membresia`): `QuienPuedeParticipar` (ink hero with photo band) +
+  `Beneficios` (server, mist band, populated) + `Ecosistema` (shared, ink band — see below) +
+  `UnirseForm`. Built test-first for the data-driven sections (TDD skill).
+  `src/data/beneficios.ts`, `src/data/elegibles.ts`.
+  - **`UnirseForm` is now a real, working form** (commit `e7036d2`), not the disabled demo
+    originally described here: it renders `<ContactForm fixedTopic="Membresia" />`, so
+    submissions go through the same `/api/contact` proxy as Contacto with the topic locked.
+    The "Este formulario es demostrativo" note and the `disabled` submit button are gone.
+  - **`UnirseForm` restyled to match `/contacto`'s layout** (user request): swapped the old
+    centered `SectionHeading` + single-column form card for the same two-column
+    `grid gap-12 lg:grid-cols-2 lg:gap-16` split `ContactoPage` uses — a new left-column
+    `UnirseInfo` component (`src/components/sections/membresia/UnirseInfo.tsx`, mirroring
+    `ContactoInfo`'s eyebrow/h2/paragraph/callout shape) alongside the same form card on the
+    right. **New copy sets expectations that weren't stated before**: the paragraph asks
+    visitors to describe their organization and which ecosystem category it fits (Fondos ·
+    Ángeles · Aceleradoras · Startups), and a "Qué esperar" callout states BOCAP reviews each
+    request manually and follows up by email. `ContactForm` gained an optional
+    `messageHint` prop (rendered as the `TextareaField` hint under "Mensaje") so this same
+    category prompt also shows inline on the message field itself; `/contacto`'s usage is
+    unaffected since it doesn't pass the prop. Covered by `UnirseForm.test.tsx` (new) and two
+    new `ContactForm.test.tsx` cases for `messageHint`.
+  - Verified: `pnpm test` (132/132), `pnpm typecheck`, `pnpm lint`, `pnpm build` all clean;
+    `pnpm dev` HTTP smoke-check of `/membresia` confirmed the two-column layout, the category
+    copy, and the "Qué esperar" callout all render.
+  - **`QuienPuedeParticipar` is data-driven now**, not inline copy: the six eligibility
+    entries live in `src/data/elegibles.ts` and each renders with an icon from
+    `ELEGIBLE_ICONS` (`src/components/icons/ElegibleIcons.tsx`).
+  - **`TiposDeMiembro` unrendered on `/membresia` for now** (user request) — still no real
+    membership-tier content exists (institutional/policy content, too risky to guess at), and
+    its "Próximamente" empty state was judged to hurt the page visually more than an omitted
+    section would. Component, test, and `src/data/tiposMiembro.ts` are all kept as-is (not
+    deleted) — just no longer imported/composed into `MembresiaPage`. Re-add the import once
+    real tier content lands.
+  - **`Beneficios` is populated now, not empty** — the "Qué obtienes como miembro" content
+    (3 cards: Acceso a oportunidades, Con quién invertir, Datos & Know-how) was moved here
+    from Home's `QueObtienes` section (real, previously-approved copy — was valid member
+    info that belonged on the membership page, not the homepage) and its CTA to `/membresia`
+    was dropped, since a membership CTA is redundant on the page it already points at.
+    `src/data/beneficios.ts` now holds that content (the old empty array + its
+    `QUE_OBTIENES`/`queObtienes.ts` counterpart from Home were retired); `Beneficios.tsx` no
+    longer has an empty-state branch, matching the no-dead-code pattern the original
+    `QueObtienes` used for the same static data.
+  - **`Beneficios` was moved ahead of `TiposDeMiembro`** (user request, since superseded by
+    `TiposDeMiembro` being unrendered entirely — see above): it's the page's first content
+    section right after the `QuienPuedeParticipar` hero.
+  - **`MiembrosActuales` retired** (component, test, and `src/data/miembrosActuales.ts` all
+    deleted): its tile wall duplicated the same 4-org roster already shown on `/ecosistema`
+    (`EcosistemaTabs`/`directorio.ts`), and its brief "Ver el ecosistema completo" CTA phase
+    (added in the prior session) made that duplication obvious — pointing users at
+    `/ecosistema` for the real thing rather than a second, thinner copy of it on this page.
+  - **`Ecosistema` moved from `home/` to a shared location**
+    (`src/components/sections/shared/Ecosistema.tsx`, test alongside it in
+    `shared/__tests__/`) since it's now rendered on two pages: `/` (unchanged) and
+    `/membresia`, in the slot `MiembrosActuales` vacated — same ink-toned teaser band
+    ("El mapa de startups e inversionistas de Bolivia" + "Explorar el mapa" → `/ecosistema`),
+    replacing the tile wall with a lighter pointer to the same destination.
+  - **`Ecosistema` gained a `showOrgCta` prop** (default `true`) to hide its second button,
+    "Agregar mi organización" → `/contacto`, when rendered on `/membresia`
+    (`<Ecosistema showOrgCta={false} />`) — asking a visitor already on the membership page
+    to "add their organization" via a separate contact-form detour is redundant with the
+    `UnirseForm` right below it. Home's usage is unchanged (prop omitted, defaults to shown).
+    **Later removed entirely** (later session): with Home's `Cierre` already carrying the
+    same "Agregar mi organización" ask, having it on `Ecosistema` too (shown on Home) was
+    redundant there as well — dropped the button and the `showOrgCta` prop, `Ecosistema` now
+    always renders just "Explorar el mapa" on both pages.
+  - Re-verified after the `MiembrosActuales` → shared-`Ecosistema` swap: `pnpm test`
+    (127/127), `pnpm typecheck`, `pnpm lint`, `pnpm build` all clean.
+  - Re-verified after unrendering `TiposDeMiembro`: `pnpm test` (127/127), `pnpm typecheck`,
+    `pnpm lint` all clean.
   - **`QuienPuedeParticipar`'s eligibility copy is drafted, not sourced verbatim** — the
     real `bocap.vc/#/miembros` page is a client-rendered Vue SPA (`WebFetch` only returned
     the page shell/title, no body content). The user supplied the site's `siteContent.js`
@@ -134,7 +263,8 @@ still the authoritative tracker for what's pending.
     bullets (Fondos de venture capital / Inversionistas ángeles / Aceleradoras /
     Corporativos / Founders y startups / Aliados institucionales) were synthesized from
     recurring phrasing across its `homeHighlights`/`institutionalGoals`/`aboutSections`
-    fields. **Flagged for user review** — not a literal quote from the source.
+    fields. **Flagged for user review** — not a literal quote from the source. (Now in
+    `src/data/elegibles.ts` rather than inline in the component.)
   - **Fixed the previously-flagged fabricated Home content** using the same
     `siteContent.js` dump (user-confirmed in-session): `src/data/juntaDirectiva.ts` now
     holds the real board (Viviana Coloma/Presidenta · Escalatec + Aceleradora SOLYDES,
@@ -144,9 +274,9 @@ still the authoritative tracker for what's pending.
     `members`/`allies` data (same 4 orgs; `allies` is empty in the real source too — no
     additional partners to add). Existing tests for both didn't need changes since they
     assert "one rendered item per data-array entry," not literal names.
-  - **Still fabricated, not touched this session**: `src/data/cifras.ts` ("40+ startups",
-    "$8M+ capital movilizado", etc.) — no real figures were in the `siteContent.js` dump
-    supplied. Flagged for a future pass, not fixed now (out of scope for Membresía).
+  - **`src/data/cifras.ts` was fabricated** ("40+ startups", "$8M+ capital movilizado") and
+    was flagged here for a future pass — since **resolved by deletion**: the Home rebuild
+    dropped the `Cifras` section and its data file entirely, so no invented figures ship.
   - Verified: `pnpm test` (34/34 incl. 3 new files/3 new tests), `pnpm typecheck`,
     `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP smoke-check confirmed all 6
     eligibility bullets, both empty states, all 4 `MiembrosActuales` tiles, and the
@@ -164,13 +294,34 @@ still the authoritative tracker for what's pending.
 
 ## Testing
 
-Added this session (repo had none before): Vitest + React Testing Library + jsdom
-(`vitest.config.mts`, `vitest.setup.ts`, `pnpm test`), per the Next.js 16 docs guide since
-Home's sections are synchronous Server Components. Agreed seams: **data-driven sections**
-(assert one rendered item per entry in the backing array/data file) and **CTA/nav links**
-(assert hrefs point at the right routes) — not full-copy snapshots. Tests live alongside
-each section in `src/components/sections/<page>/__tests__/`. Apply the same approach to
-the remaining pages below.
+Vitest + React Testing Library + jsdom (`vitest.config.mts`, `vitest.setup.ts`, `pnpm test`),
+per the Next.js 16 docs guide since most sections are synchronous Server Components.
+**Current state: 126 tests across 26 files, all passing.**
+
+Original seams, still the rule for section components: **data-driven sections** (assert one
+rendered item per entry in the backing array/data file) and **CTA/nav links** (assert hrefs
+point at the right routes) — not full-copy snapshots. Tests live alongside each section in
+`src/components/sections/<page>/__tests__/`.
+
+Extended beyond section rendering since (commit `10ebd18`), on the principle that anything
+which can *silently* fail needs coverage:
+- **`src/app/api/contact/__tests__/route.test.ts`** — the site's only server-side logic.
+  Validation (bad JSON, each missing/whitespace-only required field), the five Google Form
+  `entry.NNN` mappings (spelled out in the test, not imported — a wrong id is accepted by
+  Google and silently drops that answer), the request shape, and the full upstream status
+  table including status `0`. `next/server` runs fine under the existing jsdom config;
+  `POST` is called directly with a plain `Request`.
+- **`src/hooks/__tests__/useContactSubmission.test.ts`** — both halves of
+  `res.ok && data.ok === true`, the non-JSON-body path, in-flight status, and `reset()`.
+- **`src/components/layout/__tests__/`** — `Nav` (toggle state, `aria-current` active route,
+  close-on-navigate), `CopyEmailButton` (clipboard success/refused/absent-API, feedback
+  window), `Header`/`Footer` (landmarks, link inventory). `usePathname` is mocked via
+  `vi.hoisted` + `vi.mock("next/navigation")` — the pattern to reuse for route-aware
+  components.
+
+Not yet covered: the `src/app/*/page.tsx` files (nothing renders a whole page, so a section
+that throws on import would pass CI and fail at build), and most `src/components/ui/`
+primitives (`Section` and `FormField`-adjacent behavior aside).
 
 ## Remaining work
 
@@ -182,18 +333,27 @@ What's left is content, review, and polish:
   are **drafted/synthesized**, not a literal source quote — needs review.
 - Empty-state sections awaiting real content: `startups.ts` (Ecosistema),
   `guiasArticulos.ts`/`reportes.ts` (Recursos), `eventos.ts`/`convocatoriasAceleradoras.ts`
-  (Convocatorias), `tiposMiembro.ts`/`beneficios.ts` (Membresía). Also still pending:
+  (Convocatorias), `tiposMiembro.ts` (Membresía — `beneficios.ts` is populated now, see the
+  Membresía entry above). Also still pending:
   `angels`/`accelerators` entries for `directorio.ts` (mentioned as arriving "later this
-  week" as of this session).
-- `src/data/cifras.ts` (Home stats: "40+", "$8M+", etc.) is still fabricated — no real
-  figures have been supplied yet.
+  week" as of this session). **Same `eventos.ts`/`convocatoriasAceleradoras.ts`/
+  `reportes.ts`/`guiasArticulos.ts` gap also keeps Home's `OportunidadesEventosRecursos`
+  section hidden** — it'll appear automatically once at least 2 of its 3 columns have real
+  vigente/current entries, no code change needed.
+- Home's `QuienesConforman` board cards need real headshots to add the photo the outline
+  calls for (and to justify dropping the bios) — deferred, user confirmed 2026-07-28.
+- ✅ ~~`src/data/cifras.ts` fabricated stats~~ — resolved: the file and its `Cifras` section
+  were deleted in the Home rebuild rather than backfilled.
 
 ### 2. Polish
 - ✅ `"typecheck": "tsc --noEmit"` script added to package.json.
 - ✅ Per-route `metadata` exports — `contacto`, `convocatorias`, `ecosistema`,
-  `membresia`, `recursos` all export `metadata`; Home (`src/app/page.tsx`) has none but
-  correctly inherits the root layout's default title/description, which is the right
-  copy for the homepage anyway.
+  `membresia`, `recursos` all export `metadata` via the shared `pageMetadata()` helper
+  (`src/lib/metadata.ts`); Home (`src/app/page.tsx`) has none but correctly inherits the
+  root layout's default title/description, which is the right copy for the homepage anyway.
+- ✅ SEO baseline (commit `7a5007c`): `src/app/robots.ts`, `src/app/sitemap.ts`, a generated
+  `src/app/opengraph-image.tsx` shared by every route, OG/Twitter tags through
+  `pageMetadata()`, and JSON-LD in `src/app/layout.tsx`.
 - ✅ README: expanded from the bare install/dev stub into structure, design tokens,
   swap points (tokens in globals.css, `LOGO_SRC` in Logo.tsx, `SITE.email`/`NAV_LINKS`
   in nav.ts), Contacto form proxy + `ENTRY_IDS`/topic-value caveat, testing pattern,
@@ -232,10 +392,11 @@ What's left is content, review, and polish:
   interaction — done by the user directly in-browser (confirmed working).
 
 ### 4. Ship
-- ✅ Committed per phase locally (latest: `a808de2`, "Expand README, fix Home/sitewide
-  CSS value drift against legacy source").
+- ✅ Committed per phase locally. `main` is at `245184c` (PR #5, `ui-003`); work since then
+  is on `ui-004` — SEO baseline, photo-band contrast, Hero/QueEs copy, the `QueObtienes`
+  section, the Home rebuild, and the test-coverage pass (`10ebd18`).
 - Push / PR **only on explicit user go-ahead** (remote: `git@github.com:bocapVC/website-nextjs.git`).
-  Not yet pushed.
+  `ui-004` not yet pushed.
 
 ## Conventions (from CLAUDE.md + established code)
 - Real design tokens only — never invent colors/radii/shadows. Available: `ink`, `ink-soft`,
@@ -248,6 +409,6 @@ What's left is content, review, and polish:
 - Containers: `max-w-[var(--maxw)] px-[var(--gutter)]` (Section handles this).
 - Fonts loaded via `next/font/google` (Inter for `--sans`, Lora for `--serif`), set up in
   `src/app/layout.tsx`. h1–h4 get serif bold from globals.css.
-- Server Components by default; `"use client"` only for real interactivity
-  (DirectorioFiltrable, ContactForm, Nav, CopyEmailButton).
+- Server Components by default; `"use client"` only for real interactivity — currently just
+  `EcosistemaTabs`, `ContactForm`, `Nav`, `CopyEmailButton`.
 - pnpm only. Next.js 16: check `node_modules/next/dist/docs/` before assuming APIs.

@@ -6,5 +6,5 @@ export interface Startup {
   stage: string;
 }
 
-/** No startup entries yet — StartupGrid shows a "Próximamente" state until this is populated. */
+/** No startup entries yet — EcosistemaTabs shows a "próximamente" state until this is populated. */
 export const STARTUPS: Startup[] = [];
