@@ -19,11 +19,34 @@ describe("GuideCard", () => {
     expect(screen.getByText(guide.meta)).toBeInTheDocument();
   });
 
-  it("wraps itself in a link to guide.url when present", () => {
+  it("renders the author when present", () => {
+    const withAuthor: Guide = { ...guide, author: "María Pérez" };
+    render(<GuideCard guide={withAuthor} />);
+    expect(screen.getByText("María Pérez")).toBeInTheDocument();
+  });
+
+  it("renders no author line when author is absent", () => {
+    const { container } = render(<GuideCard guide={guide} />);
+    // title + excerpt + meta only (the category is a Badge span) — no byline.
+    expect(container.querySelectorAll("p")).toHaveLength(3);
+  });
+
+  it("links only the Descargar button to guide.url, not the whole card", () => {
     const linked: Guide = { ...guide, url: "https://example.com/guia-ronda-semilla" };
-    render(<GuideCard guide={linked} />);
-    const link = screen.getByRole("link");
+    const { container } = render(<GuideCard guide={linked} />);
+
+    const link = screen.getByRole("link", { name: /descargar/i });
     expect(link).toHaveAttribute("href", linked.url);
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+
+    // The click target must be the button alone — the card must not be inside an anchor.
+    expect(screen.getByText(linked.title).closest("a")).toBeNull();
+    expect(container.firstElementChild?.tagName).not.toBe("A");
+  });
+
+  it("shows no Descargar cue when url is absent", () => {
+    render(<GuideCard guide={guide} />);
+    expect(screen.queryByText("Descargar")).not.toBeInTheDocument();
   });
 
   it("does not render a link when url is absent", () => {

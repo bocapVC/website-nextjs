@@ -157,11 +157,22 @@ still the authoritative tracker for what's pending.
   `ReportRow` — extracted specifically so the url-present/url-absent branches (link-wrap,
   "Descargar →" vs "Próximamente") get real fixture-driven test coverage, since
   `GUIAS_ARTICULOS`/`REPORTES` are currently empty and looping over them would be vacuous.
-  `src/data/guiasArticulos.ts` (`Guide { title, excerpt, category, meta, url? }`),
+  `src/data/guiasArticulos.ts` (`Guide { title, excerpt, category, meta, author?, url? }`),
   `src/data/reportes.ts` (`Report { title, description, year, url? }`).
-  - **No real content exists yet** — both arrays are empty by design (not fabricated);
-    `GuiasArticulos`/`Reportes` render the same honest "Próximamente" empty-state pattern as
-    `StartupGrid`. Populate when guides/articles/reports content is supplied.
+  - `GUIAS_ARTICULOS` holds one real article ("Bolivia como piloto, no como techo",
+    Álvaro Villarroel Valencia, 2026), a PDF committed at
+    `public/articulos/bolivia_como_piloto.pdf` and linked via `url`. PDFs live in `public/`
+    rather than Vercel Blob: one static file that never changes after publication doesn't
+    justify the integration + token, and because `url` is just a string, moving to Blob later
+    is a one-line data edit. Note Next.js serves `public/` with `Cache-Control: public,
+    max-age=0`.
+  - `REPORTES` is still empty by design (not fabricated); `Reportes` renders the same honest
+    "Próximamente" empty-state pattern as `StartupGrid`. Populate when reports are supplied.
+  - `GuideCard` is deliberately **not** a card-wide link (unlike `EventoCard`): only the
+    "Descargar" `ExternalLink` is clickable, and the card has no hover lift (no `interactive`).
+    It's a real anchor rather than an `onClick` so the component stays a server component and
+    keeps middle-click/cmd-click/copy-link for free. A test asserts the button is the sole
+    anchor and that the title is not inside one.
   - Verified: `pnpm test` (21/21 incl. 4 new files/8 new tests), `pnpm typecheck`,
     `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP smoke-check confirmed both
     "Próximamente" empty states render on `/recursos`.
@@ -332,15 +343,15 @@ What's left is content, review, and polish:
 ### 1. Content still needed from the institution
 - `QuienPuedeParticipar`'s eligibility bullets (`src/components/sections/membresia/QuienPuedeParticipar.tsx`)
   are **drafted/synthesized**, not a literal source quote — needs review.
-- Empty-state sections awaiting real content: `startups.ts` (Ecosistema),
-  `guiasArticulos.ts`/`reportes.ts` (Recursos), `eventos.ts`/`oportunidadesAceleradoras.ts`
-  (Oportunidades), `tiposMiembro.ts` (Membresía — `beneficios.ts` is populated now, see the
-  Membresía entry above). Also still pending:
+- Empty-state sections awaiting real content: `startups.ts` (Ecosistema), `reportes.ts`
+  (Recursos — `guiasArticulos.ts` has one real article as of 2026-07-29),
+  `eventos.ts`/`oportunidadesAceleradoras.ts` (Oportunidades), `tiposMiembro.ts` (Membresía —
+  `beneficios.ts` is populated now, see the Membresía entry above). Also still pending:
   `angels`/`accelerators` entries for `directorio.ts` (mentioned as arriving "later this
-  week" as of this session). **Same `eventos.ts`/`oportunidadesAceleradoras.ts`/
-  `reportes.ts`/`guiasArticulos.ts` gap also keeps Home's `OportunidadesEventosRecursos`
-  section hidden** — it'll appear automatically once at least 2 of its 3 columns have real
-  vigente/current entries, no code change needed.
+  week" as of this session). **The `eventos.ts`/`oportunidadesAceleradoras.ts` gap still keeps
+  Home's `OportunidadesEventosRecursos` section hidden** — its `recursos` column now qualifies
+  (`guiasArticulos.ts` is non-empty), but the 2-of-3 rule needs one of `eventos.ts` /
+  `oportunidadesAceleradoras.ts` to gain a `vigente` entry. No code change needed.
 - Home's `QuienesConforman` board cards need real headshots to add the photo the outline
   calls for (and to justify dropping the bios) — deferred, user confirmed 2026-07-28.
 - ✅ ~~`src/data/cifras.ts` fabricated stats~~ — resolved: the file and its `Cifras` section
