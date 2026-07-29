@@ -4,11 +4,11 @@ import {
   OportunidadesEventosRecursos,
   buildActivityColumns,
 } from "../OportunidadesEventosRecursos";
-import type { Convocatoria } from "@/data/convocatoriasAceleradoras";
+import type { Oportunidad } from "@/data/oportunidadesAceleradoras";
 import type { Evento } from "@/data/eventos";
 import type { Report } from "@/data/reportes";
 
-const vigenteConvocatoria: Convocatoria = {
+const vigenteOportunidad: Oportunidad = {
   program: "Demo",
   organization: "Demo Org",
   description: "Demo",
@@ -28,7 +28,7 @@ const report: Report = { title: "Demo", description: "Demo", year: 2026 };
 
 describe("buildActivityColumns", () => {
   it("marks a column with content only when it has a vigente/real entry", () => {
-    const columns = buildActivityColumns([vigenteConvocatoria], [], [], []);
+    const columns = buildActivityColumns([vigenteOportunidad], [], [], []);
     expect(columns.find((c) => c.key === "oportunidades")?.hasContent).toBe(true);
     expect(columns.find((c) => c.key === "eventos")?.hasContent).toBe(false);
     expect(columns.find((c) => c.key === "recursos")?.hasContent).toBe(false);
@@ -36,7 +36,7 @@ describe("buildActivityColumns", () => {
 
   it("ignores non-vigente/cerrada entries", () => {
     const columns = buildActivityColumns(
-      [{ ...vigenteConvocatoria, status: "cerrada" }],
+      [{ ...vigenteOportunidad, status: "cerrada" }],
       [{ ...vigenteEvento, status: "pasado" }],
       [],
       [],

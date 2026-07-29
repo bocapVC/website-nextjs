@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { CONVOCATORIAS_ACELERADORAS } from "@/data/convocatoriasAceleradoras";
+import { OPORTUNIDADES_ACELERADORAS } from "@/data/oportunidadesAceleradoras";
 import { EVENTOS } from "@/data/eventos";
 import { REPORTES } from "@/data/reportes";
 import { GUIAS_ARTICULOS } from "@/data/guiasArticulos";
-import type { Convocatoria } from "@/data/convocatoriasAceleradoras";
+import type { Oportunidad } from "@/data/oportunidadesAceleradoras";
 import type { Evento } from "@/data/eventos";
 import type { Report } from "@/data/reportes";
 import type { Guide } from "@/data/guiasArticulos";
@@ -21,7 +21,7 @@ export interface ActivityColumn {
 
 /** Pure column builder, extracted so the visibility threshold is fixture-testable. */
 export function buildActivityColumns(
-  convocatorias: Convocatoria[],
+  oportunidades: Oportunidad[],
   eventos: Evento[],
   reportes: Report[],
   guias: Guide[],
@@ -30,17 +30,17 @@ export function buildActivityColumns(
     {
       key: "oportunidades",
       title: "Oportunidades abiertas",
-      description: "Convocatorias, aceleradoras y programas para startups e inversionistas.",
+      description: "Oportunidades, aceleradoras y programas para startups e inversionistas.",
       linkLabel: "Ver oportunidades",
-      href: "/convocatorias",
-      hasContent: convocatorias.some((item) => item.status === "vigente"),
+      href: "/oportunidades",
+      hasContent: oportunidades.some((item) => item.status === "vigente"),
     },
     {
       key: "eventos",
       title: "Próximos eventos",
       description: "Encuentros de BOCAP y eventos relevantes dentro y fuera de Bolivia.",
       linkLabel: "Ver eventos",
-      href: "/convocatorias",
+      href: "/oportunidades",
       hasContent: eventos.some((item) => item.status === "vigente"),
     },
     {
@@ -62,7 +62,7 @@ export function buildActivityColumns(
  */
 export function OportunidadesEventosRecursos() {
   const visibleColumns = buildActivityColumns(
-    CONVOCATORIAS_ACELERADORAS,
+    OPORTUNIDADES_ACELERADORAS,
     EVENTOS,
     REPORTES,
     GUIAS_ARTICULOS,

@@ -49,7 +49,7 @@ still the authoritative tracker for what's pending.
     CTAs, mirroring `Hero`'s pattern. `Ecosistema` reuses `/ecosistema.avif` as a photo band.
   - **`OportunidadesEventosRecursos`** is new and conditionally rendered: a pure
     `buildActivityColumns()` helper flags each of the three columns (`oportunidades` from
-    `convocatoriasAceleradoras.ts` status `vigente`, `eventos` from `eventos.ts` status
+    `oportunidadesAceleradoras.ts` status `vigente`, `eventos` from `eventos.ts` status
     `vigente`, `recursos` from `reportes.ts`/`guiasArticulos.ts` non-empty) as having real
     content or not; the whole section returns `null` unless at least 2 of 3 columns qualify
     (per the outline's dev note: "mostrar solo contenido real y vigente... ocultar la
@@ -166,17 +166,18 @@ still the authoritative tracker for what's pending.
     `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP smoke-check confirmed both
     "Próximamente" empty states render on `/recursos`.
 
-- ✅ **Convocatorias** (`/convocatorias`): `Eventos` (server) + `AceleradorasAplicaciones`
-  (server, mist band). Built test-first (TDD skill) with leaf presentational components —
-  `EventoCard`, `ConvocatoriaRow` — for the same reason as Recursos: `EVENTOS`/
-  `CONVOCATORIAS_ACELERADORAS` are currently empty, so fixture-driven tests on the leaf
+- ✅ **Oportunidades** (`/oportunidades`, renamed from Convocatorias): `Eventos` (server) +
+  `AceleradorasAplicaciones` (server, mist band). Built test-first (TDD skill) with leaf
+  presentational components — `EventoCard`, `OportunidadRow` (renamed from
+  `ConvocatoriaRow`) — for the same reason as Recursos: `EVENTOS`/
+  `OPORTUNIDADES_ACELERADORAS` are currently empty, so fixture-driven tests on the leaf
   components are what actually exercises the conditional logic.
   `src/data/eventos.ts` (`Evento { title, description, date, location, status:
-  "vigente"|"pasado", url? }`), `src/data/convocatoriasAceleradoras.ts` (`Convocatoria
+  "vigente"|"pasado", url? }`), `src/data/oportunidadesAceleradoras.ts` (`Oportunidad
   { program, organization, description, deadline, status: "vigente"|"cerrada", url? }`).
   - **No real content exists yet** — both arrays are empty by design; both sections render
     the established "Próximamente" empty-state pattern.
-  - **CTA logic for `ConvocatoriaRow`** (confirmed with user, not fully spec'd in the
+  - **CTA logic for `OportunidadRow`** (confirmed with user, not fully spec'd in the
     original plan item below): `vigente` + `url` → "Postular" (external `Button`);
     `vigente` + no `url` → ghost "Más información" → `/contacto`; `cerrada` → no CTA at all
     (badge only) — a case the original plan text didn't cover.
@@ -185,7 +186,7 @@ still the authoritative tracker for what's pending.
     its use on the card itself).
   - Verified: `pnpm test` (31/31 incl. 4 new files/10 new tests), `pnpm typecheck`,
     `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP smoke-check confirmed both
-    "Próximamente" empty states render on `/convocatorias`.
+    "Próximamente" empty states render on `/oportunidades`.
 
 - ✅ **Membresía** (`/membresia`): `QuienPuedeParticipar` (ink hero with photo band) +
   `Beneficios` (server, mist band, populated) + `Ecosistema` (shared, ink band — see below) +
@@ -325,18 +326,18 @@ primitives (`Section` and `FormField`-adjacent behavior aside).
 
 ## Remaining work
 
-All 6 pages are now built (Home, Contacto, Ecosistema, Recursos, Convocatorias, Membresía).
+All 6 pages are now built (Home, Contacto, Ecosistema, Recursos, Oportunidades, Membresía).
 What's left is content, review, and polish:
 
 ### 1. Content still needed from the institution
 - `QuienPuedeParticipar`'s eligibility bullets (`src/components/sections/membresia/QuienPuedeParticipar.tsx`)
   are **drafted/synthesized**, not a literal source quote — needs review.
 - Empty-state sections awaiting real content: `startups.ts` (Ecosistema),
-  `guiasArticulos.ts`/`reportes.ts` (Recursos), `eventos.ts`/`convocatoriasAceleradoras.ts`
-  (Convocatorias), `tiposMiembro.ts` (Membresía — `beneficios.ts` is populated now, see the
+  `guiasArticulos.ts`/`reportes.ts` (Recursos), `eventos.ts`/`oportunidadesAceleradoras.ts`
+  (Oportunidades), `tiposMiembro.ts` (Membresía — `beneficios.ts` is populated now, see the
   Membresía entry above). Also still pending:
   `angels`/`accelerators` entries for `directorio.ts` (mentioned as arriving "later this
-  week" as of this session). **Same `eventos.ts`/`convocatoriasAceleradoras.ts`/
+  week" as of this session). **Same `eventos.ts`/`oportunidadesAceleradoras.ts`/
   `reportes.ts`/`guiasArticulos.ts` gap also keeps Home's `OportunidadesEventosRecursos`
   section hidden** — it'll appear automatically once at least 2 of its 3 columns have real
   vigente/current entries, no code change needed.
@@ -347,7 +348,7 @@ What's left is content, review, and polish:
 
 ### 2. Polish
 - ✅ `"typecheck": "tsc --noEmit"` script added to package.json.
-- ✅ Per-route `metadata` exports — `contacto`, `convocatorias`, `ecosistema`,
+- ✅ Per-route `metadata` exports — `contacto`, `oportunidades`, `ecosistema`,
   `membresia`, `recursos` all export `metadata` via the shared `pageMetadata()` helper
   (`src/lib/metadata.ts`); Home (`src/app/page.tsx`) has none but correctly inherits the
   root layout's default title/description, which is the right copy for the homepage anyway.

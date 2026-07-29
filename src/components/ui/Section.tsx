@@ -79,7 +79,7 @@ export function Section({
               optimizer would decode and re-encode them into a second lossy
               AVIF generation. That re-encode was visibly grainy under the
               lightened overlay, and it isn't even a win on bytes —
-              convocatoria.avif came back 22% *larger* than its source, since
+              oportunidades.avif came back 22% *larger* than its source, since
               encoding the added noise costs bits. Serving them as authored
               skips that generation entirely. No `sizes`: without an optimizer
               there's no generated srcset, and Next drops the attribute anyway.

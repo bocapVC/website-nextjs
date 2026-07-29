@@ -14,7 +14,7 @@ export function ContactoInfo() {
 
       <p className="max-w-md text-base leading-relaxed text-ink-soft">
         ¿Quieres formar parte del ecosistema, proponer una alianza o conocer más sobre
-        nuestros reportes y convocatorias? Escríbenos y te pondremos en contacto con el
+        nuestros reportes y oportunidades? Escríbenos y te pondremos en contacto con el
         equipo indicado. Respondemos habitualmente en pocos días hábiles.
       </p>
 

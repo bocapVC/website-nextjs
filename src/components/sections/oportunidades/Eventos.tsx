@@ -8,7 +8,7 @@ export function Eventos() {
   return (
     <Section>
       <SectionHeading
-        eyebrow="Convocatorias"
+        eyebrow="Oportunidades"
         title="Eventos"
         description="Encuentros, demo days y actividades del ecosistema."
       />
