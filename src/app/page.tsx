@@ -1,7 +1,6 @@
 import { Hero } from "@/components/sections/home/Hero";
 import { QueEs } from "@/components/sections/home/QueEs";
-import { QueObtienes } from "@/components/sections/home/QueObtienes";
-import { Ecosistema } from "@/components/sections/home/Ecosistema";
+import { Ecosistema } from "@/components/sections/shared/Ecosistema";
 import { OportunidadesEventosRecursos } from "@/components/sections/home/OportunidadesEventosRecursos";
 import { QuienesConforman } from "@/components/sections/home/QuienesConforman";
 import { Cierre } from "@/components/sections/home/Cierre";
@@ -11,7 +10,6 @@ export default function Home() {
     <>
       <Hero />
       <QueEs />
-      <QueObtienes />
       <Ecosistema />
       <OportunidadesEventosRecursos />
       <QuienesConforman />

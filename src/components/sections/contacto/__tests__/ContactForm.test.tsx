@@ -46,6 +46,16 @@ describe("ContactForm", () => {
     expect(screen.queryByLabelText(/^Tema/)).not.toBeInTheDocument();
   });
 
+  it("renders no message hint by default", () => {
+    render(<ContactForm />);
+    expect(screen.queryByText(/Fondos, Ángeles/)).not.toBeInTheDocument();
+  });
+
+  it("renders the messageHint under the Mensaje field when given", () => {
+    render(<ContactForm messageHint="Cuéntanos sobre tu organización." />);
+    expect(screen.getByText("Cuéntanos sobre tu organización.")).toBeInTheDocument();
+  });
+
   it("submits the fixed topic without the user choosing one", async () => {
     const fetchMock = mockFetchOk();
     vi.stubGlobal("fetch", fetchMock);

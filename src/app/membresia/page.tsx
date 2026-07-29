@@ -1,7 +1,6 @@
 import { QuienPuedeParticipar } from "@/components/sections/membresia/QuienPuedeParticipar";
-import { TiposDeMiembro } from "@/components/sections/membresia/TiposDeMiembro";
 import { Beneficios } from "@/components/sections/membresia/Beneficios";
-import { MiembrosActuales } from "@/components/sections/membresia/MiembrosActuales";
+import { Ecosistema } from "@/components/sections/shared/Ecosistema";
 import { UnirseForm } from "@/components/sections/membresia/UnirseForm";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -15,9 +14,8 @@ export default function MembresiaPage() {
   return (
     <>
       <QuienPuedeParticipar />
-      <TiposDeMiembro />
       <Beneficios />
-      <MiembrosActuales />
+      <Ecosistema showOrgCta={false} />
       <UnirseForm />
     </>
   );

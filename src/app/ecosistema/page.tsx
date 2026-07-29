@@ -1,5 +1,6 @@
 import { PageHeader } from "@/components/ui/PageHeader";
 import { EcosistemaTabs } from "@/components/sections/ecosistema/EcosistemaTabs";
+import { UneteRed } from "@/components/sections/ecosistema/UneteRed";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -18,6 +19,7 @@ export default function EcosistemaPage() {
         title="Fondos, ángeles, aceleradoras y startups"
         description="Directorio de organizaciones y emprendimientos que forman parte de la red BOCAP."
       />
+      <UneteRed />
       <EcosistemaTabs />
     </>
   );
