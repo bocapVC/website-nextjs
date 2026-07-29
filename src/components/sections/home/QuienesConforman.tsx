@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ArrowUpRight } from "@/components/icons/ArrowUpRight";
+import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -22,8 +22,8 @@ function initials(name: string): string {
  * Mist-toned band covering both constituencies of BOCAP: the members/allies
  * logo wall and the board. Kept as one Section (not two) since the outline
  * frames "¿Quiénes conforman BOCAP?" as a single section with two parts.
- * Board cards still show initials + bio (no photo field, no long-bio trim)
- * pending real headshots from the institution.
+ * Board cards fall back to an initials avatar when a member has no `photo`
+ * yet (board composition can change before headshots catch up).
  */
 export function QuienesConforman() {
   return (
@@ -65,30 +65,47 @@ export function QuienesConforman() {
 
       <div className="mt-16">
         <p className="font-serif text-xl font-bold text-ink">Junta directiva</p>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {JUNTA_DIRECTIVA.map((member) => (
-            <Card key={member.name} className="flex items-start gap-4 text-left">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-bold text-white">
-                {initials(member.name)}
-              </span>
-              <div>
-                <p className="font-semibold text-ink">{member.name}</p>
-                <p className="text-sm text-ink-soft">{member.role}</p>
+            <div
+              key={member.name}
+              className="flex h-full flex-col overflow-hidden rounded-brand-sm border border-line bg-surface-solid shadow-brand"
+            >
+              <div className="relative aspect-[4/5] w-full shrink-0 bg-paper-strong">
+                {member.photo ? (
+                  <Image
+                    src={member.photo}
+                    alt={member.name}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover object-top"
+                  />
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center bg-ink text-2xl font-bold text-white">
+                    {initials(member.name)}
+                  </span>
+                )}
+              </div>
+              <div className="flex grow flex-col p-6 text-left">
+                <p className="font-serif text-lg font-bold text-ink">{member.name}</p>
+                <Badge tone="gold" className="mt-2 self-start">
+                  {member.role}
+                </Badge>
                 {member.organization ? (
-                  <p className="mt-1 text-xs text-ink-soft/80">{member.organization}</p>
+                  <p className="mt-2 text-xs text-ink-soft/80">{member.organization}</p>
                 ) : null}
-                {member.bio ? <p className="mt-2 text-sm text-ink-soft">{member.bio}</p> : null}
+                {member.bio ? <p className="mt-3 text-sm text-ink-soft">{member.bio}</p> : null}
                 {member.linkedin ? (
                   <ExternalLink
                     href={member.linkedin}
-                    className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-teal hover:underline hover:text-red"
+                    className="mt-auto inline-flex w-fit items-center gap-1 pt-4 text-xs font-semibold text-teal hover:underline hover:text-red"
                   >
                     LinkedIn
                     <ArrowUpRight className="h-3 w-3" />
                   </ExternalLink>
                 ) : null}
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </div>
