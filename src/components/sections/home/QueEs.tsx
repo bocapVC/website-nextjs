@@ -17,8 +17,8 @@ export function QueEs() {
             el acceso a oportunidades.
           </p>
           <p>
-            No administramos capital. Construimos la red, la información y los
-            espacios para invertir mejor.
+            No administramos el dinero de nadie. Construimos la red, la
+            información y los espacios para invertir mejor.
           </p>
         </div>
       </div>

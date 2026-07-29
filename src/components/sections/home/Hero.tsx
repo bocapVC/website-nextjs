@@ -30,7 +30,7 @@ export function Hero() {
           variant="ghost"
           className="border-white/30 text-white hover:border-white hover:bg-white/10"
         >
-          Explora el ecosistema
+          Explorar el ecosistema
         </Button>
       </div>
     </Section>

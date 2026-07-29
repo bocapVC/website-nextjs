@@ -7,7 +7,7 @@ import { QUE_OBTIENES } from "@/data/queObtienes";
 /** Benefit-card grid: one card per entry in QUE_OBTIENES, closing with a membership CTA. */
 export function QueObtienes() {
   return (
-    <Section>
+    <Section tone="mist">
       <SectionHeading eyebrow="Membresía" title="Qué obtienes como miembro" />
       <div className="mt-10 grid gap-5 sm:grid-cols-3">
         {QUE_OBTIENES.map((item) => (
