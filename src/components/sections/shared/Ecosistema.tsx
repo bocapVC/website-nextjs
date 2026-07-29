@@ -2,16 +2,8 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
-interface EcosistemaProps {
-  /**
-   * Show the "Agregar mi organización" → /contacto CTA. Defaults to true (home).
-   * Set false where the page is already /membresia — that ask is redundant there.
-   */
-  showOrgCta?: boolean;
-}
-
-/** Ink-toned content band teasing the ecosystem map, with CTAs to explore it or join it. */
-export function Ecosistema({ showOrgCta = true }: EcosistemaProps) {
+/** Ink-toned content band teasing the ecosystem map, with a CTA to explore it. */
+export function Ecosistema() {
   return (
     <Section tone="ink">
       <SectionHeading
@@ -24,15 +16,6 @@ export function Ecosistema({ showOrgCta = true }: EcosistemaProps) {
         <Button href="/ecosistema" variant="primary">
           Explorar el mapa
         </Button>
-        {showOrgCta ? (
-          <Button
-            href="/contacto"
-            variant="ghost"
-            className="border-white/30 text-white hover:border-white hover:bg-white/10"
-          >
-            Agregar mi organización
-          </Button>
-        ) : null}
       </div>
     </Section>
   );

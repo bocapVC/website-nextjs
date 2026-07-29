@@ -5,6 +5,11 @@ import { JUNTA_DIRECTIVA } from "@/data/juntaDirectiva";
 import { MIEMBROS_ALIADOS } from "@/data/miembrosAliados";
 
 describe("QuienesConforman", () => {
+  it("labels the partner logo wall as founding members", () => {
+    render(<QuienesConforman />);
+    expect(screen.getByText("Miembros fundadores")).toBeInTheDocument();
+  });
+
   it("renders a logo tile for every partner in MIEMBROS_ALIADOS", () => {
     render(<QuienesConforman />);
     for (const partner of MIEMBROS_ALIADOS) {
@@ -19,12 +24,5 @@ describe("QuienesConforman", () => {
       expect(screen.getByText(member.name)).toBeInTheDocument();
       expect(screen.getByText(member.role)).toBeInTheDocument();
     }
-  });
-
-  it("links the membership CTA to /membresia", () => {
-    render(<QuienesConforman />);
-    expect(
-      screen.getByRole("link", { name: "Conocer cómo participar" }),
-    ).toHaveAttribute("href", "/membresia");
   });
 });

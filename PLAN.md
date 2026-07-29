@@ -58,8 +58,10 @@ still the authoritative tracker for what's pending.
     HTTP smoke-check.
   - **`QuienesConforman`** merges the old separate `MiembrosAliados` + `JuntaDirectiva`
     sections into one `Section` (the outline frames "¿Quiénes conforman BOCAP?" as a single
-    section with two parts, not two page bands), with a shared intro + a "Conocer cómo
-    participar" CTA (→ `/membresia`) after the Miembros logo wall. The logo wall renders
+    section with two parts, not two page bands), with a shared intro before the Miembros logo
+    wall. **Its "Conocer cómo participar" CTA (→ `/membresia`) was later removed** —
+    redundant with `Cierre`'s membership CTA further down the same page, which already
+    covers the membership ask. The logo wall renders
     real assets: `src/data/miembrosAliados.ts` gained a `logo` field per partner, backed by
     `public/logos/` (`babasu-ventures.png`, `cibersons.svg`, `escalatec.svg`,
     `ithink-vc.svg`) — supplied, not placeholders. **Board cards still show
@@ -70,11 +72,20 @@ still the authoritative tracker for what's pending.
     ecosistema"); `QueEs`'s second paragraph now reads "No administramos el dinero de
     nadie" (was "No administramos capital") to match the outline verbatim. Misión/Visión
     cards on `QueEs` were kept (user confirmed) even though the outline doesn't mention them.
-  - **"Agregar mi organización"** CTA (appears in both `Ecosistema` and `Cierre`) links to
-    `/contacto` — user confirmed, since no dedicated org-intake form/page exists yet.
+  - **CTA consolidation (later session)**: all home membership CTAs now point straight at
+    the `/membresia` form instead of the top of the page — `UnirseForm` gained `id="unirse"`
+    and every CTA links to `/membresia#unirse`. `Ecosistema`'s "Agregar mi organización" CTA
+    (the `showOrgCta` prop) was dropped as redundant with `Cierre`'s CTA on the same page —
+    `Ecosistema` now renders only "Explorar el mapa". `Cierre` itself went from two CTAs
+    ("Quiero ser miembro" + "Agregar mi organización", both doing the same thing) down to
+    one, rephrased "Unirse".
   - **Fixed a pre-existing broken test**: `Hero.test.tsx` asserted a `/contacto` link that
     `Hero` has never rendered (only `/membresia` + `/ecosistema`) — was failing on `main`
-    before this session; corrected the assertion to `/membresia`.
+    before this session; corrected the assertion to `/membresia#unirse`.
+  - **`QuienesConforman`'s "Miembros" subhead renamed to "Miembros fundadores"** (later
+    session, user confirmed): all 4 entries in `MIEMBROS_ALIADOS` (Babasú Ventures,
+    Cibersons, Escalatec, iThink VC) are specifically the founding members, not a general
+    members roster, so the label now says that explicitly.
   - Verified: `pnpm test` (56/56), `pnpm typecheck`, `pnpm lint`, `pnpm build` all clean;
     `pnpm dev` HTTP smoke-check confirmed all 6 rendered sections (Hero through Cierre) plus
     the correctly-hidden 7th (`OportunidadesEventosRecursos`).
@@ -237,6 +248,10 @@ still the authoritative tracker for what's pending.
     (`<Ecosistema showOrgCta={false} />`) — asking a visitor already on the membership page
     to "add their organization" via a separate contact-form detour is redundant with the
     `UnirseForm` right below it. Home's usage is unchanged (prop omitted, defaults to shown).
+    **Later removed entirely** (later session): with Home's `Cierre` already carrying the
+    same "Agregar mi organización" ask, having it on `Ecosistema` too (shown on Home) was
+    redundant there as well — dropped the button and the `showOrgCta` prop, `Ecosistema` now
+    always renders just "Explorar el mapa" on both pages.
   - Re-verified after the `MiembrosActuales` → shared-`Ecosistema` swap: `pnpm test`
     (127/127), `pnpm typecheck`, `pnpm lint`, `pnpm build` all clean.
   - Re-verified after unrendering `TiposDeMiembro`: `pnpm test` (127/127), `pnpm typecheck`,

@@ -3,18 +3,11 @@ import { render, screen } from "@testing-library/react";
 import { Cierre } from "../Cierre";
 
 describe("Cierre", () => {
-  it("links the primary CTA to the membership page", () => {
+  it("links the CTA to the membership form", () => {
     render(<Cierre />);
-    expect(screen.getByRole("link", { name: "Quiero ser miembro" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Unirse" })).toHaveAttribute(
       "href",
-      "/membresia",
+      "/membresia#unirse",
     );
-  });
-
-  it("links the secondary CTA to the contact page", () => {
-    render(<Cierre />);
-    expect(
-      screen.getByRole("link", { name: "Agregar mi organización" }),
-    ).toHaveAttribute("href", "/contacto");
   });
 });

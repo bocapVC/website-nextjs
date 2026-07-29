@@ -15,7 +15,7 @@ export default function MembresiaPage() {
     <>
       <QuienPuedeParticipar />
       <Beneficios />
-      <Ecosistema showOrgCta={false} />
+      <Ecosistema />
       <UnirseForm />
     </>
   );

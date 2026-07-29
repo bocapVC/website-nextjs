@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { ArrowUpRight } from "@/components/icons/ArrowUpRight";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -35,7 +34,7 @@ export function QuienesConforman() {
       />
 
       <div className="mt-10">
-        <p className="font-serif text-xl font-bold text-ink">Miembros</p>
+        <p className="font-serif text-xl font-bold text-ink">Miembros fundadores</p>
         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {MIEMBROS_ALIADOS.map((partner) => (
             <div
@@ -55,11 +54,6 @@ export function QuienesConforman() {
               </div>
             </div>
           ))}
-        </div>
-        <div className="mt-8 flex justify-center">
-          <Button href="/membresia" variant="primary">
-            Conocer cómo participar
-          </Button>
         </div>
       </div>
 

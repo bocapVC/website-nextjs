@@ -22,7 +22,7 @@ export function Hero() {
         o quieren empezar a invertir, en startups bolivianas.
       </p>
       <div className="flex flex-wrap items-center justify-center gap-4">
-        <Button href="/membresia" variant="primary">
+        <Button href="/membresia#unirse" variant="primary">
           Quiero ser miembro
         </Button>
         <Button
