@@ -10,6 +10,10 @@ export const metadata = pageMetadata({
   path: "/oportunidades",
 });
 
+// Event vigente/pasado badges are derived from today's date, so this page can't be
+// prerendered once and left alone — regenerate it hourly to stay in sync.
+export const revalidate = 3600;
+
 export default function OportunidadesPage() {
   return (
     <>

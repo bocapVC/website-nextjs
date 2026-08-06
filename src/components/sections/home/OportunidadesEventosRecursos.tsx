@@ -7,6 +7,7 @@ import { REPORTES } from "@/data/reportes";
 import { GUIAS_ARTICULOS } from "@/data/guiasArticulos";
 import type { Oportunidad } from "@/data/oportunidadesAceleradoras";
 import type { Evento } from "@/data/eventos";
+import { hasVigenteEvento } from "@/lib/eventos";
 import type { Report } from "@/data/reportes";
 import type { Guide } from "@/data/guiasArticulos";
 
@@ -41,7 +42,7 @@ export function buildActivityColumns(
       description: "Encuentros de BOCAP y eventos relevantes dentro y fuera de Bolivia.",
       linkLabel: "Ver eventos",
       href: "/oportunidades",
-      hasContent: eventos.some((item) => item.status === "vigente"),
+      hasContent: hasVigenteEvento(eventos),
     },
     {
       key: "recursos",
