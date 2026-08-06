@@ -23,6 +23,15 @@ BOCAP's marketing site (Bocap.vc — capital emprendedor / VC network in Bolivia
 - **Design tokens** (`src/app/globals.css`): BOCAP brand values (`--ink`, `--red`, `--teal`, `--gold`, `--paper`, `--radius`, `--shadow`, `--serif`, `--sans`, etc.) are declared as CSS custom properties under `:root`, then mapped into Tailwind's `@theme inline` block so they're usable as utilities (`bg-ink`, `text-red`, `font-serif`, `rounded-brand`, `shadow-brand`, ...). These are ported 1:1 from the legacy site — don't invent new brand colors/radii/shadows; if a value seems to be missing, treat that as a signal to check the legacy source rather than picking something new.
 - Typography (`--serif` for headings, `--sans` for body/UI) is loaded via `next/font/google` (Inter for `--sans`, Lora for `--serif`), set up in `src/app/layout.tsx` and referenced by the `--sans`/`--serif` custom properties in `src/app/globals.css`. This is a deliberate deviation from the legacy site (which used Apple-only system fonts and shipped no font files): those fonts don't resolve consistently across Windows/Android/Linux, so the fonts are self-hosted by Next.js instead for consistent, readable rendering on every platform. Don't revert to raw `@import` webfont loading or bare system-font stacks.
 
+- **Derived state over stored state.** Anything that depends on today's date is computed at
+  render time, never stored in `src/data/` — `eventos.ts` stores ISO `startDate`/`endDate`
+  and `src/lib/eventos.ts` derives the Vigente/Pasado badge, the display date, and the sort
+  order. Compare ISO day strings in `America/La_Paz`, not `Date` objects (`new Date("2026-09-18")`
+  is UTC midnight, i.e. still the 17th in Bolivia). Any page rendering such state **must**
+  `export const revalidate` — these pages are static, so otherwise the value freezes at build
+  time. See the "Dates and derived state" section of `README.md`.
+- **Cards are not card-wide links** — put a real `<a>`/`Button` inside instead.
+
 ## Working with this Next.js version
 
 Next.js 16 is very new. Before relying on prior Next.js knowledge for App Router APIs or conventions, check the docs bundled in `node_modules/next/dist/docs/` (mirrors nextjs.org/docs) — APIs, conventions, or file structure may differ from what you'd otherwise assume.

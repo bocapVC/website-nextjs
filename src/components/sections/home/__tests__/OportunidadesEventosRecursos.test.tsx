@@ -35,14 +35,14 @@ describe("buildActivityColumns", () => {
     expect(columns.find((c) => c.key === "recursos")?.hasContent).toBe(false);
   });
 
-  it("ignores non-vigente/cerrada entries", () => {
-    const columns = buildActivityColumns(
-      [{ ...vigenteOportunidad, status: "cerrada" }],
-      [{ ...vigenteEvento, startDate: "2000-01-01" }],
-      [],
-      [],
-    );
+  it("ignores cerrada oportunidades", () => {
+    const columns = buildActivityColumns([{ ...vigenteOportunidad, status: "cerrada" }], [], [], []);
     expect(columns.every((c) => !c.hasContent)).toBe(true);
+  });
+
+  it("counts a past event as content, unlike a cerrada oportunidad", () => {
+    const columns = buildActivityColumns([], [{ ...vigenteEvento, startDate: "2000-01-01" }], [], []);
+    expect(columns.find((c) => c.key === "eventos")?.hasContent).toBe(true);
   });
 
   it("counts recursos as real content from reportes alone", () => {

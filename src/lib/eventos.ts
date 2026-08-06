@@ -25,6 +25,11 @@ export function eventoStatus(evento: Evento, today: string = todayInBolivia()): 
   return (evento.endDate ?? evento.startDate) < today ? "pasado" : "vigente";
 }
 
+/**
+ * Currently unused: Home's eventos column counts *any* event while the calendar is
+ * thin (see `OportunidadesEventosRecursos`). Kept as the stricter rule to switch
+ * back to once there's a steady stream of upcoming events.
+ */
 export function hasVigenteEvento(eventos: Evento[], today: string = todayInBolivia()): boolean {
   return eventos.some((evento) => eventoStatus(evento, today) === "vigente");
 }

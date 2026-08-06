@@ -29,16 +29,25 @@ describe("EventoCard", () => {
     expect(screen.queryByText("Vigente")).not.toBeInTheDocument();
   });
 
-  it("wraps itself in a link to evento.url when present", () => {
+  it('renders a "Más información" button pointing at evento.url, opening in a new tab', () => {
     const linked: Evento = { ...vigente, url: "https://example.com/demo-day" };
     render(<EventoCard evento={linked} />);
-    const link = screen.getByRole("link");
+    const link = screen.getByRole("link", { name: "Más información" });
     expect(link).toHaveAttribute("href", linked.url);
+    expect(link).toHaveAttribute("target", "_blank");
   });
 
-  it("does not render a link when url is absent", () => {
+  it("renders no button, and no link at all, when url is absent", () => {
     render(<EventoCard evento={vigente} />);
+    expect(screen.queryByText("Más información")).not.toBeInTheDocument();
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
+  });
+
+  it("does not make the card itself a link when url is present", () => {
+    const linked: Evento = { ...vigente, url: "https://example.com/demo-day" };
+    render(<EventoCard evento={linked} />);
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+    expect(screen.getByRole("link")).toHaveTextContent("Más información");
   });
 
   it("renders the flyer with its alt text when an image is set", () => {
