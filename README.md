@@ -40,15 +40,17 @@ pnpm test       # Vitest + React Testing Library (jsdom)
   `Badge`, `Section`, `Logo`, `FormField`, ...).
 - `src/components/layout/` — `Header`, `Footer`, `Nav`, `CopyEmailButton`.
 - `src/data/` — content backing the data-driven sections (one file per
-  section, e.g. `startups.ts`, `eventos.ts`, `cifras.ts`). Several of these
-  are currently empty arrays or placeholder figures because the real content
-  hasn't been supplied yet — see `PLAN.md` for the up-to-date list of what's
-  still pending from the institution. Sections render an honest "Próximamente"
-  empty state rather than fabricated entries; never fill these with invented
-  content.
+  section, e.g. `startups.ts`, `eventos.ts`, `reportes.ts`). Several of these
+  are still empty arrays because the real content hasn't been supplied yet —
+  see `PLAN.md` for the up-to-date list of what's still pending from the
+  institution. Sections render an honest "Próximamente" empty state rather
+  than fabricated entries; never fill these with invented content.
 - `src/config/nav.ts` — single source of truth for primary nav links and
   site-wide constants (see swap points below).
-- `src/lib/cn.ts` — small `clsx`-style classname helper.
+- `src/lib/` — non-visual helpers: `cn.ts` (small `clsx`-style classname
+  helper), `metadata.ts` (shared `pageMetadata()` for per-route SEO tags), and
+  `eventos.ts` (derives event status/date/order — see "Dates and derived
+  state" below).
 
 ## Primitive components
 
@@ -61,6 +63,11 @@ a plain `Record<Variant, string>` map of Tailwind classes for variants, and
 no `clsx`/`tailwind-merge`/`cva` dependency either. If a future need
 justifies pulling in a library, that's a deliberate decision to make then,
 not an assumption to carry over from other projects.
+
+Cards are never card-wide links. When a card needs to go somewhere, put a real
+`<a>`/`Button` inside it (`GuideCard`'s "Descargar", `EventoCard`'s "Más
+información", `OportunidadRow`'s "Postular") — that keeps the card a server
+component and preserves middle-click, cmd-click, and copy-link.
 
 ## Design tokens
 
@@ -96,6 +103,36 @@ easy to update without hunting through components:
 - **Nav links** — `NAV_LINKS` in `src/config/nav.ts` (shared by `Header` and
   `Footer`).
 - **Design tokens** — `:root` block in `src/app/globals.css` (see above).
+
+## Dates and derived state
+
+Anything that depends on "today" is **derived at render time, never stored**.
+`src/data/eventos.ts` is the worked example: an `Evento` stores real ISO dates
+(`startDate`, optional `endDate`) and nothing else time-related — the
+"Vigente"/"Pasado" badge, the human-readable Spanish date on the card, and the
+ordering of the grid all come from `src/lib/eventos.ts`. Don't add a `status`
+or a display-string `date` field back; that's a thing someone then has to
+remember to update.
+
+Two rules that are easy to get wrong:
+
+- **Compare ISO day strings, not `Date` objects.** Event dates are calendar
+  days, not instants. `new Date("2026-09-18")` is UTC midnight, which is still
+  Sept 17 in Bolivia (UTC-4), so `Date` arithmetic flips a badge a day early.
+  "Today" comes from `Intl.DateTimeFormat("en-CA", { timeZone: "America/La_Paz" })`,
+  and ISO `YYYY-MM-DD` sorts lexicographically, so `<` is the entire
+  comparison. An event stays `vigente` through the end of its last day.
+- **Pages rendering derived-from-today state need `export const revalidate`.**
+  These pages are statically prerendered, so without it the derived value
+  freezes at build time and never changes. `/oportunidades` is set to `3600`
+  (confirm in `pnpm build` output — it shows `Revalidate 1h`); it's the only
+  route that needs it today. Cache Components is not enabled in
+  `next.config.ts`, so the route segment config `revalidate` is still the
+  correct API here; under Cache Components it no longer exists.
+
+The flip side: if a page stops depending on "now", drop its `revalidate` again
+rather than leaving it as harmless-looking cargo. Home carried one briefly and
+no longer does.
 
 ## Contacto form
 

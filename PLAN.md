@@ -47,15 +47,16 @@ still the authoritative tracker for what's pending.
     anyway), `QuickAccess` (superseded by `Cierre`).
   - **`Ecosistema`** and **`Cierre`** are new, static (no data seam) — ink-toned bands with
     CTAs, mirroring `Hero`'s pattern. `Ecosistema` reuses `/ecosistema.avif` as a photo band.
-  - **`OportunidadesEventosRecursos`** is new and conditionally rendered: a pure
+  - **`OportunidadesEventosRecursos`** is new and conditionally rendered (note the `eventos`
+    column's threshold was later loosened to "any event" — see the 2026-08-06 entries): a pure
     `buildActivityColumns()` helper flags each of the three columns (`oportunidades` from
-    `oportunidadesAceleradoras.ts` status `vigente`, `eventos` from `eventos.ts` status
-    `vigente`, `recursos` from `reportes.ts`/`guiasArticulos.ts` non-empty) as having real
+    `oportunidadesAceleradoras.ts` status `vigente`, `eventos` from `eventos.ts` non-empty,
+    `recursos` from `reportes.ts`/`guiasArticulos.ts` non-empty) as having real
     content or not; the whole section returns `null` unless at least 2 of 3 columns qualify
     (per the outline's dev note: "mostrar solo contenido real y vigente... ocultar la
-    sección" if fewer than 2 items exist). **Currently renders nothing** — all four backing
-    data files are still empty (see "Content still needed" below) — verified via `pnpm dev`
-    HTTP smoke-check.
+    sección" if fewer than 2 items exist). ~~**Currently renders nothing** — all four backing
+    data files are still empty~~ — as of 2026-08-06 it renders two columns (`eventos` +
+    `recursos`); see the 2026-08-06 entries.
   - **`QuienesConforman`** merges the old separate `MiembrosAliados` + `JuntaDirectiva`
     sections into one `Section` (the outline frames "¿Quiénes conforman BOCAP?" as a single
     section with two parts, not two page bands), with a shared intro before the Miembros logo
@@ -168,8 +169,10 @@ still the authoritative tracker for what's pending.
     max-age=0`.
   - `REPORTES` is still empty by design (not fabricated); `Reportes` renders the same honest
     "Próximamente" empty-state pattern as `StartupGrid`. Populate when reports are supplied.
-  - `GuideCard` is deliberately **not** a card-wide link (unlike `EventoCard`): only the
+  - `GuideCard` is deliberately **not** a card-wide link: only the
     "Descargar" `ExternalLink` is clickable, and the card has no hover lift (no `interactive`).
+    (`EventoCard` was the lone exception to this until 2026-08-06, when it was brought in
+    line — see the Oportunidades entry below.)
     It's a real anchor rather than an `onClick` so the component stays a server component and
     keeps middle-click/cmd-click/copy-link for free. A test asserts the button is the sole
     anchor and that the title is not inside one.
@@ -183,21 +186,73 @@ still the authoritative tracker for what's pending.
   `ConvocatoriaRow`) — for the same reason as Recursos: `EVENTOS`/
   `OPORTUNIDADES_ACELERADORAS` are currently empty, so fixture-driven tests on the leaf
   components are what actually exercises the conditional logic.
-  `src/data/eventos.ts` (`Evento { title, description, date, location, status:
-  "vigente"|"pasado", url? }`), `src/data/oportunidadesAceleradoras.ts` (`Oportunidad
+  `src/data/eventos.ts` (`Evento` — see the 2026-08-06 entry below for its current shape),
+  `src/data/oportunidadesAceleradoras.ts` (`Oportunidad
   { program, organization, description, deadline, status: "vigente"|"cerrada", url? }`).
-  - **No real content exists yet** — both arrays are empty by design; both sections render
-    the established "Próximamente" empty-state pattern.
+  - **No real content existed at the time** — both arrays were empty by design; both
+    sections render the established "Próximamente" empty-state pattern. `eventos.ts` has
+    since been populated (see below); `oportunidadesAceleradoras.ts` is still empty.
   - **CTA logic for `OportunidadRow`** (confirmed with user, not fully spec'd in the
     original plan item below): `vigente` + `url` → "Postular" (external `Button`);
     `vigente` + no `url` → ghost "Más información" → `/contacto`; `cerrada` → no CTA at all
     (badge only) — a case the original plan text didn't cover.
-  - **`EventoCard` also wraps itself in a link** when `evento.url` is present, mirroring
-    `GuideCard`'s convention (the plan's `Evento` type includes `url?` but didn't spell out
-    its use on the card itself).
+  - ✅ ~~**`EventoCard` also wraps itself in a link** when `evento.url` is present~~ —
+    superseded 2026-08-06: the card-wide link was removed in favor of an explicit
+    "Más información" button, so `EventoCard` now matches `GuideCard`'s convention rather
+    than diverging from it. See the entry below.
   - Verified: `pnpm test` (31/31 incl. 4 new files/10 new tests), `pnpm typecheck`,
     `pnpm lint`, `pnpm build` all clean; `pnpm dev` HTTP smoke-check confirmed both
     "Próximamente" empty states render on `/oportunidades`.
+
+- ✅ **First real event + derived event state** (2026-08-06). `eventos.ts` is no longer
+  empty: it holds the Orbit Ventures "China Insider Access Program: LATAM Investors &
+  Builders" delegation (14–18 Sept 2026, Shanghái/Hangzhou), supplied by the user with a
+  flyer and a link the user verified. Description is a first pass, flagged for review with
+  BOCAP.
+  - **`Evento` is now `{ title, description, startDate, endDate?, location, url?,
+    image? }`** — `date` and `status` were **removed** from the data. Both are derived in
+    `src/lib/eventos.ts` (`eventoStatus`, `formatEventoDate`, `sortEventos`,
+    `hasVigenteEvento`) so nobody has to hand-maintain a "Vigente" badge or keep a display
+    string in sync with a real date. Rationale from the user: "it does not make sense to
+    babysit all the data we add."
+  - **Dates are compared as ISO day *strings*, never `Date` objects.** `new Date("2026-09-18")`
+    is UTC midnight, which is still Sept 17 in Bolivia — Date arithmetic would flip the badge
+    a day early. "Today" comes from `Intl.DateTimeFormat("en-CA", { timeZone: "America/La_Paz" })`,
+    and ISO `YYYY-MM-DD` sorts lexicographically, so `<` is the whole comparison. An event
+    stays `vigente` through the **end of its last day**.
+  - **`export const revalidate = 3600` on `/oportunidades`.** This is load-bearing, not
+    decoration: the page is static, so without it the derived status would freeze at build
+    time and never flip. Cache Components is **not** enabled in `next.config.ts`, so the
+    route segment config `revalidate` is still the right API here (under Cache Components
+    it's removed — see `node_modules/next/dist/docs/01-app/02-guides/caching-without-cache-components.md`).
+    The build output confirms the route at `1h`. **Any future data whose rendering depends
+    on "now" needs the same treatment.** (`/` also had one until the same-day follow-up
+    below removed its last dependency on "now".)
+  - `formatEventoDate` collapses ranges as far as it can: `14–18 de septiembre, 2026` /
+    `28 de septiembre – 2 de octubre, 2026` / `28 de diciembre, 2026 – 2 de enero, 2027`.
+  - `sortEventos` puts `vigente` first (soonest first), then `pasado` (most recent first) —
+    same "don't babysit it" reasoning, otherwise past events sit wherever they were pasted.
+  - **Flyer support**: optional `image: { src, alt }` rendered full-bleed and square at the
+    top of the card, via negative margins (`-mx-6 -mt-6`) cancelling `Card`'s `p-6` plus
+    `overflow-hidden` for the rounded top edge. Committed at
+    `public/eventos/china-insider-access-program.jpg` (same `public/`-over-Blob reasoning as
+    the Recursos PDF). **Caveat: the source is only 400×400**, so it upscales slightly at
+    ~33vw on desktop — drop in a larger original at the same path if Orbit supplies one.
+  - **`EventoCard` is no longer a card-wide link** (user request): the `MaybeExternalLink`
+    wrapper and the `interactive` hover-lift are gone, replaced by an explicit external
+    `Button` (`size="sm"`, "Más información") rendered only when `evento.url` is set —
+    matching `OportunidadRow`'s idiom. Tests pin down that the card itself isn't an anchor
+    (exactly one link, and it's the button).
+  - **`MaybeExternalLink` was deleted** from `src/components/ui/ExternalLink.tsx` — the
+    `EventoCard` wrapper was its only caller. `ExternalLink` itself stays (used by `Button`).
+  - Test fixtures use far-future/far-past dates (`2099-…`/`2000-…`) so derived status stays
+    deterministic as time passes; `src/lib/__tests__/eventos.test.ts` passes an explicit
+    `today` instead.
+  - Verified: `pnpm test` (147/147), `typecheck`, `lint`, `build` all clean; `pnpm start`
+    HTTP check confirmed the rendered card, the `Vigente` badge, the "Más información"
+    anchor with `target="_blank"`, and the flyer served as AVIF (14.6 KB from 37.7 KB).
+    One unrelated intermittent `Nav` test failure was seen once under heavy CPU contention
+    and did not reproduce across four subsequent runs — unresolved, worth watching in CI.
 
 - ✅ **Membresía** (`/membresia`): `QuienPuedeParticipar` (ink hero with photo band) +
   `Beneficios` (server, mist band, populated) + `Ecosistema` (shared, ink band — see below) +
@@ -345,13 +400,28 @@ What's left is content, review, and polish:
   are **drafted/synthesized**, not a literal source quote — needs review.
 - Empty-state sections awaiting real content: `startups.ts` (Ecosistema), `reportes.ts`
   (Recursos — `guiasArticulos.ts` has one real article as of 2026-07-29),
-  `eventos.ts`/`oportunidadesAceleradoras.ts` (Oportunidades), `tiposMiembro.ts` (Membresía —
+  `oportunidadesAceleradoras.ts` (Oportunidades), `tiposMiembro.ts` (Membresía —
   `beneficios.ts` is populated now, see the Membresía entry above). Also still pending:
   `angels`/`accelerators` entries for `directorio.ts` (mentioned as arriving "later this
-  week" as of this session). **The `eventos.ts`/`oportunidadesAceleradoras.ts` gap still keeps
-  Home's `OportunidadesEventosRecursos` section hidden** — its `recursos` column now qualifies
-  (`guiasArticulos.ts` is non-empty), but the 2-of-3 rule needs one of `eventos.ts` /
-  `oportunidadesAceleradoras.ts` to gain a `vigente` entry. No code change needed.
+  week" as of this session).
+- ✅ ~~`eventos.ts` empty~~ — resolved 2026-08-06 with the Orbit Ventures China delegation.
+  **This also unhid Home's `OportunidadesEventosRecursos` section**: the 2-of-3 rule is now
+  met by `eventos` + `recursos`, with no code change needed (as predicted).
+- ✅ ~~The Home section would re-hide itself after 2026-09-18~~ — resolved same day: the
+  `eventos` column now counts **any** event, not just `vigente` ones (user call: "we want
+  past events displayed for now"), so the section stays up once the Orbit event passes.
+  This is the one column that doesn't require currency — `oportunidades` still requires
+  `vigente`, and a `cerrada` oportunidad still doesn't count. **Revisit when the calendar is
+  less thin**: `hasVigenteEvento` in `src/lib/eventos.ts` is the stricter rule, kept in place
+  (and currently unused) precisely so switching back is a one-line change.
+  - Knock-on: Home no longer derives anything from today's date, so its `revalidate` was
+    removed rather than left as misleading cargo. `/oportunidades` still needs its own.
+  - ✅ ~~**Open copy question:** the column is titled "Próximos eventos"~~ — resolved: the
+    column title is now just **"Eventos"**. "Próximos" would have gone stale after 2026-09-18
+    (advertising upcoming events while only a past one exists), and per the user it "adds no
+    value" anyway. The column `key` stays `eventos`; only the visible title changed.
+- The Orbit event's `description` is a first pass written from the forwarded blurb; the user
+  is reviewing the wording with BOCAP.
 - Home's `QuienesConforman` board cards need real headshots to add the photo the outline
   calls for (and to justify dropping the bios) — deferred, user confirmed 2026-07-28.
 - ✅ ~~`src/data/cifras.ts` fabricated stats~~ — resolved: the file and its `Cifras` section
@@ -423,4 +493,11 @@ What's left is content, review, and polish:
   `src/app/layout.tsx`. h1–h4 get serif bold from globals.css.
 - Server Components by default; `"use client"` only for real interactivity — currently just
   `EcosistemaTabs`, `ContactForm`, `Nav`, `CopyEmailButton`.
+- Cards are not card-wide links: put a real `<a>`/`Button` inside instead (`GuideCard`,
+  `EventoCard`, `OportunidadRow`). Keeps them server components and preserves
+  middle-click/cmd-click/copy-link.
+- Derive state that depends on today's date rather than storing it — store the real date,
+  compute the badge/label (`src/lib/eventos.ts` is the reference implementation). Compare ISO
+  day strings in `America/La_Paz`, never `Date` objects. Any page rendering such state needs
+  `export const revalidate` or it freezes at build time.
 - pnpm only. Next.js 16: check `node_modules/next/dist/docs/` before assuming APIs.

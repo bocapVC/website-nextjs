@@ -37,11 +37,15 @@ export function buildActivityColumns(
     },
     {
       key: "eventos",
-      title: "Próximos eventos",
+      title: "Eventos",
       description: "Encuentros de BOCAP y eventos relevantes dentro y fuera de Bolivia.",
       linkLabel: "Ver eventos",
       href: "/oportunidades",
-      hasContent: eventos.some((item) => item.status === "vigente"),
+      // Deliberately any event, not just vigente ones (unlike `oportunidades`
+      // above): while the calendar is this thin, a past event is still worth
+      // linking to. Revisit when there's a steady stream of upcoming ones —
+      // `hasVigenteEvento` in `@/lib/eventos` is the stricter rule.
+      hasContent: eventos.length > 0,
     },
     {
       key: "recursos",

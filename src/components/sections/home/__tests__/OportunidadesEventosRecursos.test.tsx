@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import {
   OportunidadesEventosRecursos,
   buildActivityColumns,
 } from "../OportunidadesEventosRecursos";
-import type { Oportunidad } from "@/data/oportunidadesAceleradoras";
-import type { Evento } from "@/data/eventos";
-import type { Report } from "@/data/reportes";
+import { OPORTUNIDADES_ACELERADORAS, type Oportunidad } from "@/data/oportunidadesAceleradoras";
+import { EVENTOS, type Evento } from "@/data/eventos";
+import { REPORTES, type Report } from "@/data/reportes";
+import { GUIAS_ARTICULOS } from "@/data/guiasArticulos";
 
 const vigenteOportunidad: Oportunidad = {
   program: "Demo",
@@ -16,12 +17,12 @@ const vigenteOportunidad: Oportunidad = {
   status: "vigente",
 };
 
+// Far-future/far-past dates keep the derived status deterministic over time.
 const vigenteEvento: Evento = {
   title: "Demo",
   description: "Demo",
-  date: "2026-01-01",
+  startDate: "2099-01-01",
   location: "La Paz",
-  status: "vigente",
 };
 
 const report: Report = { title: "Demo", description: "Demo", year: 2026 };
@@ -34,14 +35,14 @@ describe("buildActivityColumns", () => {
     expect(columns.find((c) => c.key === "recursos")?.hasContent).toBe(false);
   });
 
-  it("ignores non-vigente/cerrada entries", () => {
-    const columns = buildActivityColumns(
-      [{ ...vigenteOportunidad, status: "cerrada" }],
-      [{ ...vigenteEvento, status: "pasado" }],
-      [],
-      [],
-    );
+  it("ignores cerrada oportunidades", () => {
+    const columns = buildActivityColumns([{ ...vigenteOportunidad, status: "cerrada" }], [], [], []);
     expect(columns.every((c) => !c.hasContent)).toBe(true);
+  });
+
+  it("counts a past event as content, unlike a cerrada oportunidad", () => {
+    const columns = buildActivityColumns([], [{ ...vigenteEvento, startDate: "2000-01-01" }], [], []);
+    expect(columns.find((c) => c.key === "eventos")?.hasContent).toBe(true);
   });
 
   it("counts recursos as real content from reportes alone", () => {
@@ -58,8 +59,23 @@ describe("buildActivityColumns", () => {
 });
 
 describe("OportunidadesEventosRecursos", () => {
-  it("renders nothing with the real current data (fewer than two populated columns)", () => {
+  it("renders exactly the populated columns of the real data, or nothing below the threshold", () => {
+    const populated = buildActivityColumns(
+      OPORTUNIDADES_ACELERADORAS,
+      EVENTOS,
+      REPORTES,
+      GUIAS_ARTICULOS,
+    ).filter((column) => column.hasContent);
+
     const { container } = render(<OportunidadesEventosRecursos />);
-    expect(container).toBeEmptyDOMElement();
+
+    if (populated.length < 2) {
+      expect(container).toBeEmptyDOMElement();
+      return;
+    }
+    for (const column of populated) {
+      expect(screen.getByText(column.title)).toBeInTheDocument();
+    }
+    expect(screen.getAllByText(/^→ Ver /)).toHaveLength(populated.length);
   });
 });
