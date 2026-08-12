@@ -25,7 +25,7 @@ export const EVENTOS: Evento[] = [
   {
     title: "China Insider Access Program: LATAM Investors & Builders",
     description:
-      "Delegación de una semana organizada por Orbit Ventures para founders, inversionistas y líderes de innovación de Latinoamérica, con visitas y sesiones privadas en ByteDance (TikTok), Alibaba, DeepSeek y otros referentes del ecosistema tecnológico chino.",
+      "Delegación de una semana organizada por Orbit Ventures para founders, inversionistas y líderes de innovación de Latinoamérica. Incluye visitas y sesiones privadas en ByteDance (TikTok), Alibaba, DeepSeek y otros referentes del ecosistema chino, además de encuentros con emprendedores e inversores locales.",
     startDate: "2026-09-14",
     endDate: "2026-09-18",
     location: "Shanghái y Hangzhou, China",
