@@ -9,20 +9,20 @@ export interface BoardMember {
 
 export const JUNTA_DIRECTIVA: BoardMember[] = [
   {
-    name: "Viviana Coloma",
+    name: "Corina Marion",
     role: "Presidenta",
+    organization: "Babasú Ventures",
+    bio: "Managing Partner de Babasú Ventures. Reconocida por LAVCA (2024) entre las principales mujeres inversionistas de América Latina.",
+    linkedin: "https://bo.linkedin.com/in/corina-marion",
+    photo: "/photos/corina.webp",
+  },
+  {
+    name: "Viviana Coloma",
+    role: "Vicepresidenta",
     organization: "Escalatec · Aceleradora SOLYDES",
     bio: "Lidera la Aceleradora SOLYDES y es Fund Manager de Escalatec, fondo pionero de capital emprendedor en Bolivia.",
     linkedin: "https://bo.linkedin.com/in/viviana-coloma-6521b796",
     photo: "/photos/viviana.jpg",
-  },
-  {
-    name: "Corina Marion",
-    role: "Vicepresidenta",
-    organization: "Babasú Ventures",
-    bio: "Managing Partner de Babasú Ventures. Reconocida por LAVCA (2024) entre las principales mujeres inversionistas de América Latina.",
-    linkedin: "https://bo.linkedin.com/in/corina-marion",
-    photo: "/photos/corina.jpg",
   },
   {
     name: "Juan Cruz Valdez Rojas",
