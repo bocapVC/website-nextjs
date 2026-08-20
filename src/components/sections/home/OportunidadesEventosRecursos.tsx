@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Button } from "@/components/ui/Button";
 import { OPORTUNIDADES_ACELERADORAS } from "@/data/oportunidadesAceleradoras";
 import { EVENTOS } from "@/data/eventos";
 import { REPORTES } from "@/data/reportes";
@@ -74,19 +74,21 @@ export function OportunidadesEventosRecursos() {
   if (visibleColumns.length < 2) return null;
 
   return (
-    <Section>
-      <SectionHeading eyebrow="Actividad" title="Oportunidades, eventos y recursos" />
-      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <Section tone="mist">
+      <SectionHeading eyebrow="Actualidad" title="Oportunidades, eventos y recursos" />
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {visibleColumns.map((column) => (
-          <div key={column.key}>
-            <p className="font-semibold text-ink">{column.title}</p>
-            <p className="mt-2 text-sm text-ink-soft">{column.description}</p>
-            <Link
-              href={column.href}
-              className="mt-3 inline-block text-sm font-semibold text-teal hover:text-red hover:underline"
-            >
-              → {column.linkLabel}
-            </Link>
+          <div
+            key={column.key}
+            className="flex flex-col gap-4 rounded-brand border border-line bg-surface-solid p-6 shadow-brand transition-all hover:shadow-lg hover:border-line-strong"
+          >
+            <div className="flex-1">
+              <p className="font-semibold text-ink">{column.title}</p>
+              <p className="mt-2 text-sm text-ink-soft">{column.description}</p>
+            </div>
+            <Button href={column.href} variant="secondary" size="sm" className="justify-center">
+              {column.linkLabel} →
+            </Button>
           </div>
         ))}
       </div>
