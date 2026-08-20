@@ -30,6 +30,11 @@ BOCAP's marketing site (Bocap.vc — capital emprendedor / VC network in Bolivia
   is UTC midnight, i.e. still the 17th in Bolivia). Any page rendering such state **must**
   `export const revalidate` — these pages are static, so otherwise the value freezes at build
   time. See the "Dates and derived state" section of `README.md`.
+- **Section Navigation (home page).** Home page uses `SectionNavigation` component for desktop-only
+  side navigation dots (right edge, fixed position). It tracks active section via Intersection Observer
+  and enables smooth scroll to any section. The component is intentionally home-page-only and hidden
+  on mobile (`hidden lg:block`) — other pages do not render it. Do not duplicate this pattern for
+  other pages; if section nav is needed elsewhere, discuss with the team first.
 - **Cards are not card-wide links** — put a real `<a>`/`Button` inside instead.
 
 ## Working with this Next.js version
