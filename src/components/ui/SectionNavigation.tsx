@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 
 const SECTIONS = [
   { id: "hero", label: "Inicio" },
-  { id: "que-es", label: "¿Qué es?" },
+  { id: "que-es", label: "Quiénes somos" },
   { id: "ecosistema", label: "Ecosistema" },
-  { id: "oportunidades", label: "Oportunidades" },
-  { id: "quienes", label: "Quiénes Conforman" },
-  { id: "cierre", label: "Cierre" },
+  { id: "oportunidades", label: "Actualidad" },
+  { id: "quienes", label: "Comunidad" },
+  { id: "cierre", label: "Únete" },
 ];
 
 export function SectionNavigation() {
@@ -55,15 +55,15 @@ export function SectionNavigation() {
     >
       {SECTIONS.map((section, index) => (
         <div key={section.id} className="group flex items-center justify-end gap-3">
-          <span className="text-xs font-medium text-gold opacity-0 transition-opacity duration-300 group-hover:opacity-100 whitespace-nowrap">
+          <span className="text-xs font-medium text-red opacity-0 transition-opacity duration-300 group-hover:opacity-100 whitespace-nowrap">
             {section.label}
           </span>
           <button
             onClick={() => handleDotClick(index)}
             className={`cursor-pointer transition-all duration-300 rounded-full ${
               activeSection === index
-                ? "h-3 w-3 bg-gold"
-                : "h-2.5 w-2.5 bg-ink-soft hover:bg-gold"
+                ? "h-3 w-3 bg-red"
+                : "h-2.5 w-2.5 bg-ink-soft hover:bg-red"
             }`}
             aria-label={`Go to ${section.label}`}
             aria-current={activeSection === index ? "page" : undefined}

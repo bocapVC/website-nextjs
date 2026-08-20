@@ -4,7 +4,6 @@ import "./globals.css";
 import { SITE } from "@/config/nav";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { SectionNavigation } from "@/components/ui/SectionNavigation";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -75,7 +74,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-        <SectionNavigation />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
