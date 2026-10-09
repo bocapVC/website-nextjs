@@ -26,7 +26,7 @@ function initials(name: string): string {
  */
 export function QuienesConforman() {
   return (
-    <Section>
+    <Section id="quienes">
       <SectionHeading
         eyebrow="Comunidad"
         title="¿Quiénes conforman BOCAP?"

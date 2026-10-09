@@ -20,27 +20,25 @@ const ENTRY_IDS = {
   message: "entry.2128493084",
 } as const;
 
-interface ContactBody {
-  name?: string;
-  organization?: string;
-  email?: string;
-  topic?: string;
-  message?: string;
-}
-
 export async function POST(request: Request) {
-  let body: ContactBody;
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
   }
 
-  const name = body.name?.trim() ?? "";
-  const organization = body.organization?.trim() ?? "";
-  const email = body.email?.trim() ?? "";
-  const topic = body.topic?.trim() ?? "";
-  const message = body.message?.trim() ?? "";
+  // Valid JSON isn't necessarily an object of strings (`null`, `{"name": 1}`);
+  // anything that isn't a string field reads as empty and fails validation below.
+  const field = (key: keyof typeof ENTRY_IDS) => {
+    const value = (body as Record<string, unknown> | null)?.[key];
+    return typeof value === "string" ? value.trim() : "";
+  };
+  const name = field("name");
+  const organization = field("organization");
+  const email = field("email");
+  const topic = field("topic");
+  const message = field("message");
 
   // organization is optional; the rest are required.
   if (!name || !email || !topic || !message) {
@@ -64,13 +62,10 @@ export async function POST(request: Request) {
       cache: "no-store",
     });
 
-    // Google Forms answers a successful submission with a redirect (surfaced as
-    // an opaque response with status 0 under `redirect: "manual"`) or a 200.
-    // Anything >= 400 is a failure.
-    const status = res.status;
-    const ok = status === 0 || (status >= 200 && status < 400);
-
-    if (!ok) {
+    // Google Forms answers a recorded submission with a 200 confirmation page.
+    // A redirect means it didn't record it (form closed, or sign-in required) —
+    // server-side fetch surfaces the real 3xx, not the browser's opaque 0.
+    if (res.status !== 200) {
       return NextResponse.json({ ok: false, error: "upstream_status" }, { status: 502 });
     }
 

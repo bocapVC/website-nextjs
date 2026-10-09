@@ -50,7 +50,7 @@ still the authoritative tracker for what's pending.
   - **`OportunidadesEventosRecursos`** is new and conditionally rendered (note the `eventos`
     column's threshold was later loosened to "any event" — see the 2026-08-06 entries): a pure
     `buildActivityColumns()` helper flags each of the three columns (`oportunidades` from
-    `oportunidadesAceleradoras.ts` status `vigente`, `eventos` from `eventos.ts` non-empty,
+    `oportunidadesAceleradoras.ts` status `vigente` — now derived from `deadline`, `eventos` from `eventos.ts` non-empty,
     `recursos` from `reportes.ts`/`guiasArticulos.ts` non-empty) as having real
     content or not; the whole section returns `null` unless at least 2 of 3 columns qualify
     (per the outline's dev note: "mostrar solo contenido real y vigente... ocultar la
@@ -188,7 +188,9 @@ still the authoritative tracker for what's pending.
   components are what actually exercises the conditional logic.
   `src/data/eventos.ts` (`Evento` — see the 2026-08-06 entry below for its current shape),
   `src/data/oportunidadesAceleradoras.ts` (`Oportunidad
-  { program, organization, description, deadline, status: "vigente"|"cerrada", url? }`).
+  { program, organization, description, deadline, status: "vigente"|"cerrada", url? }` —
+  since 2026-10-08 `status` is gone and `deadline` is an ISO day; the status is derived in
+  `src/lib/oportunidades.ts`, like `Evento`).
   - **No real content existed at the time** — both arrays were empty by design; both
     sections render the established "Próximamente" empty-state pattern. `eventos.ts` has
     since been populated (see below); `oportunidadesAceleradoras.ts` is still empty.
@@ -212,7 +214,7 @@ still the authoritative tracker for what's pending.
   - **`Evento` is now `{ title, description, startDate, endDate?, location, url?,
     image? }`** — `date` and `status` were **removed** from the data. Both are derived in
     `src/lib/eventos.ts` (`eventoStatus`, `formatEventoDate`, `sortEventos`,
-    `hasVigenteEvento`) so nobody has to hand-maintain a "Vigente" badge or keep a display
+    `hasVigenteEvento` — since removed as unused) so nobody has to hand-maintain a "Vigente" badge or keep a display
     string in sync with a real date. Rationale from the user: "it does not make sense to
     babysit all the data we add."
   - **Dates are compared as ISO day *strings*, never `Date` objects.** `new Date("2026-09-18")`

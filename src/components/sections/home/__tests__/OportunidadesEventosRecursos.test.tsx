@@ -9,15 +9,14 @@ import { EVENTOS, type Evento } from "@/data/eventos";
 import { REPORTES, type Report } from "@/data/reportes";
 import { GUIAS_ARTICULOS } from "@/data/guiasArticulos";
 
+// Far-future/far-past dates keep the derived status deterministic over time.
 const vigenteOportunidad: Oportunidad = {
   program: "Demo",
   organization: "Demo Org",
   description: "Demo",
-  deadline: "2026-01-01",
-  status: "vigente",
+  deadline: "2099-01-01",
 };
 
-// Far-future/far-past dates keep the derived status deterministic over time.
 const vigenteEvento: Evento = {
   title: "Demo",
   description: "Demo",
@@ -36,7 +35,7 @@ describe("buildActivityColumns", () => {
   });
 
   it("ignores cerrada oportunidades", () => {
-    const columns = buildActivityColumns([{ ...vigenteOportunidad, status: "cerrada" }], [], [], []);
+    const columns = buildActivityColumns([{ ...vigenteOportunidad, deadline: "2000-01-01" }], [], [], []);
     expect(columns.every((c) => !c.hasContent)).toBe(true);
   });
 
@@ -76,6 +75,6 @@ describe("OportunidadesEventosRecursos", () => {
     for (const column of populated) {
       expect(screen.getByText(column.title)).toBeInTheDocument();
     }
-    expect(screen.getAllByText(/^→ Ver /)).toHaveLength(populated.length);
+    expect(screen.getAllByText(/^Ver .* →$/)).toHaveLength(populated.length);
   });
 });

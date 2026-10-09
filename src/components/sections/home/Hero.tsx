@@ -6,6 +6,7 @@ import { Section } from "@/components/ui/Section";
 export function Hero() {
   return (
     <Section
+      id="hero"
       tone="ink"
       firstOnPage
       photo="/illimani.avif"

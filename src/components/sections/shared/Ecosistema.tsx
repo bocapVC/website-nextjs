@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 /** Ink-toned content band teasing the ecosystem map, with a CTA to explore it. */
 export function Ecosistema() {
   return (
-    <Section tone="ink">
+    <Section id="ecosistema" tone="ink">
       <SectionHeading
         eyebrow="Ecosistema"
         title="El mapa de startups e inversionistas de Bolivia"
