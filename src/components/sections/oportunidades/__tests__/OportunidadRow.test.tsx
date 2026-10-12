@@ -3,12 +3,12 @@ import { render, screen } from "@testing-library/react";
 import { OportunidadRow } from "../OportunidadRow";
 import type { Oportunidad } from "@/data/oportunidadesAceleradoras";
 
+// Far-future/far-past deadlines keep the derived status deterministic over time.
 const vigente: Oportunidad = {
   program: "Aceleradora Andina 2026",
   organization: "Impulso Bolivia",
   description: "Programa de aceleración para startups en etapa temprana.",
-  deadline: "30 de septiembre, 2026",
-  status: "vigente",
+  deadline: "2099-09-30",
 };
 
 describe("OportunidadRow", () => {
@@ -17,7 +17,7 @@ describe("OportunidadRow", () => {
     expect(screen.getByText(vigente.program)).toBeInTheDocument();
     expect(screen.getByText(vigente.organization)).toBeInTheDocument();
     expect(screen.getByText(vigente.description)).toBeInTheDocument();
-    expect(screen.getByText(vigente.deadline)).toBeInTheDocument();
+    expect(screen.getByText("30 de septiembre, 2099")).toBeInTheDocument();
     expect(screen.getByText("Vigente")).toBeInTheDocument();
   });
 
@@ -41,7 +41,7 @@ describe("OportunidadRow", () => {
   it("shows no CTA and a Cerrada badge when the oportunidad is closed", () => {
     const cerrada: Oportunidad = {
       ...vigente,
-      status: "cerrada",
+      deadline: "2000-09-30",
       url: "https://example.com/postular-aceleradora-andina",
     };
     render(<OportunidadRow oportunidad={cerrada} />);

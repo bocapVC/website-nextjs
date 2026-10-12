@@ -9,6 +9,8 @@ import type { Oportunidad } from "@/data/oportunidadesAceleradoras";
 import type { Evento } from "@/data/eventos";
 import type { Report } from "@/data/reportes";
 import type { Guide } from "@/data/guiasArticulos";
+import { todayInBolivia } from "@/lib/eventos";
+import { oportunidadStatus } from "@/lib/oportunidades";
 
 export interface ActivityColumn {
   key: string;
@@ -25,6 +27,7 @@ export function buildActivityColumns(
   eventos: Evento[],
   reportes: Report[],
   guias: Guide[],
+  today: string = todayInBolivia(),
 ): ActivityColumn[] {
   return [
     {
@@ -33,7 +36,7 @@ export function buildActivityColumns(
       description: "Oportunidades, aceleradoras y programas para startups e inversionistas.",
       linkLabel: "Ver oportunidades",
       href: "/oportunidades",
-      hasContent: oportunidades.some((item) => item.status === "vigente"),
+      hasContent: oportunidades.some((item) => oportunidadStatus(item, today) === "vigente"),
     },
     {
       key: "eventos",
@@ -43,8 +46,8 @@ export function buildActivityColumns(
       href: "/oportunidades",
       // Deliberately any event, not just vigente ones (unlike `oportunidades`
       // above): while the calendar is this thin, a past event is still worth
-      // linking to. Revisit when there's a steady stream of upcoming ones —
-      // `hasVigenteEvento` in `@/lib/eventos` is the stricter rule.
+      // linking to. Revisit when there's a steady stream of upcoming ones, e.g.
+      // `eventos.some((e) => eventoStatus(e, today) === "vigente")`.
       hasContent: eventos.length > 0,
     },
     {
@@ -59,22 +62,28 @@ export function buildActivityColumns(
 }
 
 /**
- * Home teaser for the three activity pages. Each column only appears once its
+ * Columns to render from the real data. Each column only appears once its
  * backing data has real, current entries — and the whole section stays
- * hidden unless at least two columns clear that bar, so the home page never
- * teases content that doesn't exist yet.
+ * hidden (empty list) unless at least two columns clear that bar, so the home
+ * page never teases content that doesn't exist yet.
  */
-export function OportunidadesEventosRecursos() {
-  const visibleColumns = buildActivityColumns(
+export function visibleActivityColumns(): ActivityColumn[] {
+  const columns = buildActivityColumns(
     OPORTUNIDADES_ACELERADORAS,
     EVENTOS,
     REPORTES,
     GUIAS_ARTICULOS,
   ).filter((column) => column.hasContent);
-  if (visibleColumns.length < 2) return null;
+  return columns.length < 2 ? [] : columns;
+}
+
+/** Home teaser for the three activity pages; renders nothing when `visibleActivityColumns` is empty. */
+export function OportunidadesEventosRecursos() {
+  const visibleColumns = visibleActivityColumns();
+  if (visibleColumns.length === 0) return null;
 
   return (
-    <Section tone="mist">
+    <Section id="oportunidades" tone="mist">
       <SectionHeading eyebrow="Actualidad" title="Oportunidades, eventos y recursos" />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {visibleColumns.map((column) => (

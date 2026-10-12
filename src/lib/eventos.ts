@@ -25,15 +25,6 @@ export function eventoStatus(evento: Evento, today: string = todayInBolivia()): 
   return (evento.endDate ?? evento.startDate) < today ? "pasado" : "vigente";
 }
 
-/**
- * Currently unused: Home's eventos column counts *any* event while the calendar is
- * thin (see `OportunidadesEventosRecursos`). Kept as the stricter rule to switch
- * back to once there's a steady stream of upcoming events.
- */
-export function hasVigenteEvento(eventos: Evento[], today: string = todayInBolivia()): boolean {
-  return eventos.some((evento) => eventoStatus(evento, today) === "vigente");
-}
-
 /** Upcoming/current first (soonest first), then past ones (most recent first). */
 export function sortEventos(eventos: Evento[], today: string = todayInBolivia()): Evento[] {
   return [...eventos].sort((a, b) => {
@@ -59,6 +50,12 @@ function dateParts(iso: string) {
   };
 }
 
+/** Single ISO day in Spanish, e.g. `14 de septiembre, 2026`. */
+export function formatIsoDay(iso: string): string {
+  const { day, month, year } = dateParts(iso);
+  return `${day} de ${month}, ${year}`;
+}
+
 /**
  * Human-readable Spanish date for the card, collapsing a range as far as it can:
  * `14–18 de septiembre, 2026` / `28 de septiembre – 2 de octubre, 2026` /
@@ -69,7 +66,7 @@ export function formatEventoDate(evento: Evento): string {
   const end =
     evento.endDate && evento.endDate !== evento.startDate ? dateParts(evento.endDate) : null;
 
-  if (!end) return `${start.day} de ${start.month}, ${start.year}`;
+  if (!end) return formatIsoDay(evento.startDate);
   if (start.year !== end.year) {
     return `${start.day} de ${start.month}, ${start.year} – ${end.day} de ${end.month}, ${end.year}`;
   }

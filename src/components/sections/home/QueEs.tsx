@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 /** Two-column institutional intro: what BOCAP is and why it exists, plus misión/visión. */
 export function QueEs() {
   return (
-    <Section>
+    <Section id="que-es">
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
         <SectionHeading eyebrow="Quiénes somos" title="Qué es BOCAP" />
         <div className="flex flex-col gap-4 text-base leading-relaxed text-ink-soft">

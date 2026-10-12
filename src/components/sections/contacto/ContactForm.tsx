@@ -43,7 +43,7 @@ export function ContactForm({ fixedTopic, messageHint }: ContactFormProps = {}) 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div className="grid gap-5 sm:grid-cols-2">
         <InputField
           label="Nombre"

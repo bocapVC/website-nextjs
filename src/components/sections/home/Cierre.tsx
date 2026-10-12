@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 /** Mist-toned closing band: final membership CTA. */
 export function Cierre() {
   return (
-    <Section tone="mist" className="flex flex-col items-center gap-6 text-center">
+    <Section id="cierre" tone="mist" className="flex flex-col items-center gap-6 text-center">
       <SectionHeading
         eyebrow="Únete"
         title="Súmate a BOCAP"

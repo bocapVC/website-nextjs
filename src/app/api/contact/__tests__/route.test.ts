@@ -35,8 +35,7 @@ function postJson(body: unknown) {
   );
 }
 
-/** The route only reads `.status` off the upstream response, so a bare object suffices —
- * and status 0 (the opaque redirect case) can't be built with `new Response()`. */
+/** The route only reads `.status` off the upstream response, so a bare object suffices. */
 function stubUpstream(status: number) {
   const fetchMock = vi.fn().mockResolvedValue({ status });
   vi.stubGlobal("fetch", fetchMock);
@@ -72,6 +71,19 @@ describe("POST /api/contact", () => {
       async (field) => {
         const fetchMock = stubUpstream(200);
         const body = { ...VALID, [field]: undefined };
+
+        const res = await postJson(body);
+
+        expect(res.status).toBe(400);
+        await expect(res.json()).resolves.toEqual({ ok: false, error: "missing_fields" });
+        expect(fetchMock).not.toHaveBeenCalled();
+      },
+    );
+
+    it.each([null, [], 42, { ...VALID, name: 1 }])(
+      "rejects JSON that isn't an object of string fields (%j) without calling upstream",
+      async (body) => {
+        const fetchMock = stubUpstream(200);
 
         const res = await postJson(body);
 
@@ -157,9 +169,8 @@ describe("POST /api/contact", () => {
   });
 
   describe("upstream outcome", () => {
-    // 0 is the opaque response Google's post-submit redirect surfaces under `redirect: "manual"`.
-    it.each([0, 200, 204, 302, 399])("reports success for upstream status %i", async (status) => {
-      stubUpstream(status);
+    it("reports success when upstream answers 200", async () => {
+      stubUpstream(200);
 
       const res = await postJson(VALID);
 
@@ -167,7 +178,8 @@ describe("POST /api/contact", () => {
       await expect(res.json()).resolves.toEqual({ ok: true });
     });
 
-    it.each([400, 401, 429, 500, 503])(
+    // A redirect means Google didn't record the response (form closed, sign-in required).
+    it.each([0, 204, 302, 303, 400, 401, 429, 500, 503])(
       "reports a 502 upstream_status for upstream status %i",
       async (status) => {
         stubUpstream(status);

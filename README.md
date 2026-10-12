@@ -112,7 +112,10 @@ Anything that depends on "today" is **derived at render time, never stored**.
 "Vigente"/"Pasado" badge, the human-readable Spanish date on the card, and the
 ordering of the grid all come from `src/lib/eventos.ts`. Don't add a `status`
 or a display-string `date` field back; that's a thing someone then has to
-remember to update.
+remember to update. `src/data/oportunidadesAceleradoras.ts` follows the same
+rule: an `Oportunidad` stores an ISO `deadline` (last day to apply,
+inclusive), and the "Vigente"/"Cerrada" badge, the displayed date, and whether
+the home teaser counts it all come from `src/lib/oportunidades.ts`.
 
 Two rules that are easy to get wrong:
 
@@ -121,18 +124,20 @@ Two rules that are easy to get wrong:
   Sept 17 in Bolivia (UTC-4), so `Date` arithmetic flips a badge a day early.
   "Today" comes from `Intl.DateTimeFormat("en-CA", { timeZone: "America/La_Paz" })`,
   and ISO `YYYY-MM-DD` sorts lexicographically, so `<` is the entire
-  comparison. An event stays `vigente` through the end of its last day.
+  comparison. An event stays `vigente` through the end of its last day; an
+  oportunidad stays `vigente` through the end of its deadline day.
 - **Pages rendering derived-from-today state need `export const revalidate`.**
   These pages are statically prerendered, so without it the derived value
-  freezes at build time and never changes. `/oportunidades` is set to `3600`
-  (confirm in `pnpm build` output — it shows `Revalidate 1h`); it's the only
-  route that needs it today. Cache Components is not enabled in
+  freezes at build time and never changes. Two routes set `3600` today
+  (confirm in `pnpm build` output — both show `Revalidate 1h`):
+  `/oportunidades` (event and oportunidad badges) and `/` (the Actualidad
+  teaser only counts oportunidades still open, and hides itself — and its
+  side-nav dot — below two populated columns). Cache Components is not enabled in
   `next.config.ts`, so the route segment config `revalidate` is still the
   correct API here; under Cache Components it no longer exists.
 
 The flip side: if a page stops depending on "now", drop its `revalidate` again
-rather than leaving it as harmless-looking cargo. Home carried one briefly and
-no longer does.
+rather than leaving it as harmless-looking cargo.
 
 ## Contacto form
 
@@ -157,6 +162,11 @@ surface a real success/error to the user.
   an accent/wording drift here first: the choice list has no "other"
   free-text fallback, so a value the form doesn't recognize is lost rather
   than recorded under a fallback.
+- Only a `200` from Google counts as recorded (verified live 2026-10-08). A
+  redirect means Google did *not* record the response — e.g. the form was
+  closed or switched to require sign-in — so it is reported as a `502`, not
+  success. Server-side `fetch` with `redirect: "manual"` surfaces the real
+  `3xx`; the opaque status `0` only happens in browsers.
 - Verified live: a real submission returns `{ ok: true }`; missing-fields and
   invalid-JSON return `400`; an unreachable or erroring upstream returns
   `502`.
