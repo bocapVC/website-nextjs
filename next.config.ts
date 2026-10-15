@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
     // authored as AVIF and are served `unoptimized` (see `Section`).
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    return [
+      // Oportunidades is soft-deleted: its components and data stay in the repo,
+      // but the page is gone. Temporary (307) so the URL can come back later.
+      { source: "/oportunidades", destination: "/", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;
