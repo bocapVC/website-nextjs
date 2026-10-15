@@ -9,7 +9,6 @@ Checklist de trabajo post-Fase 1 (Rebuild Next.js). Basado en requerimientos de 
 ### 2.1 Completar contenido faltante del sitio
 
 - [ ] `startups.ts` — ecosistema (actualmente vacío)
-- [ ] `reportes.ts` — recursos (vacío; `guiasArticulos.ts` tiene 1 artículo)
 - [ ] `oportunidadesAceleradoras.ts` — oportunidades (vacío)
 - [ ] `tiposMiembro.ts` — tipos de membresía (actualmente oculto)
 - [ ] Fotos reales de board members (actualmente solo iniciales)

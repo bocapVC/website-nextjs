@@ -7,7 +7,7 @@ export interface NavLink {
 export const NAV_LINKS: NavLink[] = [
   { label: "Inicio", href: "/" },
   { label: "Ecosistema", href: "/ecosistema" },
-  { label: "Recursos", href: "/recursos" },
+  { label: "Publicaciones", href: "/publicaciones" },
   { label: "Membresía", href: "/membresia" },
   { label: "Contacto", href: "/contacto" },
 ];
