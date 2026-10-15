@@ -186,6 +186,20 @@ surface a real success/error to the user.
   invalid-JSON return `400`; an unreachable or erroring upstream returns
   `502`.
 
+## Protected publications
+
+A publication in `src/data/guiasArticulos.ts` with `access: "protected"` asks
+for the visitor's email before its PDF downloads (`ProtectedDownload`). Omitted
+or `"open"` downloads directly, as before. The email and the article title go
+through `src/app/api/article-access/route.ts` to a Google Form (Email →
+`entry.2140414971`, Artículo → `entry.1559454988`), same pattern as Contacto.
+One submission unlocks every protected article on that browser for 3 months
+(`src/lib/articleUnlock.ts` stores only the expiry, in localStorage), and the
+visitor gets the file even if the form fails to record the submission.
+
+This is lead capture, not access control: the PDFs stay in `public/` and
+anyone with the URL can download them.
+
 ## Testing
 
 Vitest + React Testing Library (jsdom), config in `vitest.config.mts` /
