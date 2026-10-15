@@ -10,6 +10,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Recursos", href: "/recursos" },
   { label: "Oportunidades", href: "/oportunidades" },
   { label: "Membresía", href: "/membresia" },
+  { label: "Newsletter", href: "/newsletter" },
   { label: "Contacto", href: "/contacto" },
 ];
 
