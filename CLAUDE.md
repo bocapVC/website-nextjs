@@ -42,3 +42,17 @@ BOCAP's marketing site (Bocap.vc — capital emprendedor / VC network in Bolivia
 Next.js 16 is very new. Before relying on prior Next.js knowledge for App Router APIs or conventions, check the docs bundled in `node_modules/next/dist/docs/` (mirrors nextjs.org/docs) — APIs, conventions, or file structure may differ from what you'd otherwise assume.
 
 @AGENTS.md
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues for `bocapVC/website-nextjs` (via the `gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-label vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
