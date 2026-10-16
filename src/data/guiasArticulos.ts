@@ -6,6 +6,11 @@ export interface Guide {
   /** Byline, rendered only when supplied — not every guide is individually authored. */
   author?: string;
   url?: string;
+  /**
+   * "protected" asks for the visitor's email (once every 3 months, for all protected
+   * articles) before downloading. Omitted means "open" — omission is never protected.
+   */
+  access?: "open" | "protected";
 }
 
 export const GUIAS_ARTICULOS: Guide[] = [
@@ -17,6 +22,7 @@ export const GUIAS_ARTICULOS: Guide[] = [
     meta: "2026",
     author: "Álvaro Villarroel Valencia",
     url: "/articulos/bolivia_como_piloto.pdf",
+    access: "open",
   },
   {
     title: "Deuda y Cuasi Equity",
@@ -26,5 +32,6 @@ export const GUIAS_ARTICULOS: Guide[] = [
     meta: "2026",
     author: "Álvaro Villarroel Valencia",
     url: "/articulos/deuda_y_cuasi_equity.pdf",
+    access: "open",
   },
 ];
