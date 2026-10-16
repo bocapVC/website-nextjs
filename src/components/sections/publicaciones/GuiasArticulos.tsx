@@ -8,7 +8,7 @@ export function GuiasArticulos() {
   return (
     <Section>
       <SectionHeading
-        eyebrow="Recursos"
+        eyebrow="Publicaciones"
         title="Guías y artículos"
         description="Contenido para entender el capital emprendedor en Bolivia."
       />

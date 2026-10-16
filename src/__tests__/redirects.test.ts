@@ -13,4 +13,11 @@ describe("redirects", () => {
       permanent: false,
     });
   });
+
+  it("sends /recursos to /publicaciones permanently, so links and rankings carry over", async () => {
+    expect(await redirectFor("/recursos")).toMatchObject({
+      destination: "/publicaciones",
+      permanent: true,
+    });
+  });
 });

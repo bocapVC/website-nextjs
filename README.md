@@ -30,7 +30,7 @@ pnpm test       # Vitest + React Testing Library (jsdom)
 ## Structure
 
 - `src/app/` — Next.js App Router. One folder per route (`contacto/`,
-  `ecosistema/`, `membresia/`, `recursos/`) plus the root
+  `ecosistema/`, `membresia/`, `publicaciones/`) plus the root
   `page.tsx` (home) and `layout.tsx`. `src/app/api/contact/route.ts` is the
   Contacto form's server proxy (see below).
 - `src/components/sections/<page>/` — one component per page section, composed
@@ -40,7 +40,7 @@ pnpm test       # Vitest + React Testing Library (jsdom)
   `Badge`, `Section`, `Logo`, `FormField`, ...).
 - `src/components/layout/` — `Header`, `Footer`, `Nav`, `CopyEmailButton`.
 - `src/data/` — content backing the data-driven sections (one file per
-  section, e.g. `startups.ts`, `eventos.ts`, `reportes.ts`). Several of these
+  section, e.g. `startups.ts`, `eventos.ts`, `guiasArticulos.ts`). Several of these
   are still empty arrays because the real content hasn't been supplied yet —
   see `PLAN.md` for the up-to-date list of what's still pending from the
   institution. Sections render an honest "Próximamente" empty state rather
@@ -149,6 +149,10 @@ data (`eventos.ts`, `oportunidadesAceleradoras.ts`) and date helpers
 (`src/lib/eventos.ts`, `src/lib/oportunidades.ts`) are kept, with their tests,
 so restoring it means re-adding the page, the nav entry, and dropping the
 redirect.
+
+**Recursos** was renamed to **Publicaciones** (`/publicaciones`); `/recursos`
+permanently redirects (308) there. Its empty "Reportes" section was deleted
+outright.
 
 ## Contacto form
 
