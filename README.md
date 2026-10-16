@@ -30,7 +30,7 @@ pnpm test       # Vitest + React Testing Library (jsdom)
 ## Structure
 
 - `src/app/` — Next.js App Router. One folder per route (`contacto/`,
-  `oportunidades/`, `ecosistema/`, `membresia/`, `recursos/`) plus the root
+  `ecosistema/`, `membresia/`, `recursos/`) plus the root
   `page.tsx` (home) and `layout.tsx`. `src/app/api/contact/route.ts` is the
   Contacto form's server proxy (see below).
 - `src/components/sections/<page>/` — one component per page section, composed
@@ -114,8 +114,9 @@ ordering of the grid all come from `src/lib/eventos.ts`. Don't add a `status`
 or a display-string `date` field back; that's a thing someone then has to
 remember to update. `src/data/oportunidadesAceleradoras.ts` follows the same
 rule: an `Oportunidad` stores an ISO `deadline` (last day to apply,
-inclusive), and the "Vigente"/"Cerrada" badge, the displayed date, and whether
-the home teaser counts it all come from `src/lib/oportunidades.ts`.
+inclusive), and the "Vigente"/"Cerrada" badge and the displayed date come from
+`src/lib/oportunidades.ts`. (Oportunidades is currently soft-deleted — see
+"Retired pages" below — so these are kept but not rendered anywhere.)
 
 Two rules that are easy to get wrong:
 
@@ -128,16 +129,26 @@ Two rules that are easy to get wrong:
   oportunidad stays `vigente` through the end of its deadline day.
 - **Pages rendering derived-from-today state need `export const revalidate`.**
   These pages are statically prerendered, so without it the derived value
-  freezes at build time and never changes. Two routes set `3600` today
-  (confirm in `pnpm build` output — both show `Revalidate 1h`):
-  `/oportunidades` (event and oportunidad badges) and `/` (the Actualidad
-  teaser only counts oportunidades still open, and hides itself — and its
-  side-nav dot — below two populated columns). Cache Components is not enabled in
+  freezes at build time and never changes. No route renders such state right
+  now (it was `/oportunidades` and the home Actualidad teaser, both retired);
+  whichever page renders it next sets `3600` and should show `Revalidate 1h`
+  in `pnpm build` output. Cache Components is not enabled in
   `next.config.ts`, so the route segment config `revalidate` is still the
   correct API here; under Cache Components it no longer exists.
 
 The flip side: if a page stops depending on "now", drop its `revalidate` again
 rather than leaving it as harmless-looking cargo.
+
+## Retired pages
+
+**Oportunidades** (events + accelerator calls) is soft-deleted: the route
+`src/app/oportunidades/` and the home "Actualidad" section are gone, and
+`/oportunidades` temporarily redirects (307) to `/` via `redirects()` in
+`next.config.ts`. Its components (`src/components/sections/oportunidades/`),
+data (`eventos.ts`, `oportunidadesAceleradoras.ts`) and date helpers
+(`src/lib/eventos.ts`, `src/lib/oportunidades.ts`) are kept, with their tests,
+so restoring it means re-adding the page, the nav entry, and dropping the
+redirect.
 
 ## Contacto form
 
