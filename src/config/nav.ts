@@ -9,6 +9,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Ecosistema", href: "/ecosistema" },
   { label: "Publicaciones", href: "/publicaciones" },
   { label: "Membresía", href: "/membresia" },
+  { label: "Newsletter", href: "/newsletter" },
   { label: "Contacto", href: "/contacto" },
 ];
 

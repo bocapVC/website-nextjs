@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { NAV_LINKS, SITE } from "@/config/nav";
 import { Logo } from "@/components/ui/Logo";
+import { SubscribeForm } from "@/components/sections/newsletter/SubscribeForm";
 import { CopyEmailButton } from "./CopyEmailButton";
 
-/** Site footer on the ink theme: brand blurb, nav column, contact column, meta row. */
+/** Site footer on the ink theme: brand blurb, nav column, contact column, newsletter signup, meta row. */
 export function Footer() {
   return (
     <footer className="mt-auto bg-ink text-white">
@@ -48,7 +49,21 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-white/15 pt-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 grid gap-4 border-t border-white/15 pt-8 lg:grid-cols-[1.4fr_2fr] lg:items-start">
+          <div>
+            <h3 className="font-sans text-xs font-bold uppercase tracking-[0.16em] text-white/50">
+              Newsletter
+            </h3>
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/75">
+              Lo más importante del ecosistema, una vez por trimestre.
+            </p>
+          </div>
+          <div className="max-w-lg">
+            <SubscribeForm variant="compact" />
+          </div>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-2 border-t border-white/15 pt-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 {SITE.name}</p>
           <p>Bolivia · Capital emprendedor · Ecosistema latinoamericano</p>
         </div>

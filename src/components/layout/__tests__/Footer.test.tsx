@@ -25,6 +25,17 @@ describe("Footer", () => {
     expect(links.map((l) => l.textContent)).toEqual(NAV_LINKS.map((link) => link.label));
   });
 
+  it("offers a compact, email-only newsletter signup", () => {
+    render(<Footer />);
+
+    expect(screen.getByRole("link", { name: "Newsletter" })).toHaveAttribute(
+      "href",
+      "/newsletter",
+    );
+    expect(screen.getByLabelText("Correo electrónico")).toHaveAttribute("type", "email");
+    expect(screen.getByRole("button", { name: "Suscribirme" })).toBeInTheDocument();
+  });
+
   it("links to Publicaciones, not the old Recursos page", () => {
     render(<Footer />);
 

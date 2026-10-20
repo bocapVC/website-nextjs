@@ -187,7 +187,7 @@ Términos objetivo: BOCAP, Venture Capital Bolivia, startup Bolivia, innovación
 
 ## 📝 Notas
 
-- **Blog sin newsletter**: Newsletter queda fuera de esta fase (planeado para más adelante).
+- **Blog sin newsletter**: el blog no envía nada por sí mismo. El newsletter público (Brevo, trimestral, #13) se escribe y envía a mano desde Brevo; ver "Newsletter" en `README.md`.
 - **Presupuesto**: Hosting en Vercel dentro de $30/mes acordado.
 - **Entregable de cierre**: Reporte de estado de indexación y checklist técnico verificado — no una promesa de posición en Google (depende del tiempo propio de Google).
 - **Bilingüismo**: Es crítico para lanzar — sin esto el sitio no está listo públicamente.

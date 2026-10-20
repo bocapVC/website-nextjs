@@ -186,6 +186,33 @@ surface a real success/error to the user.
   invalid-JSON return `400`; an unreachable or erroring upstream returns
   `502`.
 
+## Newsletter
+
+Public, quarterly, Spanish-only newsletter on Brevo (free plan). The team
+writes and sends each issue from Brevo's editor; the site only handles
+subscriptions: `/newsletter` (full form, email + optional name) and a compact
+email-only form in the footer, both `SubscribeForm`, both posting to
+`src/app/api/newsletter/route.ts` via `useNewsletterSubscription`.
+
+Double opt-in: the route looks the contact up in Brevo; if they're already on
+the newsletter list (and not unsubscribed/blacklisted) it answers
+`already_subscribed`, otherwise it triggers Brevo's DOI email (re-sent on each
+resubmission), whose link lands on `/newsletter/confirmado` (noindex, not in
+the sitemap). Unsubscribing only happens through Brevo's link in every email.
+A filled `website` honeypot is answered as `pending` without calling Brevo.
+
+Server-only env vars (Vercel project settings; never `NEXT_PUBLIC_`):
+
+| Variable                           | Value                                        |
+| ---------------------------------- | -------------------------------------------- |
+| `BREVO_API_KEY`                    | Brevo → SMTP & API → API keys                |
+| `BREVO_NEWSLETTER_LIST_ID`         | numeric id of the dedicated newsletter list  |
+| `BREVO_NEWSLETTER_DOI_TEMPLATE_ID` | numeric id of the double opt-in template     |
+
+Missing configuration makes the route answer 502, so the form shows its
+generic error rather than pretending to subscribe. The name is stored as the
+`FIRSTNAME` contact attribute.
+
 ## Protected publications
 
 A publication in `src/data/guiasArticulos.ts` with `access: "protected"` asks
