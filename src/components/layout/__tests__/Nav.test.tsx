@@ -49,6 +49,16 @@ describe("Nav", () => {
       expect(screen.getAllByRole("link")).toHaveLength(PRIMARY_LINKS.length + 1);
     });
 
+    it("links to Publicaciones, not the old Recursos page", () => {
+      render(<Nav />);
+
+      expect(screen.getByRole("link", { name: "Publicaciones" })).toHaveAttribute(
+        "href",
+        "/publicaciones",
+      );
+      expect(screen.queryByRole("link", { name: "Recursos" })).not.toBeInTheDocument();
+    });
+
     it("renders the Contacto CTA separately from the primary links", () => {
       render(<Nav />);
 
@@ -78,7 +88,7 @@ describe("Nav", () => {
     });
 
     it("marks Inicio only on the home page, not on every route", () => {
-      usePathname.mockReturnValue("/recursos");
+      usePathname.mockReturnValue("/publicaciones");
       render(<Nav />);
 
       expect(linkTo("/")).not.toHaveAttribute("aria-current");
@@ -100,7 +110,7 @@ describe("Nav", () => {
       render(<Nav />);
 
       expect(linkTo("/ecosistema")).toHaveClass("border-white/70", "text-white");
-      expect(linkTo("/recursos")).toHaveClass("border-transparent");
+      expect(linkTo("/publicaciones")).toHaveClass("border-transparent");
     });
   });
 
@@ -144,7 +154,7 @@ describe("Nav", () => {
       render(<Nav />);
       fireEvent.click(toggle());
 
-      clickLink(linkTo("/recursos"));
+      clickLink(linkTo("/publicaciones"));
 
       expect(toggle()).toHaveAttribute("aria-expanded", "false");
       expect(panel()).toHaveClass("max-[920px]:hidden");

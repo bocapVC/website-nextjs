@@ -36,6 +36,17 @@ describe("Footer", () => {
     expect(screen.getByRole("button", { name: "Suscribirme" })).toBeInTheDocument();
   });
 
+  it("links to Publicaciones, not the old Recursos page", () => {
+    render(<Footer />);
+
+    expect(
+      within(navColumn()).getByRole("link", { name: "Publicaciones" }),
+    ).toHaveAttribute("href", "/publicaciones");
+    expect(
+      within(navColumn()).queryByRole("link", { name: "Recursos" }),
+    ).not.toBeInTheDocument();
+  });
+
   it("renders the brand blurb and wordmark", () => {
     render(<Footer />);
 

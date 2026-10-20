@@ -17,13 +17,12 @@ describe("SectionNavigation", () => {
     vi.unstubAllGlobals();
   });
 
-  it("drops omitted dots and scrolls each remaining dot to its own section by id", () => {
-    // Actualidad (#oportunidades) renders nothing below its content threshold.
+  it("renders one dot per home section and scrolls each dot to its own section by id", () => {
     const ids = ["hero", "que-es", "ecosistema", "quienes", "cierre"];
     const scrollIntoView = vi.fn();
     render(
       <>
-        <SectionNavigation omit={["oportunidades"]} />
+        <SectionNavigation />
         {ids.map((id) => (
           <section key={id} id={id} />
         ))}

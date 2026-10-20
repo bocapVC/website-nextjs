@@ -30,7 +30,7 @@ pnpm test       # Vitest + React Testing Library (jsdom)
 ## Structure
 
 - `src/app/` — Next.js App Router. One folder per route (`contacto/`,
-  `oportunidades/`, `ecosistema/`, `membresia/`, `recursos/`) plus the root
+  `ecosistema/`, `membresia/`, `publicaciones/`) plus the root
   `page.tsx` (home) and `layout.tsx`. `src/app/api/contact/route.ts` is the
   Contacto form's server proxy (see below).
 - `src/components/sections/<page>/` — one component per page section, composed
@@ -40,7 +40,7 @@ pnpm test       # Vitest + React Testing Library (jsdom)
   `Badge`, `Section`, `Logo`, `FormField`, ...).
 - `src/components/layout/` — `Header`, `Footer`, `Nav`, `CopyEmailButton`.
 - `src/data/` — content backing the data-driven sections (one file per
-  section, e.g. `startups.ts`, `eventos.ts`, `reportes.ts`). Several of these
+  section, e.g. `startups.ts`, `eventos.ts`, `guiasArticulos.ts`). Several of these
   are still empty arrays because the real content hasn't been supplied yet —
   see `PLAN.md` for the up-to-date list of what's still pending from the
   institution. Sections render an honest "Próximamente" empty state rather
@@ -114,8 +114,9 @@ ordering of the grid all come from `src/lib/eventos.ts`. Don't add a `status`
 or a display-string `date` field back; that's a thing someone then has to
 remember to update. `src/data/oportunidadesAceleradoras.ts` follows the same
 rule: an `Oportunidad` stores an ISO `deadline` (last day to apply,
-inclusive), and the "Vigente"/"Cerrada" badge, the displayed date, and whether
-the home teaser counts it all come from `src/lib/oportunidades.ts`.
+inclusive), and the "Vigente"/"Cerrada" badge and the displayed date come from
+`src/lib/oportunidades.ts`. (Oportunidades is currently soft-deleted — see
+"Retired pages" below — so these are kept but not rendered anywhere.)
 
 Two rules that are easy to get wrong:
 
@@ -128,16 +129,30 @@ Two rules that are easy to get wrong:
   oportunidad stays `vigente` through the end of its deadline day.
 - **Pages rendering derived-from-today state need `export const revalidate`.**
   These pages are statically prerendered, so without it the derived value
-  freezes at build time and never changes. Two routes set `3600` today
-  (confirm in `pnpm build` output — both show `Revalidate 1h`):
-  `/oportunidades` (event and oportunidad badges) and `/` (the Actualidad
-  teaser only counts oportunidades still open, and hides itself — and its
-  side-nav dot — below two populated columns). Cache Components is not enabled in
+  freezes at build time and never changes. No route renders such state right
+  now (it was `/oportunidades` and the home Actualidad teaser, both retired);
+  whichever page renders it next sets `3600` and should show `Revalidate 1h`
+  in `pnpm build` output. Cache Components is not enabled in
   `next.config.ts`, so the route segment config `revalidate` is still the
   correct API here; under Cache Components it no longer exists.
 
 The flip side: if a page stops depending on "now", drop its `revalidate` again
 rather than leaving it as harmless-looking cargo.
+
+## Retired pages
+
+**Oportunidades** (events + accelerator calls) is soft-deleted: the route
+`src/app/oportunidades/` and the home "Actualidad" section are gone, and
+`/oportunidades` temporarily redirects (307) to `/` via `redirects()` in
+`next.config.ts`. Its components (`src/components/sections/oportunidades/`),
+data (`eventos.ts`, `oportunidadesAceleradoras.ts`) and date helpers
+(`src/lib/eventos.ts`, `src/lib/oportunidades.ts`) are kept, with their tests,
+so restoring it means re-adding the page, the nav entry, and dropping the
+redirect.
+
+**Recursos** was renamed to **Publicaciones** (`/publicaciones`); `/recursos`
+permanently redirects (308) there. Its empty "Reportes" section was deleted
+outright.
 
 ## Contacto form
 
@@ -197,6 +212,20 @@ Server-only env vars (Vercel project settings; never `NEXT_PUBLIC_`):
 Missing configuration makes the route answer 502, so the form shows its
 generic error rather than pretending to subscribe. The name is stored as the
 `FIRSTNAME` contact attribute.
+
+## Protected publications
+
+A publication in `src/data/guiasArticulos.ts` with `access: "protected"` asks
+for the visitor's email before its PDF downloads (`ProtectedDownload`). Omitted
+or `"open"` downloads directly, as before. The email and the article title go
+through `src/app/api/article-access/route.ts` to a Google Form (Email →
+`entry.2140414971`, Artículo → `entry.1559454988`), same pattern as Contacto.
+One submission unlocks every protected article on that browser for 3 months
+(`src/lib/articleUnlock.ts` stores only the expiry, in localStorage), and the
+visitor gets the file even if the form fails to record the submission.
+
+This is lead capture, not access control: the PDFs stay in `public/` and
+anyone with the URL can download them.
 
 ## Testing
 
