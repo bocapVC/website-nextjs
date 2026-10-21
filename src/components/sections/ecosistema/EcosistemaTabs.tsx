@@ -73,9 +73,13 @@ export function EcosistemaTabs() {
                 <Badge>{entry.category}</Badge>
               </div>
               <p className="mt-3 font-semibold text-ink">{entry.name}</p>
-              <p className="text-xs uppercase tracking-wide text-ink-soft">{entry.type}</p>
-              <p className="mt-2 text-sm leading-relaxed text-ink-soft">{entry.description}</p>
-              {entry.focus.length > 0 ? (
+              {entry.type ? (
+                <p className="text-xs uppercase tracking-wide text-ink-soft">{entry.type}</p>
+              ) : null}
+              {entry.description ? (
+                <p className="mt-2 text-sm leading-relaxed text-ink-soft">{entry.description}</p>
+              ) : null}
+              {entry.focus?.length ? (
                 <p className="mt-3 text-xs text-ink-soft">
                   <span className="font-semibold text-ink">Enfoque: </span>
                   {entry.focus.join(", ")}
