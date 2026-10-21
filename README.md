@@ -96,7 +96,9 @@ is documented in [`docs/design-system.md`](docs/design-system.md).
 A few values are institution-owned and intentionally centralized so they're
 easy to update without hunting through components:
 
-- **Contact email** — `SITE.email` in `src/config/nav.ts`.
+- **Contact email and LinkedIn** — edited from the admin panel (see below);
+  stored in `src/data/siteSettings.json` and exposed as `SITE.email` /
+  `SITE.linkedin` in `src/config/nav.ts`.
 - **Logo** — `LOGO_SRC` in `src/components/ui/Logo.tsx`, currently
   `public/logo.png`. The component expects a transparent PNG with the full
   white lockup, sized for dark surfaces (header pill, footer); height is
@@ -106,6 +108,43 @@ easy to update without hunting through components:
 - **Nav links** — `NAV_LINKS` in `src/config/nav.ts` (shared by `Header` and
   `Footer`).
 - **Design tokens** — `:root` block in `src/app/globals.css` (see above).
+
+## Admin panel
+
+Non-technical staff edit content at `/admin`: [Sveltia CMS](https://sveltiacms.app),
+a static page (`public/admin/index.html` + `public/admin/config.yml`). Content stays
+in the repo as JSON under `src/data/`; every save is a commit to `main`, which
+Vercel deploys in ~1–2 minutes. There are no drafts — git history is the undo.
+Why this design: `docs/adr/0001-admin-panel-git-based-cms.md`.
+
+Sign-in: Sveltia opens `/api/admin/auth` in a popup. Staff type the shared admin
+password; the route returns a GitHub token, which the popup hands to the CMS.
+Five wrong passwords lock that IP out for 15 minutes (per server instance).
+
+Server-only env vars (Vercel Production + Preview, and `.env.local`):
+
+| Variable           | Value                                                          |
+| ------------------ | -------------------------------------------------------------- |
+| `ADMIN_PASSWORD`   | shared admin password, e.g. `openssl rand -base64 32`          |
+| `GITHUB_CMS_TOKEN` | fine-grained PAT from `bocapVC`, see below                     |
+
+Creating `GITHUB_CMS_TOKEN`: as `bocapVC`, GitHub → Settings → Developer settings
+→ Fine-grained tokens → Generate. Resource owner `bocapVC`, **Only select
+repositories → `website-nextjs`**, permissions **Contents: Read and write**
+(Metadata: read-only is added automatically), nothing else. Pick an expiry and
+put a reminder in the calendar: when it expires the panel stops saving.
+
+Rotation:
+
+- **Someone leaves** — change `ADMIN_PASSWORD` and redeploy. Also regenerate
+  the token: anyone who signed in has it in their browser's storage.
+- **Token leaked or expiring** — regenerate it on GitHub, update
+  `GITHUB_CMS_TOKEN`, redeploy, delete the old one.
+- **Emergency off-switch** — revoke the token on GitHub; saving stops at once.
+
+Adding an editable field: add it to the JSON file and to `config.yml` in the same
+change. The CMS rewrites the whole file on save, so a key missing from `config.yml`
+may be dropped.
 
 ## Dates and derived state
 

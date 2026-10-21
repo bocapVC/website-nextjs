@@ -35,6 +35,10 @@ BOCAP's marketing site (Bocap.vc — capital emprendedor / VC network in Bolivia
   and enables smooth scroll to any section. The component is intentionally home-page-only and hidden
   on mobile (`hidden lg:block`) — other pages do not render it. Do not duplicate this pattern for
   other pages; if section nav is needed elsewhere, discuss with the team first.
+- **Admin panel (`/admin`, Sveltia CMS).** Some `src/data/` files are JSON edited by
+  staff through `public/admin/config.yml`; every save is a commit to `main`. When you
+  change the shape of one of those files, update `config.yml` in the same change. See
+  `docs/adr/0001-admin-panel-git-based-cms.md` and the README's "Admin panel" section.
 - **Cards are not card-wide links** — put a real `<a>`/`Button` inside instead.
 
 ## Design system

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { NAV_LINKS, SITE } from "@/config/nav";
+import { ArrowUpRight } from "@/components/icons/ArrowUpRight";
+import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Logo } from "@/components/ui/Logo";
 import { SubscribeForm } from "@/components/sections/newsletter/SubscribeForm";
 import { CopyEmailButton } from "./CopyEmailButton";
@@ -45,6 +47,15 @@ export function Footer() {
               >
                 Escríbenos por correo
               </a>
+              {SITE.linkedin ? (
+                <ExternalLink
+                  href={SITE.linkedin}
+                  className="inline-flex items-center gap-1 text-sm text-white/75 transition-colors hover:text-white"
+                >
+                  LinkedIn
+                  <ArrowUpRight className="h-3 w-3" />
+                </ExternalLink>
+              ) : null}
             </div>
           </div>
         </div>
