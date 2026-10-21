@@ -32,3 +32,37 @@ collections:
             required: false
             hint: Enlace completo a la página de BOCAP en LinkedIn. Si lo dejas vacío, no aparece en el pie de página.
             pattern: ['^https://([a-z]+\.)?linkedin\.com/', "Debe ser un enlace de LinkedIn que empiece con https://"]
+
+  - name: inicio
+    label: Página de inicio
+    files:
+      - name: junta-directiva
+        label: Junta directiva
+        file: src/data/juntaDirectiva.json
+        fields:
+          - name: members
+            label: Miembros
+            label_singular: Miembro
+            widget: list
+            hint: Se muestran en este orden en la página de inicio. Arrastra para reordenar.
+            summary: "{{fields.name}} — {{fields.role}}"
+            fields:
+              - name: photo
+                label: Foto
+                widget: image
+                required: false
+                hint: JPG o WebP, cuadrada, de al menos 600 px y máximo 2 MB. Sin foto se muestran las iniciales.
+                accept: image/jpeg,image/webp
+                max_file_size: 2097152
+                media_folder: /public/photos
+                public_folder: /photos
+              - { name: name, label: Nombre, widget: string }
+              - { name: role, label: Cargo, widget: string, hint: "Ej.: Presidenta, Tesorero." }
+              - { name: organization, label: Organización, widget: string, required: false }
+              - { name: bio, label: Biografía, widget: text, required: false, hint: Una o dos oraciones. }
+              - name: linkedin
+                label: LinkedIn
+                widget: string
+                required: false
+                hint: Enlace completo al perfil de LinkedIn.
+                pattern: ['^https://([a-z]+\.)?linkedin\.com/', "Debe ser un enlace de LinkedIn que empiece con https://"]
