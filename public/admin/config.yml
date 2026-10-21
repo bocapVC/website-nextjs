@@ -1,0 +1,34 @@
+# Sveltia CMS config for the admin panel at /admin. Every save is a commit to `branch`,
+# which Vercel deploys. See docs/adr/0001-admin-panel-git-based-cms.md.
+backend:
+  name: github
+  repo: bocapVC/website-nextjs
+  branch: main
+  # Served by src/app/api/admin/auth/route.ts (password form → scoped token).
+  auth_endpoint: api/admin/auth
+
+# Uploads land in the repo; later collections narrow this per field.
+media_folder: public/uploads
+public_folder: /uploads
+
+locale: es
+
+collections:
+  - name: ajustes
+    label: Ajustes generales
+    files:
+      - name: general
+        label: Contacto y redes
+        file: src/data/siteSettings.json
+        fields:
+          - name: email
+            label: Correo institucional
+            widget: string
+            hint: Se muestra en el pie de página y en la página de Contacto.
+            pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', "Ingresa un correo válido."]
+          - name: linkedin
+            label: LinkedIn
+            widget: string
+            required: false
+            hint: Enlace completo a la página de BOCAP en LinkedIn. Si lo dejas vacío, no aparece en el pie de página.
+            pattern: ['^https://([a-z]+\.)?linkedin\.com/', "Debe ser un enlace de LinkedIn que empiece con https://"]

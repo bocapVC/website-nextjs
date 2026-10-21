@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
     // authored as AVIF and are served `unoptimized` (see `Section`).
     formats: ["image/avif", "image/webp"],
   },
+  async rewrites() {
+    // The admin panel is a static page in public/admin; serve it at the bare path.
+    return [{ source: "/admin", destination: "/admin/index.html" }];
+  },
   async redirects() {
     return [
       // Oportunidades is soft-deleted: its components and data stay in the repo,
