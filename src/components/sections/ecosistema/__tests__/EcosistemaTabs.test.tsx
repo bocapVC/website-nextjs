@@ -59,10 +59,18 @@ describe("EcosistemaTabs", () => {
     }
   });
 
-  it("shows a próximamente state for Ángeles, which has no entries yet", () => {
+  it("switches to Ángeles and renders its entries, or a próximamente state when there are none yet", () => {
     render(<EcosistemaTabs />);
     fireEvent.click(screen.getByRole("button", { name: "Ángeles" }));
-    expect(screen.getByText(/próximamente/i)).toBeInTheDocument();
+    const angeles = DIRECTORIO.filter((entry) => entry.category === "Ángeles");
+
+    if (angeles.length === 0) {
+      expect(screen.getByText(/próximamente/i)).toBeInTheDocument();
+    } else {
+      for (const entry of angeles) {
+        expect(screen.getByText(entry.name)).toBeInTheDocument();
+      }
+    }
   });
 
   it("switches to Startups and renders a card per startup, or a próximamente state when there are none yet", () => {

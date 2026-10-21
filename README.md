@@ -102,6 +102,10 @@ easy to update without hunting through components:
 - **Junta directiva** — edited from the admin panel; stored in
   `src/data/juntaDirectiva.json` (photos in `public/photos`), typed as
   `JUNTA_DIRECTIVA` in `src/data/juntaDirectiva.ts`.
+- **Directorio de /ecosistema** (Fondos, Ángeles, Aceleradoras) — edited from
+  the admin panel; stored in `src/data/directorio.json` (logos in
+  `public/logos`), typed as `DIRECTORIO` in `src/data/directorio.ts`. Startups
+  and the home logo wall (`src/data/miembrosAliados.ts`) stay in code.
 - **Logo** — `LOGO_SRC` in `src/components/ui/Logo.tsx`, currently
   `public/logo.png`. The component expects a transparent PNG with the full
   white lockup, sized for dark surfaces (header pill, footer); height is

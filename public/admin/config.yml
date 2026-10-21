@@ -66,3 +66,42 @@ collections:
                 required: false
                 hint: Enlace completo al perfil de LinkedIn.
                 pattern: ['^https://([a-z]+\.)?linkedin\.com/', "Debe ser un enlace de LinkedIn que empiece con https://"]
+
+  - name: ecosistema
+    label: Ecosistema
+    files:
+      - name: directorio
+        label: Directorio
+        file: src/data/directorio.json
+        fields:
+          - name: entries
+            label: Organizaciones
+            label_singular: Organización
+            widget: list
+            hint: Se muestran en este orden en /ecosistema. Arrastra para reordenar. Las startups y los logos de la página de inicio no se editan aquí.
+            summary: "{{fields.name}} — {{fields.category}}"
+            fields:
+              - { name: name, label: Nombre, widget: string }
+              - name: category
+                label: Categoría
+                widget: select
+                hint: Define en qué pestaña aparece.
+                options: [Fondos, Ángeles, Aceleradoras]
+              - { name: type, label: Tipo, widget: string, required: false, hint: "Subtítulo breve. Ej.: Fondo de capital emprendedor." }
+              - { name: description, label: Descripción, widget: text, required: false, hint: Una o dos oraciones. }
+              - { name: location, label: Ubicación, widget: string, required: false, hint: "Ej.: Bolivia · LatAm." }
+              - { name: focus, label: Enfoque, widget: list, required: false, hint: "Etiquetas cortas separadas por coma. Ej.: Impacto, Early-stage." }
+              - name: website
+                label: Sitio web
+                widget: string
+                required: false
+                hint: Enlace completo, empezando con https://
+                pattern: ['^https://', "Debe ser un enlace que empiece con https://"]
+              - name: logo
+                label: Logo
+                widget: image
+                hint: SVG o PNG con fondo transparente, máximo 1 MB.
+                accept: image/svg+xml,image/png
+                max_file_size: 1048576
+                media_folder: /public/logos
+                public_folder: /logos
