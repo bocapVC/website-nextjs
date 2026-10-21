@@ -51,7 +51,7 @@ collections:
                 label: Foto
                 widget: image
                 required: false
-                hint: JPG o WebP, cuadrada, de al menos 600 px y máximo 2 MB. Sin foto se muestran las iniciales.
+                hint: JPG o WebP, vertical 4:5 (por ejemplo 800 × 1000 px, mínimo 600 px de ancho), máximo 2 MB. Sin foto se muestran las iniciales.
                 accept: image/jpeg,image/webp
                 max_file_size: 2097152
                 media_folder: /public/photos
