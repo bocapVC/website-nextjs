@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowUpRight } from "@/components/icons/ArrowUpRight";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -84,7 +85,8 @@ export function EcosistemaTabs() {
                 <span className="text-xs text-ink-soft">{entry.location}</span>
                 {entry.website ? (
                   <Button href={entry.website} external size="sm" variant="secondary" className="shrink-0">
-                    Visitar sitio →
+                    Visitar sitio
+                    <ArrowUpRight className="h-4 w-4" />
                   </Button>
                 ) : null}
               </div>

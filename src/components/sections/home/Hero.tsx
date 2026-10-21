@@ -13,12 +13,12 @@ export function Hero() {
       sectionClassName="lg:flex lg:min-h-[90vh] lg:flex-col lg:items-center lg:justify-center"
       className="relative z-10 flex flex-col items-center gap-6 text-center"
     >
-      <Eyebrow className="text-red">BOCAP</Eyebrow>
+      <Eyebrow color="white">BOCAP</Eyebrow>
       <h1 className="max-w-6xl font-serif text-5xl font-bold text-white sm:text-6xl">
         La red de inversión en <span className="text-red">startups</span> de
         Bolivia
       </h1>
-      <p className="max-w-3xl text-md text-white/70">
+      <p className="max-w-3xl text-base leading-relaxed text-white/85">
         Reunimos a fondos, ángeles, family offices y corporativos que invierten,
         o quieren empezar a invertir, en startups bolivianas.
       </p>

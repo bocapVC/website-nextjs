@@ -92,7 +92,7 @@ export function QuienesConforman() {
                 {member.linkedin ? (
                   <ExternalLink
                     href={member.linkedin}
-                    className="mt-auto inline-flex w-fit items-center gap-1 pt-4 text-xs font-semibold text-teal hover:underline hover:text-red"
+                    className="mt-auto inline-flex w-fit items-center gap-1 pt-4 text-xs font-semibold text-teal hover:underline hover:text-teal-strong"
                   >
                     LinkedIn
                     <ArrowUpRight className="h-3 w-3" />

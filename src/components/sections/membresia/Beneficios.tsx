@@ -11,7 +11,7 @@ export function Beneficios() {
       <div className="mt-10 grid gap-5 sm:grid-cols-3">
         {BENEFICIOS.map((beneficio) => (
           <Card key={beneficio.title}>
-            <p className="font-semibold text-ink">{beneficio.title}</p>
+            <p className="font-serif text-xl font-bold text-ink">{beneficio.title}</p>
             <p className="mt-2 text-sm text-ink-soft">{beneficio.description}</p>
           </Card>
         ))}
