@@ -14,11 +14,11 @@ export function QuienPuedeParticipar() {
       className="relative z-10 flex flex-col gap-10"
     >
       <div className="flex flex-col gap-3">
-        <Eyebrow className="text-red">Membresía</Eyebrow>
+        <Eyebrow color="white">Membresía</Eyebrow>
         <h1 className="max-w-2xl font-serif text-3xl font-bold text-white sm:text-4xl">
           ¿Quién puede participar en BOCAP?
         </h1>
-        <p className="max-w-xl text-base leading-relaxed text-white/70">
+        <p className="max-w-xl text-base leading-relaxed text-white/85">
           BOCAP reúne a los actores que están construyendo el mercado de capital emprendedor
           en Bolivia.
         </p>
