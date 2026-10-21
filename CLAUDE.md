@@ -37,6 +37,14 @@ BOCAP's marketing site (Bocap.vc — capital emprendedor / VC network in Bolivia
   other pages; if section nav is needed elsewhere, discuss with the team first.
 - **Cards are not card-wide links** — put a real `<a>`/`Button` inside instead.
 
+## Design system
+
+Before building or styling any UI, read `docs/design-system.md`: which component to use
+(`src/components/ui`), what each token is for, type scale, layout, copy rules (Spanish,
+sentence case, no emoji) and contrast caveats. Reuse those components and tokens instead
+of one-off Tailwind classes or new values. When you change a token or a shared
+component, update that doc in the same change.
+
 ## Working with this Next.js version
 
 Next.js 16 is very new. Before relying on prior Next.js knowledge for App Router APIs or conventions, check the docs bundled in `node_modules/next/dist/docs/` (mirrors nextjs.org/docs) — APIs, conventions, or file structure may differ from what you'd otherwise assume.

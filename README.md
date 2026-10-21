@@ -88,6 +88,9 @@ Typography is the one deliberate deviation: `--serif`/`--sans` are loaded via
 legacy site's Apple-only system font stack, so headings and body text render
 consistently on Windows/Android/Linux too.
 
+How to use each token and component — colors, type scale, layout, copy rules —
+is documented in [`docs/design-system.md`](docs/design-system.md).
+
 ## Known swap points
 
 A few values are institution-owned and intentionally centralized so they're
