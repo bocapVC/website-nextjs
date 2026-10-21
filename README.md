@@ -99,6 +99,9 @@ easy to update without hunting through components:
 - **Contact email and LinkedIn** — edited from the admin panel (see below);
   stored in `src/data/siteSettings.json` and exposed as `SITE.email` /
   `SITE.linkedin` in `src/config/nav.ts`.
+- **Junta directiva** — edited from the admin panel; stored in
+  `src/data/juntaDirectiva.json` (photos in `public/photos`), typed as
+  `JUNTA_DIRECTIVA` in `src/data/juntaDirectiva.ts`.
 - **Logo** — `LOGO_SRC` in `src/components/ui/Logo.tsx`, currently
   `public/logo.png`. The component expects a transparent PNG with the full
   white lockup, sized for dark surfaces (header pill, footer); height is
