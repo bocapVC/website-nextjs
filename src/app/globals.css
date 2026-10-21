@@ -4,7 +4,7 @@
    except --sans/--serif: legacy used Apple-only system fonts (Avenir Next,
    Iowan Old Style) that don't render consistently across Windows/Android/Linux,
    so those are now self-hosted via next/font (Inter/Lora) in app/layout.tsx.
-   See design-system reference artifact for the full catalog and provenance notes. */
+   Usage rules for every token: docs/design-system.md. */
 :root {
   --ink: #1f2f4a;
   --ink-soft: #75829a;
