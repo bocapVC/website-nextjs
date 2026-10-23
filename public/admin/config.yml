@@ -13,6 +13,11 @@ public_folder: /uploads
 
 locale: es
 
+# File names for new publications: "Guía de inversión" → guia-de-inversion.
+slug:
+  encoding: ascii
+  clean_accents: true
+
 collections:
   - name: ajustes
     label: Ajustes generales
@@ -106,43 +111,65 @@ collections:
                 media_folder: /public/logos
                 public_folder: /logos
 
+  # One JSON file per publication; the file name is the page URL: /publicaciones/<slug>.
   - name: publicaciones
     label: Publicaciones
-    files:
-      - name: guias-articulos
-        label: Guías y artículos
-        file: src/data/guiasArticulos.json
-        fields:
-          - name: entries
-            label: Publicaciones
-            label_singular: Publicación
-            widget: list
-            hint: Se muestran en este orden en /publicaciones. Arrastra para reordenar.
-            summary: "{{fields.title}} — {{fields.category}}"
-            fields:
-              - { name: title, label: Título, widget: string }
-              - { name: excerpt, label: Resumen, widget: text, hint: Dos o tres oraciones. }
-              - name: category
-                label: Categoría
-                widget: select
-                options: [Artículo, Guía]
-              - { name: meta, label: Detalle, widget: string, hint: "Texto breve bajo el resumen. Ej.: 2026, 8 min de lectura." }
-              - { name: author, label: Autor, widget: string, required: false }
-              # One field, so exactly one of upload or link: the file widget offers both
-              # (choose_url defaults to true); max_file_size only applies to uploads.
-              - name: url
-                label: Archivo PDF o enlace
-                widget: file
-                hint: Sube un PDF (máximo 10 MB) o pega un enlace externo que empiece con https://
-                accept: application/pdf
-                max_file_size: 10485760
-                media_folder: /public/articulos
-                public_folder: /articulos
-              - name: access
-                label: Acceso
-                widget: select
-                default: open
-                hint: "Protegida pide el correo del visitante antes de descargar. Los PDF subidos igual son públicos en GitHub."
-                options:
-                  - { label: Abierta, value: open }
-                  - { label: Protegida (requiere correo), value: protected }
+    label_singular: Publicación
+    folder: src/data/publicaciones
+    format: json
+    create: true
+    slug:
+      template: "{{slug}}"
+      # Only while creating: renaming later would break links already shared.
+      editable: [create]
+      hint: "Dirección de la página: bocap.vc/publicaciones/… Se genera del título; no se puede cambiar después de guardar."
+    summary: "{{title}} — {{category}} · {{date}}"
+    sortable_fields: [date, title, category]
+    # Images inserted in the body.
+    media_folder: /public/uploads/publicaciones
+    public_folder: /uploads/publicaciones
+    fields:
+      - { name: title, label: Título, widget: string }
+      - name: date
+        label: Fecha de publicación
+        widget: datetime
+        time_format: false
+        hint: Se ordenan de la más reciente a la más antigua en /publicaciones.
+      - name: category
+        label: Categoría
+        widget: select
+        hint: Define en qué filtro aparece.
+        options: [Artículo, Guía]
+      - name: excerpt
+        label: Resumen
+        widget: text
+        hint: Dos o tres oraciones. Se muestra en la tarjeta, al inicio de la página y en Google y redes sociales.
+      - { name: author, label: Autor, widget: string, required: false }
+      - name: body
+        label: Texto
+        widget: richtext
+        required: false
+        hint: "El artículo completo. Usa Título 2 y Título 3 para las secciones (el título de la página ya es el principal). Imágenes: JPG o WebP, idealmente de menos de 1 MB. Si lo dejas vacío, la página muestra solo el resumen y el archivo."
+        buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote]
+        editor_components: [image]
+        media_folder: /public/uploads/publicaciones
+        public_folder: /uploads/publicaciones
+      # The file widget offers both an upload and a link (choose_url defaults to true);
+      # max_file_size only applies to uploads.
+      - name: file
+        label: Archivo PDF o enlace
+        widget: file
+        required: false
+        hint: Opcional. Sube un PDF (máximo 10 MB) o pega un enlace externo que empiece con https://
+        accept: application/pdf
+        max_file_size: 10485760
+        media_folder: /public/articulos
+        public_folder: /articulos
+      - name: access
+        label: Acceso al archivo
+        widget: select
+        default: open
+        hint: "Protegido pide el correo del visitante antes de descargar el archivo. El texto de la página siempre es público, y los PDF subidos también son públicos en GitHub."
+        options:
+          - { label: Abierto, value: open }
+          - { label: Protegido (requiere correo), value: protected }

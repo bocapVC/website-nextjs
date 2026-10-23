@@ -20,12 +20,18 @@ El contenido editable por el equipo de BOCAP vive en el panel de administración
 - Ajustes generales (contacto y redes) — #25
 - Junta directiva — #26
 - Directorio de /ecosistema — #27
-- Publicaciones (guías y artículos, PDF o enlace, acceso abierto/protegido) — #28
+- Publicaciones (guías y artículos, PDF o enlace, acceso abierto/protegido) — #28; ahora también el blog, ver 2.2
 - Imágenes del hero — #30
 
 ### 2.2 Blog administrado desde el panel
 
-Reemplaza el plan anterior basado en MDX en el repositorio: el blog lo escribe el equipo (no técnico) desde el panel de administración, y cada artículo es una página propia, indexable individualmente por Google. Alcance a definir con el equipo antes de empezar (listado, página por artículo, metadata/OG, JSON-LD, categorías, share buttons, y si el blog absorbe /publicaciones) — ver #29.
+Reemplaza el plan anterior basado en MDX en el repositorio: el blog lo escribe el equipo (no técnico) desde el panel de administración (colección **Publicaciones**) — #29.
+
+- [x] El blog absorbe /publicaciones: cada publicación es un archivo JSON en `src/data/publicaciones/` y una página propia en `/publicaciones/<slug>`, con texto enriquecido opcional y un PDF o enlace opcional (con acceso abierto o protegido por correo)
+- [x] Listado en /publicaciones, de la más reciente a la más antigua, con filtro por categoría (Artículo, Guía)
+- [x] Metadata por publicación (title, description, canonical, Open Graph `article`), imagen OG generada con el título, JSON-LD `BlogPosting`/`Article`, entrada en `sitemap.xml`
+- [x] Botones para compartir (LinkedIn, WhatsApp, X, Facebook, copiar enlace)
+- Sin enlace "Blog" aparte en el menú: "Publicaciones" ya lo cubre
 
 ---
 
@@ -127,7 +133,7 @@ Optimización de velocidad de carga y performance.
   - [ ] Form submissions (contacto, membresía)
   - [ ] Link clicks (CTAs, nav)
   - [ ] Scroll depth
-  - [ ] Blog post views (si aplica)
+  - [ ] Vistas de publicaciones (`/publicaciones/<slug>`)
 - [ ] Monitoring inicial de indexación y errores en GSC
 
 ### 5.2 Validaciones técnicas SEO
@@ -136,7 +142,7 @@ Optimización de velocidad de carga y performance.
 - [ ] `sitemap.xml` ✅ (ya existe en `src/app/sitemap.ts`)
 - [ ] Metadata dinámicas ✅ (ya existe via `pageMetadata()`)
 - [ ] Structured data (schema.org JSON-LD) ✅ (ya existe)
-- [ ] Agregar schema.org `BlogPosting` (una vez blog esté listo)
+- [x] Agregar schema.org `BlogPosting` — en cada `/publicaciones/<slug>` (#29)
 - [ ] Mobile-friendly check (Lighthouse)
 - [ ] hreflang tags (una vez bilingüe esté listo)
 - [ ] Performance check (Core Web Vitals)
@@ -167,7 +173,7 @@ Términos objetivo: BOCAP, Venture Capital Bolivia, startup Bolivia, innovación
    ↓
 2. Implementar i18n bilingüe ESP/ENG (largo, mejor temprano)
    ↓
-3. Agregar sistema de Blog (da valor inmediato a SEO)
+3. ~~Agregar sistema de Blog~~ — hecho en /publicaciones (#29)
    ↓
 4. WCAG 2.1 AA audit + fixes (accesibilidad crítica)
    ↓
