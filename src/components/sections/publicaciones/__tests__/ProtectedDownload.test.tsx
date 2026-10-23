@@ -1,25 +1,29 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
-import { GuideCard } from "../GuideCard";
-import type { Guide } from "@/data/guiasArticulos";
+import { PublicacionCard } from "../PublicacionCard";
+import type { Publicacion } from "@/lib/publicaciones";
 
-const OPEN: Guide = {
+const OPEN: Publicacion = {
+  slug: "abierto",
   title: "Artículo abierto",
+  date: "2026-01-15",
   excerpt: "Libre.",
   category: "Artículo",
-  meta: "2026",
-  url: "/articulos/abierto.pdf",
+  file: "/articulos/abierto.pdf",
+  access: "open",
 };
-const PROTECTED: Guide = {
+const PROTECTED: Publicacion = {
   ...OPEN,
+  slug: "protegido",
   title: "Artículo protegido",
-  url: "/articulos/protegido.pdf",
+  file: "/articulos/protegido.pdf",
   access: "protected",
 };
-const OTHER_PROTECTED: Guide = {
+const OTHER_PROTECTED: Publicacion = {
   ...PROTECTED,
+  slug: "otro",
   title: "Otro artículo protegido",
-  url: "/articulos/otro.pdf",
+  file: "/articulos/otro.pdf",
 };
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -61,7 +65,8 @@ function dialog() {
 }
 
 function clickDescargar(title = PROTECTED.title) {
-  const card = screen.getByText(title).parentElement!;
+  // The heading's parent is the card.
+  const card = screen.getByRole("heading", { name: title }).parentElement!;
   fireEvent.click(within(card).getByRole("button", { name: /descargar/i }));
 }
 
@@ -75,7 +80,7 @@ async function submitEmail(email: string) {
   });
 }
 
-describe("GuideCard — protected publications", () => {
+describe("PublicacionCard — protected file downloads", () => {
   let downloads: string[];
 
   beforeEach(() => {
@@ -91,23 +96,23 @@ describe("GuideCard — protected publications", () => {
   });
 
   it("leaves open articles as a plain download link, with no lock or dialog", () => {
-    render(<GuideCard guide={OPEN} />);
+    render(<PublicacionCard publicacion={OPEN} />);
 
-    expect(screen.getByRole("link", { name: /descargar/i })).toHaveAttribute("href", OPEN.url);
+    expect(screen.getByRole("link", { name: /descargar/i })).toHaveAttribute("href", OPEN.file);
     expect(screen.queryByText(/requiere correo/i)).not.toBeInTheDocument();
     expect(dialog()).not.toBeInTheDocument();
   });
 
   it("marks protected articles with a lock indicator and still shows their details", () => {
-    render(<GuideCard guide={PROTECTED} />);
+    render(<PublicacionCard publicacion={PROTECTED} />);
 
     expect(screen.getByText(/requiere correo/i)).toBeInTheDocument();
     expect(screen.getByText(PROTECTED.excerpt)).toBeInTheDocument();
-    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /descargar/i })).not.toBeInTheDocument();
   });
 
   it("opens a labelled email dialog instead of downloading", () => {
-    render(<GuideCard guide={PROTECTED} />);
+    render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
 
@@ -124,7 +129,7 @@ describe("GuideCard — protected publications", () => {
     ["a click on the backdrop", () => fireEvent.click(screen.getByRole("dialog"))],
   ])("dismissing with %s keeps it locked and returns focus", (_, dismiss) => {
     const fetchMock = stubRoute();
-    render(<GuideCard guide={PROTECTED} />);
+    render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
     dismiss();
@@ -139,7 +144,7 @@ describe("GuideCard — protected publications", () => {
   });
 
   it("doesn't close when clicking inside the dialog's content", () => {
-    render(<GuideCard guide={PROTECTED} />);
+    render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
     fireEvent.click(screen.getByRole("heading", { name: "Descarga este artículo" }));
@@ -152,7 +157,7 @@ describe("GuideCard — protected publications", () => {
     ["ana@", /correo válido/i],
   ])("validates the email %j before sending anything", async (email, message) => {
     const fetchMock = stubRoute();
-    render(<GuideCard guide={PROTECTED} />);
+    render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
     await submitEmail(email);
@@ -165,7 +170,7 @@ describe("GuideCard — protected publications", () => {
 
   it("sends the email and article title, then closes and downloads", async () => {
     const fetchMock = stubRoute();
-    render(<GuideCard guide={PROTECTED} />);
+    render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
     await submitEmail("ana@example.com");
@@ -178,7 +183,7 @@ describe("GuideCard — protected publications", () => {
       article: PROTECTED.title,
     });
     expect(dialog()).not.toBeInTheDocument();
-    expect(downloads).toEqual([PROTECTED.url]);
+    expect(downloads).toEqual([PROTECTED.file]);
   });
 
   it.each([
@@ -186,31 +191,31 @@ describe("GuideCard — protected publications", () => {
     ["is unreachable", () => Promise.reject(new TypeError("network error"))],
   ])("still unlocks and downloads when the route %s", async (_, response) => {
     stubRoute(response());
-    render(<GuideCard guide={PROTECTED} />);
+    render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
     await submitEmail("ana@example.com");
 
-    expect(downloads).toEqual([PROTECTED.url]);
+    expect(downloads).toEqual([PROTECTED.file]);
     expect(dialog()).not.toBeInTheDocument();
   });
 
   it("disables the submit button while the email is being sent", async () => {
     let resolve!: (v: unknown) => void;
     stubRoute(new Promise((r) => (resolve = r)));
-    render(<GuideCard guide={PROTECTED} />);
+    render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
     await submitEmail("ana@example.com");
 
     expect(screen.getByRole("button", { name: /enviando/i })).toBeDisabled();
     await act(async () => resolve({ ok: true, status: 200 }));
-    expect(downloads).toEqual([PROTECTED.url]);
+    expect(downloads).toEqual([PROTECTED.file]);
   });
 
   it("unlocks locally without sending anything when the honeypot is filled", async () => {
     const fetchMock = stubRoute();
-    const { container } = render(<GuideCard guide={PROTECTED} />);
+    const { container } = render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
     fireEvent.change(container.querySelector('input[name="website"]')!, {
@@ -219,15 +224,15 @@ describe("GuideCard — protected publications", () => {
     await submitEmail("bot@example.com");
 
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(downloads).toEqual([PROTECTED.url]);
+    expect(downloads).toEqual([PROTECTED.file]);
   });
 
   it("downloads every other protected article directly once unlocked", async () => {
     const fetchMock = stubRoute();
     render(
       <>
-        <GuideCard guide={PROTECTED} />
-        <GuideCard guide={OTHER_PROTECTED} />
+        <PublicacionCard publicacion={PROTECTED} />
+        <PublicacionCard publicacion={OTHER_PROTECTED} />
       </>,
     );
 
@@ -236,7 +241,7 @@ describe("GuideCard — protected publications", () => {
     clickDescargar(OTHER_PROTECTED.title);
 
     expect(dialog()).not.toBeInTheDocument();
-    expect(downloads).toEqual([PROTECTED.url, OTHER_PROTECTED.url]);
+    expect(downloads).toEqual([PROTECTED.file, OTHER_PROTECTED.file]);
     expect(fetchMock).toHaveBeenCalledOnce();
   });
 
@@ -244,7 +249,7 @@ describe("GuideCard — protected publications", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-10-15T12:00:00Z"));
     stubRoute();
-    const { unmount } = render(<GuideCard guide={PROTECTED} />);
+    const { unmount } = render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
     await submitEmail("ana@example.com");
@@ -252,7 +257,7 @@ describe("GuideCard — protected publications", () => {
 
     // A returning visit, just under 3 months later: still unlocked.
     vi.setSystemTime(new Date("2027-01-14T12:00:00Z"));
-    render(<GuideCard guide={OTHER_PROTECTED} />);
+    render(<PublicacionCard publicacion={OTHER_PROTECTED} />);
     clickDescargar(OTHER_PROTECTED.title);
     expect(dialog()).not.toBeInTheDocument();
 
@@ -260,7 +265,7 @@ describe("GuideCard — protected publications", () => {
     vi.setSystemTime(new Date(new Date("2027-01-15T12:00:00Z").getTime() + DAY));
     clickDescargar(OTHER_PROTECTED.title);
     expect(dialog()).toBeInTheDocument();
-    expect(downloads).toEqual([PROTECTED.url, OTHER_PROTECTED.url]);
+    expect(downloads).toEqual([PROTECTED.file, OTHER_PROTECTED.file]);
   });
 
   it("still completes the flow when localStorage throws", async () => {
@@ -271,13 +276,13 @@ describe("GuideCard — protected publications", () => {
       throw new Error("QuotaExceededError");
     });
     stubRoute();
-    render(<GuideCard guide={PROTECTED} />);
+    render(<PublicacionCard publicacion={PROTECTED} />);
 
     clickDescargar();
     expect(dialog()).toBeInTheDocument();
     await submitEmail("ana@example.com");
 
-    expect(downloads).toEqual([PROTECTED.url]);
+    expect(downloads).toEqual([PROTECTED.file]);
     expect(dialog()).not.toBeInTheDocument();
   });
 });

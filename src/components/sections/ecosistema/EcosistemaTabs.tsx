@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { FilterTabs } from "@/components/ui/FilterTabs";
 import { Section } from "@/components/ui/Section";
-import { cn } from "@/lib/cn";
 import { DIRECTORIO } from "@/data/directorio";
 import { STARTUPS } from "@/data/startups";
 
@@ -38,24 +38,7 @@ export function EcosistemaTabs() {
   return (
     <Section>
       <Eyebrow className="mb-4">Ecosistema Bocap</Eyebrow>
-      <div className="flex flex-wrap gap-6 border-b border-line-strong">
-        {TABS.map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            onClick={() => setActiveTab(tab)}
-            aria-current={activeTab === tab}
-            className={cn(
-              "border-b-2 pb-4 text-sm font-semibold uppercase tracking-wide transition-colors",
-              activeTab === tab
-                ? "border-red text-ink"
-                : "border-transparent text-ink-soft hover:text-ink",
-            )}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
+      <FilterTabs tabs={TABS} active={activeTab} onChange={setActiveTab} />
 
       {directoryEntries.length > 0 || startupEntries.length > 0 ? (
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

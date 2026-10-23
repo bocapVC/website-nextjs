@@ -22,6 +22,7 @@ Reach for `src/components/ui` before writing one-off Tailwind classes:
 | Action | `Button` (`variant="primary" \| "secondary" \| "ghost"`, `size="md" \| "sm"`, `href`, `external`) |
 | Content surface | `Card` (`interactive` for a hover lift) |
 | Category or status pill | `Badge` (`tone="neutral" \| "red" \| "ink" \| "gold"`) |
+| Category filter over a card grid | `FilterTabs` (`tabs`, `active`, `onChange`, `labels`) |
 | Form controls | `InputField`, `SelectField`, `TextareaField` from `FormField` |
 | Form result | `StatusPanel` (`variant="success" \| "error"`) |
 | Off-site link | `ExternalLink` (new tab, `rel="noreferrer"`) |
@@ -44,7 +45,7 @@ without discussing it with the team.
 - **No emoji.** Status is a word in a `Badge` ("Vigente", "Pasado", "Requiere
   correo").
 - **Dates.** Spanish long form ("14–18 de septiembre, 2026") from
-  `formatEventoDate`. Anything that depends on today is derived at render time —
+  `formatEventoDate` / `formatIsoDay`. Anything that depends on today is derived at render time —
   see "Dates and derived state" in `README.md`.
 
 ## Color
@@ -84,6 +85,7 @@ without discussing it with the team.
 | Display | Lora 700, `text-5xl sm:text-6xl` | Home hero h1 only |
 | Section title | Lora 700, `text-heading-lg` (clamp(2rem, 4vw, 3.2rem)), `leading-tight`, `max-w-[16ch]` | `SectionHeading` |
 | Card title | Lora 700, `text-xl` | Publication / feature cards |
+| Article body | 17px, `leading-relaxed`, `text-ink`, `max-w-3xl` column; h2 Lora `text-3xl`, h3 `text-2xl` | `/publicaciones/<slug>` (`Markdown`) |
 | Date | Lora 700, `text-lg`, `text-red` | `EventoCard` |
 | Lede | 16px, `leading-relaxed`, `max-w-2xl`, `text-ink-soft` | Under section titles |
 | Body small | `text-sm leading-relaxed` | Card excerpts, footer |

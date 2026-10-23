@@ -1,5 +1,6 @@
 import { PageHeader } from "@/components/ui/PageHeader";
-import { GuiasArticulos } from "@/components/sections/publicaciones/GuiasArticulos";
+import { PublicacionesList } from "@/components/sections/publicaciones/PublicacionesList";
+import { getPublicaciones } from "@/lib/getPublicaciones";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -20,7 +21,7 @@ export default function PublicacionesPage() {
         title="Artículos y guías"
         description="Análisis y miradas de BOCAP y su red para entender el capital emprendedor en Bolivia."
       />
-      <GuiasArticulos />
+      <PublicacionesList publicaciones={getPublicaciones()} />
     </>
   );
 }

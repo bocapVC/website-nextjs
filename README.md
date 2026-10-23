@@ -40,7 +40,7 @@ pnpm test       # Vitest + React Testing Library (jsdom)
   `Badge`, `Section`, `Logo`, `FormField`, ...).
 - `src/components/layout/` — `Header`, `Footer`, `Nav`, `CopyEmailButton`.
 - `src/data/` — content backing the data-driven sections (one file per
-  section, e.g. `startups.ts`, `eventos.ts`, `guiasArticulos.ts`). Several of these
+  section, e.g. `startups.ts`, `eventos.ts`, `directorio.json`). Several of these
   are still empty arrays because the real content hasn't been supplied yet —
   see `PLAN.md` for the up-to-date list of what's still pending from the
   institution. Sections render an honest "Próximamente" empty state rather
@@ -106,11 +106,16 @@ easy to update without hunting through components:
   the admin panel; stored in `src/data/directorio.json` (logos in
   `public/logos`), typed as `DIRECTORIO` in `src/data/directorio.ts`. Startups
   and the home logo wall (`src/data/miembrosAliados.ts`) stay in code.
-- **Publicaciones** (guías y artículos) — edited from the admin panel; stored in
-  `src/data/guiasArticulos.json` (uploaded PDFs in `public/articulos`, max
-  10 MB), typed as `GUIAS_ARTICULOS` in `src/data/guiasArticulos.ts`. Each one
-  is either an uploaded PDF or an external link, with a category from a fixed
-  list (`GuideCategory`, mirrored in `public/admin/config.yml`).
+- **Publicaciones** (guías, artículos and blog posts) — edited from the admin
+  panel; one JSON file per publication in `src/data/publicaciones/`, whose file
+  name is the page URL (`/publicaciones/<slug>`). Each has an optional rich-text
+  body (Markdown, rendered by `Markdown.tsx`; body images in
+  `public/uploads/publicaciones`) and an optional PDF (`public/articulos`, max
+  10 MB) or external link, open or email-gated. Read at build time by
+  `getPublicaciones()` in `src/lib/getPublicaciones.ts` (server-only; types and
+  pure helpers in `src/lib/publicaciones.ts`). The category list
+  (`PUBLICACION_CATEGORIES`) is mirrored in `public/admin/config.yml`. A slug is
+  fixed once the entry is saved, so shared links keep working.
 - **Logo** — `LOGO_SRC` in `src/components/ui/Logo.tsx`, currently
   `public/logo.png`. The component expects a transparent PNG with the full
   white lockup, sized for dark surfaces (header pill, footer); height is
