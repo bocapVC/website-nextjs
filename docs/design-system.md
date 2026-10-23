@@ -120,11 +120,18 @@ without discussing it with the team.
 
 ## Imagery
 
-- Photo bands (`Section photo=…`) put an AVIF under `.section-photo-overlay`
+- Photo bands (`Section photo=…`) put a photo under `.section-photo-overlay`
   (red and teal corner tints, a dark vertical scrim, a red diagonal) and add
   `.section-photo-text` (text shadow) to the content. Use white eyebrows there.
-- Photos are served `unoptimized`; set `photoPosition` so the subject survives
-  the crop.
+- The four page heroes (inicio, ecosistema, publicaciones, membresía) take
+  their photo, alt text and `photoPosition` from `src/data/heroes.json`, which
+  staff edit in the admin panel (Ajustes generales → Imágenes de portada).
+  Don't hard-code a hero photo; pass the page's `HEROES` entry (`PageHeader`
+  takes it as `hero`).
+- Photos go through the Next image optimizer (`sizes="100vw"`, AVIF/WebP,
+  default quality), so uploads can be large originals. Pass `photoAlt` for a
+  meaningful photo; without it the image is decorative (`alt=""`,
+  `aria-hidden`).
 
 ## Motion and states
 

@@ -159,6 +159,11 @@ Rotation:
   `GITHUB_CMS_TOKEN`, redeploy, delete the old one.
 - **Emergency off-switch** — revoke the token on GitHub; saving stops at once.
 
+Images uploaded from the panel are committed to the repo under `public/` (each
+field sets its own folder, e.g. hero photos in `public/heroes/`). Heroes are
+served through the Next image optimizer, so staff can upload large originals
+(up to 5 MB); the panel rejects anything bigger.
+
 Adding an editable field: add it to the JSON file and to `config.yml` in the same
 change. The CMS rewrites the whole file on save, so a key missing from `config.yml`
 may be dropped.

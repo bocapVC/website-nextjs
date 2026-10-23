@@ -1,0 +1,22 @@
+{
+  "inicio": {
+    "photo": "/heroes/illimani.avif",
+    "alt": "El nevado Illimani sobre La Paz de noche",
+    "position": "center"
+  },
+  "ecosistema": {
+    "photo": "/heroes/ecosistema.avif",
+    "alt": "Panel en un evento de BOCAP frente a un público sentado",
+    "position": "center"
+  },
+  "publicaciones": {
+    "photo": "/heroes/illimani.avif",
+    "alt": "El nevado Illimani sobre La Paz de noche",
+    "position": "top"
+  },
+  "membresia": {
+    "photo": "/heroes/illimani.avif",
+    "alt": "El nevado Illimani sobre La Paz de noche",
+    "position": "top"
+  }
+}

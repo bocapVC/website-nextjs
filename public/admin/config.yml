@@ -38,6 +38,42 @@ collections:
             hint: Enlace completo a la página de BOCAP en LinkedIn. Si lo dejas vacío, no aparece en el pie de página.
             pattern: ['^https://([a-z]+\.)?linkedin\.com/', "Debe ser un enlace de LinkedIn que empiece con https://"]
 
+      # One slot per page, each independent (they may point at the same file).
+      # The fields are written once under `inicio` and reused via a YAML anchor.
+      - name: portadas
+        label: Imágenes de portada
+        file: src/data/heroes.json
+        fields:
+          - name: inicio
+            label: Inicio
+            widget: object
+            fields: &hero_fields
+              - name: photo
+                label: Foto
+                widget: image
+                hint: JPG, WebP o AVIF, horizontal, mínimo 2400 px de ancho, máximo 5 MB. El sitio la reduce y optimiza para cada pantalla.
+                accept: image/jpeg,image/webp,image/avif
+                max_file_size: 5242880
+                media_folder: /public/heroes
+                public_folder: /heroes
+              - name: alt
+                label: Descripción de la foto
+                widget: string
+                required: false
+                hint: "Para lectores de pantalla y buscadores. Ej.: El nevado Illimani sobre La Paz de noche."
+              - name: position
+                label: Parte a conservar al recortar
+                widget: select
+                default: center
+                hint: En pantallas angostas la foto se recorta. Elige dónde está lo importante.
+                options:
+                  - { label: Centro, value: center }
+                  - { label: Arriba, value: top }
+                  - { label: Abajo, value: bottom }
+          - { name: ecosistema, label: Ecosistema, widget: object, fields: *hero_fields }
+          - { name: publicaciones, label: Publicaciones, widget: object, fields: *hero_fields }
+          - { name: membresia, label: Membresía, widget: object, fields: *hero_fields }
+
   - name: inicio
     label: Página de inicio
     files:

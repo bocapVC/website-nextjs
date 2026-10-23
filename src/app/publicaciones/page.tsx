@@ -2,6 +2,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { PublicacionesList } from "@/components/sections/publicaciones/PublicacionesList";
 import { getPublicaciones } from "@/lib/getPublicaciones";
 import { pageMetadata } from "@/lib/metadata";
+import { HEROES } from "@/data/heroes";
 
 export const metadata = pageMetadata({
   title: "Publicaciones",
@@ -13,10 +14,8 @@ export const metadata = pageMetadata({
 export default function PublicacionesPage() {
   return (
     <>
-      {/* illimani.avif is a placeholder until a dedicated publicaciones photo is ready */}
       <PageHeader
-        photo="/illimani.avif"
-        photoPosition="top"
+        hero={HEROES.publicaciones}
         eyebrow="Publicaciones"
         title="Artículos y guías"
         description="Análisis y miradas de BOCAP y su red para entender el capital emprendedor en Bolivia."

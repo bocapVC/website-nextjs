@@ -1,16 +1,18 @@
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
+import { HEROES } from "@/data/heroes";
 import { ELEGIBLES } from "@/data/elegibles";
 import { ELEGIBLE_ICONS } from "@/components/icons/ElegibleIcons";
 
-/** Ink-toned hero: who is eligible to join BOCAP, as a 2-col icon list. Uses illimani.avif as a placeholder until a dedicated membresía photo is ready. */
+/** Ink-toned hero: who is eligible to join BOCAP, as a 2-col icon list. Photo set from the admin panel. */
 export function QuienPuedeParticipar() {
   return (
     <Section
       tone="ink"
       firstOnPage
-      photo="/illimani.avif"
-      photoPosition="top"
+      photo={HEROES.membresia.photo}
+      photoAlt={HEROES.membresia.alt}
+      photoPosition={HEROES.membresia.position || undefined}
       className="relative z-10 flex flex-col gap-10"
     >
       <div className="flex flex-col gap-3">
