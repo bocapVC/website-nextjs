@@ -29,11 +29,20 @@ export function markUnlocked(now: Date = new Date()): void {
   }
 }
 
-/** Starts a same-origin file download without navigating away from the page. */
+/**
+ * Starts the download without navigating away from the page. Browsers ignore `download`
+ * on cross-origin links, so an external URL (a publication linked instead of uploaded)
+ * opens in a new tab.
+ */
 export function triggerDownload(url: string): void {
   const a = document.createElement("a");
   a.href = url;
-  a.download = "";
+  if (a.origin === window.location.origin) {
+    a.download = "";
+  } else {
+    a.target = "_blank";
+    a.rel = "noreferrer";
+  }
   document.body.appendChild(a);
   a.click();
   a.remove();

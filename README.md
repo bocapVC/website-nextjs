@@ -106,6 +106,11 @@ easy to update without hunting through components:
   the admin panel; stored in `src/data/directorio.json` (logos in
   `public/logos`), typed as `DIRECTORIO` in `src/data/directorio.ts`. Startups
   and the home logo wall (`src/data/miembrosAliados.ts`) stay in code.
+- **Publicaciones** (guías y artículos) — edited from the admin panel; stored in
+  `src/data/guiasArticulos.json` (uploaded PDFs in `public/articulos`, max
+  10 MB), typed as `GUIAS_ARTICULOS` in `src/data/guiasArticulos.ts`. Each one
+  is either an uploaded PDF or an external link, with a category from a fixed
+  list (`GuideCategory`, mirrored in `public/admin/config.yml`).
 - **Logo** — `LOGO_SRC` in `src/components/ui/Logo.tsx`, currently
   `public/logo.png`. The component expects a transparent PNG with the full
   white lockup, sized for dark surfaces (header pill, footer); height is
@@ -264,9 +269,10 @@ generic error rather than pretending to subscribe. The name is stored as the
 
 ## Protected publications
 
-A publication in `src/data/guiasArticulos.ts` with `access: "protected"` asks
-for the visitor's email before its PDF downloads (`ProtectedDownload`). Omitted
-or `"open"` downloads directly, as before. The email and the article title go
+A publication with `access: "protected"` (the "Acceso" select in the admin
+panel) asks for the visitor's email before its PDF downloads
+(`ProtectedDownload`). Omitted or `"open"` downloads directly. An external link
+instead of an uploaded PDF opens in a new tab after the same gate. The email and the article title go
 through `src/app/api/article-access/route.ts` to a Google Form (Email →
 `entry.2140414971`, Artículo → `entry.1559454988`), same pattern as Contacto.
 One submission unlocks every protected article on that browser for 3 months

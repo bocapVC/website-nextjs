@@ -1,10 +1,16 @@
+import guiasArticulos from "@/data/guiasArticulos.json";
+
+/** Fixed list so the /publicaciones filters don't fragment; mirrors the panel's select in `public/admin/config.yml`. */
+export type GuideCategory = "Artículo" | "Guía";
+
 export interface Guide {
   title: string;
   excerpt: string;
-  category: string;
+  category: GuideCategory;
   meta: string;
   /** Byline, rendered only when supplied — not every guide is individually authored. */
   author?: string;
+  /** An uploaded PDF under /articulos, or an external https:// link. */
   url?: string;
   /**
    * "protected" asks for the visitor's email (once every 3 months, for all protected
@@ -13,25 +19,6 @@ export interface Guide {
   access?: "open" | "protected";
 }
 
-export const GUIAS_ARTICULOS: Guide[] = [
-  {
-    title: "Bolivia como piloto, no como techo",
-    excerpt:
-      "Bolivia no tiene un problema de talento emprendedor, sino de tamaño de visión. Muchos emprendimientos nacen pensando solo en el mercado local, cuando el verdadero desafío del venture capital exige pensar en escala regional desde el día uno.",
-    category: "Artículo",
-    meta: "2026",
-    author: "Álvaro Villarroel Valencia",
-    url: "/articulos/bolivia_como_piloto.pdf",
-    access: "open",
-  },
-  {
-    title: "Deuda y Cuasi Equity",
-    excerpt:
-      "Entre la banca que exige garantías y el venture capital que exige escala regional, las startups bolivianas caen en un \"financing gap\". La deuda y el cuasi equity ofrecen una salida real a esa zona gris.",
-    category: "Artículo",
-    meta: "2026",
-    author: "Álvaro Villarroel Valencia",
-    url: "/articulos/deuda_y_cuasi_equity.pdf",
-    access: "open",
-  },
-];
+/** Edited from the admin panel (`/admin`); list order is display order. Emptied optional fields may be `""` or missing. */
+// The panel's selects restrict `category` and `access`; JSON imports type them as plain string.
+export const GUIAS_ARTICULOS = guiasArticulos.entries as Guide[];
