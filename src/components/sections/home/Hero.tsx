@@ -1,6 +1,7 @@
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
+import { HEROES } from "@/data/heroes";
 
 /** Ink-toned landing band: eyebrow, serif headline, tagline, and the two primary CTAs. */
 export function Hero() {
@@ -9,7 +10,9 @@ export function Hero() {
       id="hero"
       tone="ink"
       firstOnPage
-      photo="/illimani.avif"
+      photo={HEROES.inicio.photo}
+      photoAlt={HEROES.inicio.alt}
+      photoPosition={HEROES.inicio.position || undefined}
       sectionClassName="lg:flex lg:min-h-[90vh] lg:flex-col lg:items-center lg:justify-center"
       className="relative z-10 flex flex-col items-center gap-6 text-center"
     >

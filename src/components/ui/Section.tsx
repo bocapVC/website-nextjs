@@ -11,11 +11,13 @@ interface SectionProps {
   /** Extra classes for the outer full-bleed <section> element. */
   sectionClassName?: string;
   /**
-   * Path to a decorative background photo, rendered beneath the brand gradient
+   * Path to a background photo, rendered beneath the brand gradient
    * overlay. Content is layered above it, so callers still need `relative z-10`
-   * on `className`. Served `unoptimized` — see the note on the <Image> below.
+   * on `className`. Served through the image optimizer, resized to the viewport.
    */
   photo?: string;
+  /** Alt text for `photo`. Empty or missing marks it decorative (hidden from screen readers). */
+  photoAlt?: string;
   /**
    * Preload the background photo — emits a <link rel="preload"> and skips lazy
    * loading. Defaults to `firstOnPage`, where the photo is the LCP element.
@@ -24,7 +26,7 @@ interface SectionProps {
   /**
    * Which part of the photo to keep when `object-cover` crops it. Shorter
    * bands crop away the most, so the default centre crop can cut the subject
-   * out entirely — `illimani.avif`'s mountain sits in the upper half and is
+   * out entirely — `heroes/illimani.avif`'s mountain sits in the upper half and is
    * lost on anything below full height. The legacy site set a focal point per
    * hero for the same reason (`center 34%`, `center 22%`, ...).
    */
@@ -58,6 +60,7 @@ export function Section({
   className,
   sectionClassName,
   photo,
+  photoAlt,
   photoPreload,
   photoPosition = "center",
   firstOnPage = false,
@@ -75,22 +78,18 @@ export function Section({
     >
       {photo && (
         <>
-          {/* `unoptimized`: the band photos are authored as AVIF, so the
-              optimizer would decode and re-encode them into a second lossy
-              AVIF generation. That re-encode was visibly grainy under the
-              lightened overlay, and it isn't even a win on bytes —
-              oportunidades.avif came back 22% *larger* than its source, since
-              encoding the added noise costs bits. Serving them as authored
-              skips that generation entirely. No `sizes`: without an optimizer
-              there's no generated srcset, and Next drops the attribute anyway.
-              If these are ever re-authored large enough to be worth resizing,
-              drop `unoptimized` and restore `sizes="100vw"`. */}
+          {/* Optimized so an admin-uploaded original (up to 5 MB) never
+              reaches the browser: resized per viewport and re-encoded to
+              AVIF/WebP at the default quality 75. This used to be
+              `unoptimized` because a second AVIF generation looked grainy;
+              re-checked at 1920px, it isn't visibly noisier than the source
+              and is about half the bytes (illimani: 150 KB vs 302 KB). */}
           <Image
             src={photo}
-            alt=""
-            aria-hidden
+            alt={photoAlt ?? ""}
+            aria-hidden={photoAlt ? undefined : true}
             fill
-            unoptimized
+            sizes="100vw"
             preload={photoPreload ?? firstOnPage}
             className={cn("object-cover", photoPositionClasses[photoPosition])}
           />

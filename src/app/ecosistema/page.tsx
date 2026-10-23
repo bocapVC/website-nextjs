@@ -2,6 +2,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { EcosistemaTabs } from "@/components/sections/ecosistema/EcosistemaTabs";
 import { UneteRed } from "@/components/sections/ecosistema/UneteRed";
 import { pageMetadata } from "@/lib/metadata";
+import { HEROES } from "@/data/heroes";
 
 export const metadata = pageMetadata({
   title: "Ecosistema",
@@ -14,7 +15,7 @@ export default function EcosistemaPage() {
   return (
     <>
       <PageHeader
-        photo="/ecosistema.avif"
+        hero={HEROES.ecosistema}
         eyebrow="Ecosistema"
         title="Fondos, ángeles, aceleradoras y startups"
         description="Directorio de organizaciones y emprendimientos que forman parte de la red BOCAP."
