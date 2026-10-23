@@ -105,3 +105,44 @@ collections:
                 max_file_size: 1048576
                 media_folder: /public/logos
                 public_folder: /logos
+
+  - name: publicaciones
+    label: Publicaciones
+    files:
+      - name: guias-articulos
+        label: Guías y artículos
+        file: src/data/guiasArticulos.json
+        fields:
+          - name: entries
+            label: Publicaciones
+            label_singular: Publicación
+            widget: list
+            hint: Se muestran en este orden en /publicaciones. Arrastra para reordenar.
+            summary: "{{fields.title}} — {{fields.category}}"
+            fields:
+              - { name: title, label: Título, widget: string }
+              - { name: excerpt, label: Resumen, widget: text, hint: Dos o tres oraciones. }
+              - name: category
+                label: Categoría
+                widget: select
+                options: [Artículo, Guía]
+              - { name: meta, label: Detalle, widget: string, hint: "Texto breve bajo el resumen. Ej.: 2026, 8 min de lectura." }
+              - { name: author, label: Autor, widget: string, required: false }
+              # One field, so exactly one of upload or link: the file widget offers both
+              # (choose_url defaults to true); max_file_size only applies to uploads.
+              - name: url
+                label: Archivo PDF o enlace
+                widget: file
+                hint: Sube un PDF (máximo 10 MB) o pega un enlace externo que empiece con https://
+                accept: application/pdf
+                max_file_size: 10485760
+                media_folder: /public/articulos
+                public_folder: /articulos
+              - name: access
+                label: Acceso
+                widget: select
+                default: open
+                hint: "Protegida pide el correo del visitante antes de descargar. Los PDF subidos igual son públicos en GitHub."
+                options:
+                  - { label: Abierta, value: open }
+                  - { label: Protegida (requiere correo), value: protected }

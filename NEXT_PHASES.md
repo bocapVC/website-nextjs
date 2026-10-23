@@ -11,24 +11,21 @@ Checklist de trabajo post-Fase 1 (Rebuild Next.js). Basado en requerimientos de 
 - [ ] `startups.ts` — ecosistema (actualmente vacío)
 - [ ] `oportunidadesAceleradoras.ts` — oportunidades (vacío)
 - [ ] `tiposMiembro.ts` — tipos de membresía (actualmente oculto)
-- [ ] Fotos reales de board members (actualmente solo iniciales)
-- [ ] `angels`/`accelerators` en directorio (vacío)
+- [x] Fotos reales de board members — se cargan desde el panel de administración (#26)
+- [ ] `angels`/`accelerators` en directorio — se cargan desde el panel de administración (#27)
 - [ ] Description review de evento Orbit Ventures con BOCAP
 
-### 2.2 Implementar sistema de Blog
+El contenido editable por el equipo de BOCAP vive en el panel de administración (`/admin`, ver `docs/adr/0001-admin-panel-git-based-cms.md`):
 
-Sistema de publicación basado en el repositorio (sin CMS visual). Cada artículo es una página propia, indexable individualmente por Google.
+- Ajustes generales (contacto y redes) — #25
+- Junta directiva — #26
+- Directorio de /ecosistema — #27
+- Publicaciones (guías y artículos, PDF o enlace, acceso abierto/protegido) — #28
+- Imágenes del hero — #30
 
-- [ ] Elegir & setup librería MDX (`contentlayer`, `next-mdx-remote`, etc.)
-- [ ] Estructura de rutas `/blog/[slug]` — cada artículo es una página indexable
-- [ ] Metadata dinámicas (title, description, OG) por artículo
-- [ ] Componentes para blog posts (heading, code blocks, images, etc.)
-- [ ] Tags/categorías con filtrado
-- [ ] Share buttons (Twitter, LinkedIn, WhatsApp)
-- [ ] Schema.org `BlogPosting` en JSON-LD
-- [ ] Archivo/cronología de artículos
-- [ ] Página de blog principal (`/blog`)
-- [ ] Testing: blog post renderiza, metadata son correctas, links funcionan
+### 2.2 Blog administrado desde el panel
+
+Reemplaza el plan anterior basado en MDX en el repositorio: el blog lo escribe el equipo (no técnico) desde el panel de administración, y cada artículo es una página propia, indexable individualmente por Google. Alcance a definir con el equipo antes de empezar (listado, página por artículo, metadata/OG, JSON-LD, categorías, share buttons, y si el blog absorbe /publicaciones) — ver #29.
 
 ---
 
@@ -194,4 +191,4 @@ Términos objetivo: BOCAP, Venture Capital Bolivia, startup Bolivia, innovación
 
 ---
 
-**Última actualización**: 2026-08-12
+**Última actualización**: 2026-10-23
