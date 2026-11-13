@@ -51,7 +51,7 @@ component, update that doc in the same change.
 
 ## Working with this Next.js version
 
-Next.js 16 is very new. Before relying on prior Next.js knowledge for App Router APIs or conventions, check the docs bundled in `node_modules/next/dist/docs/` (mirrors nextjs.org/docs) — APIs, conventions, or file structure may differ from what you'd otherwise assume.
+Before relying on prior Next.js knowledge for App Router APIs or conventions, check the docs bundled in `node_modules/next/dist/docs/`. They match the installed version (mirrors nextjs.org/docs), so APIs, conventions, or file structure may differ from what you'd otherwise assume.
 
 @AGENTS.md
 
